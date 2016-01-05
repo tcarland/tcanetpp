@@ -1,0 +1,82 @@
+tcanetpp
+========
+ 
+  Copyright (c) 2008,2009 Timothy Charlton Arland 
+  Author tca@charltontechnology.net
+
+#### LICENSE
+ 
+  tcanetpp is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as 
+  published by the Free Software Foundation, either version 3 of 
+  the License, or (at your option) any later version.
+ 
+  tcanetpp is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+ 
+  You should have received a copy of the GNU Lesser General Public 
+  License along with tcanetpp.  
+  If not, see <http://www.gnu.org/licenses/>.
+ 
+<!--
+  @mainpage tcanetpp 
+ -->
+
+<!-- 
+  @section overview
+  -->
+#### Overview
+
+  The 'tcanetpp' library is C++ library for providing core
+networking functionality with an object-oriented interface. The 
+library is a collection of utility classes that are not all 
+necessarily networking specific, but are included for convenience.  
+
+  The library has been used in production software and has been 
+refined over many years. At the heart, it provides an Object-Oriented 
+Socket class that wraps the Standard Library socket functions as well 
+as (WIN32) Winsock2, providing a cross-platform implementation.   
+
+  The general goal of the library is to provide core network functionality 
+based completely on berkely sockets, libc, and libstdc++, with no other 
+dependencies (with the exception of pthreads for the Thread-related classes).  
+
+The library provides the following additional functionality: 
+ * Containers: patricia/radix tree, hashmap, circular buffer, synchronized queue
+ * An event management class for handling both network I/O and sub-second timers 
+ * An Object-Oriented interface for pthreads and pthread mutexes
+ * IP functions for manipulating IPv4 and IPv6 Addresses
+ * A thread-safe logging facility
+ * Network Device objects for management purposes   
+  
+   
+  The library has few external dependencies outside of libc. The project can 
+build individual libraries consisting of just the sub-components, or a single, 
+encompassing lib of 'libtcanetpp'.  The pthreads library is only needed for the 
+Thread related classes.   
+
+
+#### Documentation
+  The library is being documented in an API format via doxygen. 
+Run 'make documentation' to generate the docs (doxygen req.)  
+
+
+#### Building
+
+**Unix:**
+  Uses tcamake build environment to set dependencies for simply 
+running 'make'. The library links only libpthread and libdl.
+The library librt may be needed on linux systems, especially for the 
+high resolution timing support provided by the **EventManager**.  
+
+**Mac OSX:**
+  With the gnu tools provided with xcode.
+
+**Win32/64:**
+  Visual studio project files should be provided for win32 support
+(only the thread classes are unsupported with windows and are not 
+compiled; The win32 pthread library may be compatible, but ymmv). 
+
+
