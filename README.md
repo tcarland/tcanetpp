@@ -58,18 +58,23 @@ encompassing lib of 'libtcanetpp'.  The pthreads library is only needed for the
 Thread related classes.   
 
 
-#### Documentation
-  The library is being documented in an API format via doxygen. 
-Run 'make documentation' to generate the docs (doxygen req.)  
-
-
 #### Building
 
+ The project uses the **tcamake** build environment for managing project dependencies
+and running 'make'.  To build, the **tcamake** project should be pulled down to the root 
+of the project by running:
+```
+git clone https://github.com/tcarland/tcamake
+``` 
+
 **Unix:**
-  Uses tcamake build environment to set dependencies for simply 
-running 'make'. The library links only libpthread and libdl.
+   The library requires linking only libpthread and libdl.
 The library librt may be needed on linux systems, especially for the 
-high resolution timing support provided by the **EventManager**.  
+high resolution timing support provided by the **EventManager**. To build, the **tcamake** 
+project should be pulled down to the root of the project by running:
+```
+git clone https://github.com/tcarland/tcamake
+``` 
 
 **Mac OSX:**
   With the gnu tools provided with xcode.
@@ -78,5 +83,11 @@ high resolution timing support provided by the **EventManager**.
   Visual studio project files should be provided for win32 support
 (only the thread classes are unsupported with windows and are not 
 compiled; The win32 pthread library may be compatible, but ymmv). 
+
+
+#### Documentation
+  The library is being documented in an API format via doxygen. 
+Run 'make documentation' to generate the docs (doxygen req.)  
+
 
 
