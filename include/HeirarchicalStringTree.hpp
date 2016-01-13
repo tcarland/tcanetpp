@@ -92,12 +92,7 @@ class HeirarchicalStringTree {
   public:
 
     HeirarchicalStringTree ( char delimiter = '/' );
-    HeirarchicalStringTree ( const HeirarchicalStringTree & tree );
-
     virtual ~HeirarchicalStringTree();
-
-
-    HeirarchicalStringTree&  operator= ( const HeirarchicalStringTree & tree );
 
 
     char            getDelimiter() const;
@@ -151,6 +146,11 @@ class HeirarchicalStringTree {
         void operator() ( Node * node ) { nodes.push_back(node); }
     };
 
+
+  private:
+
+    HeirarchicalStringTree ( const HeirarchicalStringTree & tree );
+    HeirarchicalStringTree&  operator= ( const HeirarchicalStringTree & tree );
 
   private:
 

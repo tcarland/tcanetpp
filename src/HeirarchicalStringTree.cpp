@@ -140,6 +140,8 @@ HeirarchicalStringTree<ValueType>::HeirarchicalStringTree ( char delimiter )
 
 template<typename ValueType>
 HeirarchicalStringTree<ValueType>::HeirarchicalStringTree ( const HeirarchicalStringTree & tree )
+    : _delim(tree.getDelimiter()),
+	  _size(0)
 {}
 
 
