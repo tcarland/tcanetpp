@@ -136,11 +136,15 @@ int main ( int argc, char **argv )
 
     std::string  cidr = "192.102.249.0/32";
     IpAddr       pfx;
+    ipv4addr_t   base;
 
     IpAddr::ToIpAddr(cidr, pfx);
     
     printf("\nProcessing string %s ...\n", cidr.c_str());
     printf("Result is %u / %u\n", pfx.getPrefix(), pfx.getPrefixLen());
+
+    base = IpAddr::ToBasePrefix(pfx.getPrefix(), 18);
+    std::cout << "Base Prefix for " << pfx.toString() << " = " << IpAddr::ntop(base) << std::endl;
 
     return 0;
 }
