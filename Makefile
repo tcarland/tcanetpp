@@ -1,10 +1,6 @@
 # Makefile for tcanetpp
 #
-ifdef TCAMAKE_PROJECT
-  TOPDIR = ../..
-else
-  TOPDIR = .
-endif
+TOPDIR = ..
 
 NEED_SOCKET = 1
 NEED_LIBDL = 1
@@ -18,7 +14,7 @@ endif
 
 #-------------------#
 
-ifdef TNMS_DEBUG
+ifdef TCAMAKE_DEBUG
   OPT_FLAGS =       -g 
 # -DEV_DEBUG
 endif
@@ -120,19 +116,22 @@ distclean: clean libclean doc-clean test-clean
 	@echo
 
 dist: distclean
-ifdef TNMS_DISTDIR
-	@echo "build distribution to $(TNMS_DISTDIR)/tcanetpp"
-	( $(TOPDIR)/tcamake/scripts/tcamake_build.sh dist $(TNMS_DISTDIR) )
+ifdef TCAMAKE_DISTDIR
+	@echo "sync distribution to $(TCAMAKE_DISTDIR)/tcanetpp"
+	( $(TOPDIR)/tcamake/scripts/tcamake_build.sh dist $(TCAMAKE_DISTDIR) )
 	@echo
 endif
 
 install: clean
-ifdef TNMS_PREFIX
-	@echo "Installing libtcanetpp to $(TNMS_PREFIX)/lib"
-	$(MKDIR) $(TNMS_PREFIX)/include/tcanetpp
-	$(MKDIR) $(TNMS_PREFIX)/lib
-	$(RSYNC) --delete include/ $(TNMS_PREFIX)/include/tcanetpp/
-	$(RSYNC) lib/ $(TNMS_PREFIX)/lib/
+ifdef TCAMAKE_PREFIX
+	@echo "Installing libtcanetpp to $(TCAMAKE_PREFIX)/{include,lib}"
+	$(MKDIR) $(TCAMAKE_PREFIX)/include/tcanetpp
+	$(MKDIR) $(TCAMAKE_PREFIX)/lib
+	$(RSYNC) --delete include/ $(TCAMAKE_PREFIX)/include/tcanetpp/
+	$(RSYNC) lib/ $(TCAMAKE_PREFIX)/lib/
 	@echo
+else
+	@echo "TCAMAKE_PREFIX is not set. Install not performed"
+	@echo "  eg. export TCAMAKE_PREFIX=/usr/local"
 endif
 
