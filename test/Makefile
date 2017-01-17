@@ -1,8 +1,4 @@
-ifdef TCAMAKE_PROJECT
-    TOPDIR = ../../..
-else
-    TOPDIR = ..
-endif
+TOPDIR = ../..
 
 NEED_LIBDL = 1
 NEED_SOCKET = 1
