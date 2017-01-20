@@ -1,7 +1,7 @@
 tcanetpp
 ========
  
-  Copyright (c) 2008,2009 Timothy Charlton Arland 
+  Copyright (c) 2002-2016 Timothy Charlton Arland 
   Author tca@charltontechnology.net
 
 #### LICENSE
@@ -87,7 +87,7 @@ compiled; The win32 pthread library may be compatible, but ymmv).
 
 #### Documentation
   The library is being documented in an API format via doxygen. 
-Run 'make documentation' to generate the docs (doxygen req.)  
+Run 'make documentation' to generate the docs (doxygen required).  
 
 
 

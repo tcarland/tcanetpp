@@ -3,7 +3,7 @@
   *
   *    An abstract Thread class wrapping libpthread.
   *  
-  * Copyright (c) 2002,2008 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2015 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
   * @section LICENSE

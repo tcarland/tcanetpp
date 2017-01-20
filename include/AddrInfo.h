@@ -3,7 +3,7 @@
   *
   * For handling struct addrinfo and getaddrinfo/getnameinfo
   *
-  * Copyright (c) 2012 Timothy Charlton Arland
+  * Copyright (c) 2012-2015 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
