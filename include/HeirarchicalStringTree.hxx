@@ -1,5 +1,5 @@
 /**
-  * @file HeirarchicalStringTree.cpp
+  * @file HeirarchicalStringTree.hxx
   *
   * Copyright (c) 2008,2009 Timothy Charlton Arland
   * @author tcarland@gmail.com
@@ -22,14 +22,11 @@
   * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
-#ifndef _TCANETPP_HEIRARCHICALSTRINGTREE_CPP_
-#define _TCANETPP_HEIRARCHICALSTRINGTREE_CPP_
+#ifndef _TCANETPP_HEIRARCHICALSTRINGTREE_HXX_
+#define _TCANETPP_HEIRARCHICALSTRINGTREE_HXX_
 
 #include "StringUtils.h"
 
-// not common to split template declarations and implementation
-// and it requires including the source within the header which
-// pisses off the Eclipse CDT, so this is just to make Eclipse happy.
 #ifndef _TCANETPP_HEIRARCHICALSTRINGTREE_HPP_
 #include "HeirarchicalStringTree.hpp"
 #endif
@@ -382,5 +379,5 @@ HeirarchicalStringTree<ValueType>::depthFirstTraversal ( Node * node, Predicate_
 
 } // namespace
 
-#endif // _TCANETPP_HEIRARCHICALSTRINGTREE_CPP_
+#endif // _TCANETPP_HEIRARCHICALSTRINGTREE_HXX_
 

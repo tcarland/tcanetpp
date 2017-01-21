@@ -162,7 +162,7 @@ class HeirarchicalStringTree {
 
 }  // namespace
 
-#include "../src/HeirarchicalStringTree.cpp"
+#include "HeirarchicalStringTree.hxx"
 
 
 #endif // _TCANETPP_HEIRARCHICALSTRINGTREE_HPP_

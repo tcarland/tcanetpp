@@ -48,18 +48,19 @@ BIN =		    ptest pfxtest
 ALL_OBJS =	    $(OBJS) $(TH_OBJS) $(PT_OBJS) $(CMDBUF_OBJS)
 ALL_BINS = 	    $(BIN)
 
+# ---------------------------------------------
 
 all: lib
 
-
 include ${TOPDIR}/tcamake/project_defs
 
+# ---------------------------------------------
 
 lib: arlib 
 
 arlib: lib/libtcanetpp.a
 
-solib: libtcanetpp.so.1.0.9
+solib: libtcanetpp.so.1.1.0
 
 libtcapt: lib/libtcapt.a
 
@@ -83,7 +84,7 @@ lib/libtcanetpp.a: ${OBJS}
 	$(make-lib-rule)
 	@echo
 
-libtcanetpp.so.1.0.9: ${OBJS}
+libtcanetpp.so.1.1.0: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)
