@@ -653,7 +653,6 @@ int
 EventManager::GetTimeOfDay ( timeval * tv )
 {
     int r = 0;
-    // TODO: fix WIN32
 #   ifdef WIN32
     t->tv_sec = (long) ::time(NULL);
 #   else
