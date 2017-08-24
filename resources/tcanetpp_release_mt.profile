@@ -1,0 +1,9 @@
+
+export PROFILE="tcanetpp_release_mt"
+
+export TCAMAKE_PREFIX="/usr/local"
+export TCAMAKE_DEBUG=
+
+export USE_PTHREADS="true"
+export USE_LIBRT="true"
+

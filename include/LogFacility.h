@@ -163,6 +163,9 @@ class LogFacility {
     static void           SetDebug        ( bool debug );
     static bool           GetDebug();
 
+    static void           SetVerbose      ( int level );
+    static int            GetVerbose();
+
     static bool           RotateLogFile   ( const std::string & logname,
                                             const time_t & now );
 
@@ -236,6 +239,7 @@ private:
     static bool                  _Broadcast;
     static bool                  _Syslog;
     static bool                  _Debug;
+    static int                   _VerboseLvl;
 
 };
 

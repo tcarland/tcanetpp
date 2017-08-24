@@ -59,6 +59,7 @@ bool           LogFacility::_Syslog     = false;
 bool           LogFacility::_Broadcast  = false;
 bool           LogFacility::_Enabled    = false;
 bool           LogFacility::_Debug      = false;
+int            LogFacility::_VerboseLvl = 0;
 std::string    LogFacility::_LogName    = "";
 std::string    LogFacility::_LogPrefix  = "";
 std::string    LogFacility::_LogTimeStr = "";
@@ -345,6 +346,20 @@ bool
 LogFacility::GetDebug()
 {
     return LogFacility::_Debug;
+}
+
+// ----------------------------------------------------------------------
+
+void
+LogFacility::SetVerbose ( int v )
+{
+    LogFacility::_VerboseLvl = v;
+}
+
+int
+LogFacility::GetVerbose()
+{
+    return LogFacility::_VerboseLvl;
 }
 
 // ----------------------------------------------------------------------

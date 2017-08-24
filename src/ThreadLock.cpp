@@ -41,7 +41,7 @@ namespace tcanetpp {
 
 /* ----------------------------------------------------------------------- */
 /**  Class to lock/unlock a mutex on construction/destruction
-  *  allowing for simple synchronization of a class method by simply
+  *  allowing for synchronization of a class method by simply
   *  instantiating this object with the ThreadLock instance.
  **/
 ThreadAutoMutex::ThreadAutoMutex ( ThreadLock * lock, bool sync )
