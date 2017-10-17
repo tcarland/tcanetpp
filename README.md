@@ -1,8 +1,7 @@
 tcanetpp
 ========
  
-  Copyright (c) 2002-2016 Timothy Charlton Arland 
-  Author tca@charltontechnology.net
+  Copyright (c) 2002-2016 Timothy Charlton Arland <tca@charltontechnology.net>
 
 #### LICENSE
  
@@ -61,28 +60,27 @@ Thread related classes.
 #### Building
 
  The project uses the **tcamake** build environment for managing project dependencies
-and running 'make'.  To build, the **tcamake** project should be pulled down to the root 
-of the project by running:
+and running 'make'.  To build, the **tcamake** project should be pulled down to the parent
+directory of the project by running:
 ```
+cd ..
 git clone https://github.com/tcarland/tcamake
+cd tcanetpp
+export TCAMAKE_PROJECT=1
+make
 ``` 
 
 **Unix:**
    The library requires linking only libpthread and libdl.
-The library librt may be needed on linux systems, especially for the 
-high resolution timing support provided by the **EventManager**. To build, the **tcamake** 
-project should be pulled down to the root of the project by running:
-```
-git clone https://github.com/tcarland/tcamake
-``` 
+The library librt should be included on linux systems, especially for the 
+high resolution timing support provided by the **EventManager**. 
 
 **Mac OSX:**
-  With the gnu tools provided with xcode.
+  **tcamake** is needed plus gnu tools provided with xcode.
 
 **Win32/64:**
-  Visual studio project files should be provided for win32 support
-(only the thread classes are unsupported with windows and are not 
-compiled; The win32 pthread library may be compatible, but ymmv). 
+  Only the thread classes (based on libpthread are unsupported with windows.
+The win32 pthread library may be compatible, but ymmv. 
 
 
 #### Documentation
