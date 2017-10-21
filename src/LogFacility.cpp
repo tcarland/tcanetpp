@@ -110,7 +110,7 @@ LogFacility::OpenLogFile ( const std::string & logname,
     if ( sIter != LogFacility::_StreamMap.end() )
         return false;
 
-    std::auto_ptr<std::ofstream>  newfstrm(new std::ofstream());
+    std::unique_ptr<std::ofstream>  newfstrm(new std::ofstream());
 
     if ( append )
         mode |= std::ios::app;
