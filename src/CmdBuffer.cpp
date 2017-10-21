@@ -25,6 +25,7 @@
 #define _TCANETPP_CMDBUFFER_CPP_
 
 #include "CmdBuffer.h"
+#include "Exception.hpp"
 
 
 namespace tcanetpp {
@@ -33,13 +34,7 @@ namespace tcanetpp {
 const char*  CmdBuffer::EOL = "\n";
 
 
-CmdBuffer::CmdBufferException::CmdBufferException ( const std::string & errstr )
-    : Exception(errstr)
-{}
-
-
-
-CmdBuffer::CmdBuffer ( size_t bufsize ) throw ( CmdBufferException )
+CmdBuffer::CmdBuffer ( size_t bufsize ) 
     : _cmdbuf(NULL),
       _file(NULL),
       _bufsize(bufsize),
@@ -47,11 +42,11 @@ CmdBuffer::CmdBuffer ( size_t bufsize ) throw ( CmdBufferException )
       _init(false)
 {
     if ( (bufsize < MINIMUM_CMDBUFFER_SIZE) || (bufsize > MAXIMUM_CMDBUFFER_SIZE) )
-        throw ( CmdBufferException("CmdBuffer error, buffersize out of bounds") );
+        throw ( Exception("CmdBuffer error, buffersize out of bounds") );
 }
 
 
-CmdBuffer::CmdBuffer ( const std::string & cmd, size_t bufsize ) throw ( CmdBufferException )
+CmdBuffer::CmdBuffer ( const std::string & cmd, size_t bufsize )
     : _cmdbuf(NULL),
       _file(NULL),
       _bufsize(bufsize),
@@ -60,9 +55,9 @@ CmdBuffer::CmdBuffer ( const std::string & cmd, size_t bufsize ) throw ( CmdBuff
       _init(false)
 {
     if ( (bufsize < MINIMUM_CMDBUFFER_SIZE) || (bufsize > MAXIMUM_CMDBUFFER_SIZE) )
-        throw ( CmdBufferException("CmdBuffer error, buffersize out of bounds") );
+        throw ( Exception("CmdBuffer error, buffersize out of bounds") );
     if ( ! this->Open(cmd) )
-        throw ( CmdBufferException(this->_errstr) );
+        throw ( Exception(this->_errstr) );
 }
 
 

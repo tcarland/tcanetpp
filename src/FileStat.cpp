@@ -26,6 +26,7 @@
 
 #include <fstream>
 
+#include "Exception.hpp"
 #include "FileStat.h"
 #include "FileUtils.h"
 #include "StringUtils.h"
@@ -36,7 +37,6 @@ namespace tcanetpp {
 
 
 FileStat::FileStat ( const std::string & filename )
-    throw ( Exception )
   : _file(filename)
 {
     if ( ! FileUtils::InitFileStat(_file, &_statb) )

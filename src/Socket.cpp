@@ -84,7 +84,6 @@ Socket::Socket()
   *  address and port.
  **/
 Socket::Socket ( ipv4addr_t ipaddr, uint16_t port, SocketType type, int protocol )
-    throw ( SocketException )
     : _ipaddr(ipaddr),
       _socktype(type),
       _proto(protocol),
@@ -113,7 +112,6 @@ Socket::Socket ( ipv4addr_t ipaddr, uint16_t port, SocketType type, int protocol
 }
 
 Socket::Socket ( ipv6addr_t ipaddr, uint16_t port, SocketType type, int protocol )
-    throw ( SocketException )
     : _ipaddr(ipaddr),
       _socktype(type),
       _proto(protocol),
@@ -143,7 +141,6 @@ Socket::Socket ( ipv6addr_t ipaddr, uint16_t port, SocketType type, int protocol
 
 
 Socket::Socket ( sockaddr_t * sa, uint16_t port, SocketType type, int protocol )
-    throw ( SocketException )
     : _ipaddr(sa),
       _socktype(type),
       _proto(protocol),
@@ -170,7 +167,6 @@ Socket::Socket ( sockaddr_t * sa, uint16_t port, SocketType type, int protocol )
 
 
 Socket::Socket ( addrinfo * ai )
-    throw ( SocketException )
     : _socktype(SOCKTYPE_CLIENT),
       _bound(false),
       _connected(false),
@@ -938,7 +934,6 @@ Socket::nreadn ( void * vptr, size_t n )
 /** Static function for initializing a socket descriptor */
 void
 Socket::InitializeSocket ( sockfd_t & fd, IpAddr & addr, int socktype, int proto )
-    throw ( SocketException )
 {
     std::string errstr = "Socket::initSocket() Fatal Error ";
 
