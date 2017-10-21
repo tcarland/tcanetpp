@@ -34,9 +34,6 @@
 //using __gnu_cxx::stdio_filebuf;
 #endif
 
-#include "Exception.hpp"
-
-
 #define MINIMUM_CMDBUFFER_SIZE  16
 #define MAXIMUM_CMDBUFFER_SIZE  2147483648
 #define DEFAULT_CMDBUFFER_SIZE  1024
@@ -50,7 +47,6 @@ typedef std::vector<std::string>        StringBuffer;
 typedef std::streamsize                 strmsz_t;
 
 
-
 /**  Provides a simpler wrapper to the gnu_cxx:stdio_filebuf interface
   *  offering the buffering system file io such as stdout, for parsing. 
  **/
@@ -58,19 +54,10 @@ class CmdBuffer {
 
   public:
 
-    class CmdBufferException : public Exception {
-      public:
-        CmdBufferException ( const std::string & errstr );
-        virtual ~CmdBufferException() throw () {}
-    };
-
-  public:
-
-    CmdBuffer ( size_t bufsize = DEFAULT_CMDBUFFER_SIZE ) 
-        throw ( CmdBufferException );
+    CmdBuffer ( size_t bufsize = DEFAULT_CMDBUFFER_SIZE ) noexcept(false);
 
     CmdBuffer ( const std::string & cmd, size_t bufsize = DEFAULT_CMDBUFFER_SIZE )
-        throw ( CmdBufferException );
+        noexcept(false);
 
     virtual ~CmdBuffer();
 

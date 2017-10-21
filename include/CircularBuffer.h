@@ -84,11 +84,9 @@ class CircularBuffer {
 
   public:
 
-    CircularBuffer ( size_t totalsize = DEFAULT_CIRBUFFER_SIZE ) 
-        throw ( BufferException );
+    CircularBuffer ( size_t totalsize = DEFAULT_CIRBUFFER_SIZE );
 
-    CircularBuffer ( const CircularBuffer & buffer ) 
-        throw ( BufferException );
+    CircularBuffer ( const CircularBuffer & buffer );
 
     ~CircularBuffer();
 
@@ -104,7 +102,7 @@ class CircularBuffer {
     size_t          reverse ( size_t offset );
     size_t          skip    ( size_t offset );
 
-    bool            resize  ( size_t buffsize ) throw ( BufferException );
+    bool            resize  ( size_t buffsize );
 
     void            clear();
     inline  void    reset()       { return this->clear(); }
@@ -114,10 +112,10 @@ class CircularBuffer {
   public:
 
     char*           getWritePtr ( size_t * size );
-    void            setWritePtr ( size_t   offset ) throw ( BufferException );
+    void            setWritePtr ( size_t   offset ) noexcept(false);
 
     char*           getReadPtr  ( size_t * size );
-    void            setReadPtr  ( size_t   offset ) throw ( BufferException );
+    void            setReadPtr  ( size_t   offset ) noexcept(false);
     
     size_t          readPtrAvailable() const;
     size_t          writePtrAvailable() const;
@@ -128,7 +126,7 @@ class CircularBuffer {
 
   private:
 
-    void            init() throw ( BufferException );
+    void            init() noexcept(false);
     bool            isWrapped() const;
 
 

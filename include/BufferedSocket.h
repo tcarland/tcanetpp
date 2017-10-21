@@ -37,9 +37,7 @@ namespace tcanetpp {
   *  functionality to the base tcanetpp::Socket class.
  **/
 class BufferedSocket : public Socket {
-
   public:
-
     /**  Socket factory class for handling Socket::accept()
      *   in derived classes */
     class BufferedSocketFactory : public Socket::SocketFactory {
@@ -62,19 +60,19 @@ class BufferedSocket : public Socket {
     BufferedSocket ( ipv4addr_t   ip,
                      uint16_t     port,
                      SocketType   socktype,
-                     int          proto ) throw ( SocketException );
+                     int          proto );
 
     BufferedSocket ( ipv6addr_t   ip,
                      uint16_t     port,
                      SocketType   socktype,
-                     int          proto ) throw ( SocketException );
+                     int          proto );
 
     BufferedSocket ( sockaddr_t * sa,
                      uint16_t     port,
                      SocketType   type,
-                     int          protocol ) throw ( SocketException );
+                     int          protocol );
 
-    BufferedSocket ( addrinfo   * ai ) throw ( SocketException );
+    BufferedSocket ( addrinfo   * ai );
 
     virtual ~BufferedSocket();
 

@@ -72,7 +72,7 @@ Thread::~Thread()
  *  threadEntry function.
  **/
 void
-Thread::start() throw ( ThreadException )
+Thread::start()
 {
     size_t stksz = 0;
 
@@ -115,7 +115,7 @@ Thread::start() throw ( ThreadException )
  *   fails.
  **/
 void
-Thread::stop() throw ( ThreadException )
+Thread::stop()
 {
     if ( _tid == 0 )
         return;

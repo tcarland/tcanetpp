@@ -28,7 +28,6 @@
 #ifndef _TCANETPP_SOCKET_H_
 #define _TCANETPP_SOCKET_H_
 
-
 #ifdef WIN32
 # pragma warning (disable:4267)
 #endif
@@ -70,7 +69,7 @@ class SocketException : public Exception {
   public:
     SocketException ( const std::string & errstr ) 
         : Exception(errstr) {}
-    virtual ~SocketException() throw() {}
+    virtual ~SocketException() {}
 };
 
 
@@ -123,19 +122,19 @@ class Socket {
     Socket ( ipv4addr_t   ipaddr,
              uint16_t     port,
              SocketType   type,
-             int          protocol ) throw ( SocketException );
+             int          protocol );
     
     Socket ( ipv6addr_t   ipaddr,
              uint16_t     port,
              SocketType   type,
-             int          protocol ) throw ( SocketException );
+             int          protocol );
 
     Socket ( sockaddr_t * sa,
              uint16_t     port,
              SocketType   type,
-             int          protocol ) throw ( SocketException );
+             int          protocol );
 
-    Socket ( addrinfo   * ai ) throw ( SocketException );
+    Socket ( addrinfo   * ai );
 
     virtual ~Socket();
 	
@@ -219,8 +218,7 @@ class Socket {
     
     
     static void InitializeSocket ( sockfd_t & fd, IpAddr & addr, 
-                                   int socktype,  int proto )
-        throw ( SocketException );
+                                   int socktype,  int proto ) noexcept(false);
     
     
   protected:

@@ -46,7 +46,7 @@ namespace tcanetpp {
   *  buffer size is out of range. If no size is given,
   *  a default size is used.
  **/
-CircularBuffer::CircularBuffer ( size_t totalsize ) throw ( BufferException )
+CircularBuffer::CircularBuffer ( size_t totalsize )
     : _buffer(NULL),
       _readPtr(NULL),
       _writePtr(NULL),
@@ -61,7 +61,6 @@ CircularBuffer::CircularBuffer ( size_t totalsize ) throw ( BufferException )
   *  RW state.
  **/
 CircularBuffer::CircularBuffer ( const CircularBuffer & buffer ) 
-    throw ( BufferException )
     : _buffer(NULL),
       _buffsize(buffer._buffsize)
 {
@@ -118,7 +117,7 @@ CircularBuffer::operator= ( const CircularBuffer & buffer )
 
 /** Internal initialization function used by the constructor(s) */
 void
-CircularBuffer::init() throw ( BufferException )
+CircularBuffer::init() 
 {
     if ( _buffer )
         ::free(_buffer);
@@ -383,7 +382,7 @@ CircularBuffer::clear()
   *   to realloc fails.
  **/
 bool
-CircularBuffer::resize ( size_t buffsize ) throw ( BufferException )
+CircularBuffer::resize ( size_t buffsize )
 {
     if ( buffsize < MIN_CIRBUFFER_SIZE || buffsize > MAX_CIRBUFFER_SIZE) 
         return false;
@@ -538,9 +537,8 @@ CircularBuffer::getWritePtr ( size_t * size )
   *   The method will throw a BufferException if the offset
   *   provided is not valid (ie. would cause an overwrite)
  **/
-
 void
-CircularBuffer::setWritePtr ( size_t offset ) throw ( BufferException )
+CircularBuffer::setWritePtr ( size_t offset )
 {
     if ( offset > this->writePtrAvailable() )
         throw BufferException("CircularBuffer over-write attempted");
@@ -599,7 +597,7 @@ CircularBuffer::getReadPtr ( size_t * size )
   *   @param offset  is the size (bytes) read off the buffer.
  **/
 void
-CircularBuffer::setReadPtr ( size_t offset ) throw ( BufferException )
+CircularBuffer::setReadPtr ( size_t offset )
 {
     if ( offset > this->readPtrAvailable() )
         throw BufferException("CircularBuffer over-read attempted!");

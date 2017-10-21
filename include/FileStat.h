@@ -35,7 +35,6 @@ extern "C" {
 
 #include <string>
 
-#include "Exception.hpp"
 
 
 namespace tcanetpp {
@@ -52,8 +51,7 @@ class FileStat {
 
   public:
 
-    FileStat ( const std::string & filename ) 
-        throw ( Exception );
+    FileStat ( const std::string & filename ) noexcept(false);
 
     bool          operator< ( const FileStat & fs ) const;
 

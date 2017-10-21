@@ -53,7 +53,6 @@ BufferedSocket::BufferedSocket()
 {}
 
 BufferedSocket::BufferedSocket ( ipv4addr_t ip, uint16_t port, SocketType type, int proto )
-    throw ( SocketException )
     : Socket(ip, port, type, proto),
       _rbuffer(new CircularBuffer()),
       _wbuffer(NULL),
@@ -63,7 +62,6 @@ BufferedSocket::BufferedSocket ( ipv4addr_t ip, uint16_t port, SocketType type, 
 }
 
 BufferedSocket::BufferedSocket ( ipv6addr_t ip, uint16_t port, SocketType type, int proto )
-    throw ( SocketException )
     : Socket(ip, port, type, proto),
       _rbuffer(new CircularBuffer()),
       _wbuffer(NULL),
@@ -73,7 +71,6 @@ BufferedSocket::BufferedSocket ( ipv6addr_t ip, uint16_t port, SocketType type, 
 }
 
 BufferedSocket::BufferedSocket ( sockaddr_t * sa, uint16_t port, SocketType type, int proto )
-    throw ( SocketException )
     : Socket(sa, port, type, proto),
       _rbuffer(new CircularBuffer()),
       _wbuffer(NULL),
@@ -82,7 +79,7 @@ BufferedSocket::BufferedSocket ( sockaddr_t * sa, uint16_t port, SocketType type
     this->init(false);
 }
 
-BufferedSocket::BufferedSocket ( addrinfo * ai ) throw ( SocketException )
+BufferedSocket::BufferedSocket ( addrinfo * ai )
     : Socket(ai),
       _rbuffer(new CircularBuffer()),
       _wbuffer(NULL),

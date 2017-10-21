@@ -77,10 +77,8 @@ class Thread {
     virtual void        finished();
     virtual void        setAlarm();
 
-
-    void                start() throw ( ThreadException );
-    void                stop()  throw ( ThreadException );
-
+    void                start() noexcept(false);
+    void                stop()  noexcept(false);
 
     bool                isRunning();
     void                yield();
