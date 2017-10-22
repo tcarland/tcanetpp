@@ -29,7 +29,6 @@
 #include <map>
 #include <list>
 #include <vector>
-#include <stdexcept>
 
 
 namespace tcanetpp {
@@ -105,8 +104,7 @@ class HeirarchicalStringTree {
 
     template<typename OutputIterator_>
     Node*           insert ( const std::string & absoluteName,
-                             OutputIterator_ outIter )
-        throw ( std::runtime_error );
+                             OutputIterator_ outIter ) noexcept(false);
 
 
     template<typename OutputIterator_>

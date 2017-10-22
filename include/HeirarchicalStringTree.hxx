@@ -219,7 +219,6 @@ template<typename OutputIterator_>
 typename HeirarchicalStringTree<ValueType>::Node*
 HeirarchicalStringTree<ValueType>::insert ( const std::string & absoluteName,
                                             OutputIterator_     outIter )
-    throw ( std::runtime_error )
 {
     StringList      branchNames;
     BranchNodeList  branches;
@@ -248,7 +247,7 @@ HeirarchicalStringTree<ValueType>::insert ( const std::string & absoluteName,
         std::pair<NodeMapIter, bool> insertR = children->insert(typename NodeMap::value_type(branchNames[bi], 0));
 
         if ( ! insertR.second )
-            throw std::runtime_error("insert failed on " + absoluteName);
+            throw std::runtime_error("HeirarchicalStringTree::insert failed on " + absoluteName);
 
         nIter = insertR.first;
         node  = new Node(nIter->first, parent);
