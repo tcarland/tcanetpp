@@ -1,7 +1,7 @@
-/** 
+/**
   * @file NetworkDevice
   *
-  * Copyright (c) 2002,2008,2009 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
 **/
 #define _TCANETPP_NETWORKDEVICE_CPP_
@@ -131,7 +131,7 @@ NetworkDevice::operator< ( const NetworkDevice & device ) const
 // ----------------------------------------------------------------------
 
 /**@{
-  *   Returns this objects device hostname or IP address 
+  *   Returns this objects device hostname or IP address
   *   accordingly
  **/
 const std::string&
@@ -160,8 +160,8 @@ NetworkDevice::addr() const
 /*@}*/
 
 /**@{
-  *   A device ID is really best considered it's IP, but this 
-  *   is left general enough to be multipurpose. Could be used in 
+  *   A device ID is really best considered it's IP, but this
+  *   is left general enough to be multipurpose. Could be used in
   *   context of a node or database id.
  **/
 void
@@ -181,7 +181,7 @@ NetworkDevice::deviceId() const
 
 /**@{  Sets or returns the snmp community string.  */
 void
-NetworkDevice::readCommunity ( const std::string & comm ) 
+NetworkDevice::readCommunity ( const std::string & comm )
 {
     this->_readComm = comm;
 }
@@ -273,7 +273,7 @@ NetworkDevice::serialNumber() const
 
 // ----------------------------------------------------------------------
 
-/**@{ Get/Set method to intended to provide a means to temporarily disable 
+/**@{ Get/Set method to intended to provide a means to temporarily disable
  *    polling or querying a device.
  **/
 void
@@ -329,10 +329,10 @@ NetworkDevice::errorStr() const
 // ----------------------------------------------------------------------
 
 /**@{
-  *   These methods attempt to interpret the hostname string parameter 
-  *  provided in CDP queries. This is generally of the format of 
-  *  "hostname" (or fqdn) or "serial#(hostname)". This method will 
-  *  perform forward or reverse dns lookups depending on what format 
+  *   These methods attempt to interpret the hostname string parameter
+  *  provided in CDP queries. This is generally of the format of
+  *  "hostname" (or fqdn) or "serial#(hostname)". This method will
+  *  perform forward or reverse dns lookups depending on what format
   * is provided.
  **/
 bool
@@ -346,12 +346,12 @@ NetworkDevice::setDevice ( const std::string & host )
     // check for a hostaddr in string format
     if (  IpAddr::pton(host, addr) == 1 ) {
         return this->setDevice(addr);
-        
+
     //  this is very CDP specific which often returns 'serial_num (host)'
     } else if ( (indx = StringUtils::indexOf(host, "(")) > 0 ) {
         _serial     = host.substr(0, indx);
         _deviceName = host.substr((indx + 1), host.length());
-        
+
         if ( (endx = StringUtils::indexOf(_deviceName, ")")) > 0 )
             _deviceName.erase(endx);
 
@@ -387,7 +387,7 @@ NetworkDevice::setDevice ( const IpAddr & addr )
 /**@{
   *   Sets device name or address without performing dns resolution.
  **/
-void         
+void
 NetworkDevice::setDeviceName ( const std::string & name )
 {
     this->_deviceName = name;
@@ -413,7 +413,7 @@ NetworkDevice::ifcount() const
 
 // ----------------------------------------------------------------------
 
-/**@{ 
+/**@{
   *   These set/get methods allow a NetworkDevice object to
   *   contain the related vector of NetworkInterface objects
   *   for this device.
@@ -438,13 +438,13 @@ NetworkDevice::SetDeviceVersion ( NetworkDevice & dev, const std::string & desc 
 {
     std::string  ver, vs;
     std::vector<std::string>  stok;
-    
+
     StringUtils::split(desc, '\n', std::back_inserter(stok));
-    
+
     if ( stok.size() >= 2 ) {
         vs   = stok[1];
         stok.clear();
-        
+
         StringUtils::split(vs, ',', std::back_inserter(stok));
         vs = "";
         if ( stok.size() >= 2 ) {
@@ -480,6 +480,4 @@ NetworkDevice::SetDeviceVersion ( NetworkDevice & dev, const std::string & desc 
 
 } // namespace
 
-
 // _TCANETPP_NETWORKDEVICE_CPP_
-

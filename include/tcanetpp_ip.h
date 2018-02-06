@@ -1,14 +1,14 @@
-/** 
+/**
   * @file tcanetpp_ip.h
   *
   *   Defines various IP headers.
   *
-  * These are defined within this library to avoid having to 
+  * These are defined within this library to avoid having to
   * use platform specific defines for various headers. This also
   * means we avoid the issue of some fields varying slightly in
   * convention across platforms.
   *
-  * Copyright (c) 2010,2015 Timothy Charlton Arland
+  * Copyright (c) 2010-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -33,7 +33,6 @@
 #define _TCANETPP_TCANETIP_H_
 
 #include "tcanetpp_types.h"
-
 
 
 // ----------------------------------------------------------------------
@@ -114,9 +113,9 @@ typedef struct IpHeader {
     uint32_t  srcaddr;
     uint32_t  dstaddr;
 
-    IpHeader() 
-        : version(0x45), tos(0), 
-          length(0), id(0), 
+    IpHeader()
+        : version(0x45), tos(0),
+          length(0), id(0),
           frag(0), ttl(0),
           protocol(0), chksum(0),
           srcaddr(0), dstaddr(0)
@@ -181,8 +180,8 @@ typedef struct UdpHeader {
     uint16_t  length;
     uint16_t  chksum;
 
-    UdpHeader() 
-        : srcport(0), dstport(0), 
+    UdpHeader()
+        : srcport(0), dstport(0),
           length(0),  chksum(0)
     {}
 
@@ -245,11 +244,11 @@ typedef struct TcpHeader {
 //  ICMP Header
 
 
-//  ICMP types and codes 
+//  ICMP types and codes
 // We redefine these for simplifying platform compatibility
 #define ICMP_ECHOREPLY          0
 #define ICMP_DEST_UNREACH       3
-#define ICMP_SOURCE_QUENCH      4 
+#define ICMP_SOURCE_QUENCH      4
 #define ICMP_REDIRECT           5
 #define ICMP_ECHO               8
 #define ICMP_TIME_EXCEEDED      11
@@ -268,7 +267,7 @@ typedef struct TcpHeader {
 #define ICMP_PROT_UNREACH       2
 #define ICMP_PORT_UNREACH       3
 #define ICMP_FRAG_NEEDED        4
-#define ICMP_SR_FAILED          5 
+#define ICMP_SR_FAILED          5
 #define ICMP_NET_UNKNOWN        6
 #define ICMP_HOST_UNKNOWN       7
 #define ICMP_HOST_ISOLATED      8
@@ -276,14 +275,14 @@ typedef struct TcpHeader {
 #define ICMP_HOST_ANO           10
 #define ICMP_NET_UNR_TOS        11
 #define ICMP_HOST_UNR_TOS       12
-#define ICMP_PKT_FILTERED       13  
-#define ICMP_PREC_VIOLATION     14 
+#define ICMP_PKT_FILTERED       13
+#define ICMP_PREC_VIOLATION     14
 #define ICMP_PREC_CUTOFF        15
 #define NR_ICMP_UNREACH         15
 
 /* Codes for REDIRECT. */
-#define ICMP_REDIR_NET          0  
-#define ICMP_REDIR_HOST         1 
+#define ICMP_REDIR_NET          0
+#define ICMP_REDIR_HOST         1
 #define ICMP_REDIR_NETTOS       2
 #define ICMP_REDIR_HOSTTOS      3
 
@@ -350,6 +349,4 @@ typedef struct IgmpHeader {
 } netigmp_h;
 
 
-
 #endif  // _TCANETPP_TCANETIP_H_
-

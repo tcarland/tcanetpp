@@ -1,9 +1,9 @@
 /**
   * @file EventManager.h
-  * 
+  *
   * The EventManager class for multiplexing I/O and timer events.
   *
-  * Copyright (c) 2002,2008-2016 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -11,8 +11,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -20,8 +20,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_EVENTMANAGER_H_
@@ -49,19 +49,19 @@ namespace tcanetpp {
 
 // macros for normalizing event time units
 #define sectoevu(x)  (x * USEC_PER_SEC)
-#define msectoevu(x) (x * MSEC_PER_SEC)
+#define msectoevu(x) (x * 1000)
 #define nsectoevu(x) (x / 1000)
 #define evutosec(x)  (x / USEC_PER_SEC)
-#define evutomsec(x) (x / 1000)
+#define evutomsec(x) (x / MSEC_PER_SEC)
 #define evutonsec(x) (x * 1000)
 
 
 
 /**  The EventManager class provides an interface to using select for a
   *  variety of I/O and timer events.  By default the main loop will
-  *  run endlessly until setAlarm() is called or if 'dieoff' is set true, 
+  *  run endlessly until setAlarm() is called or if 'dieoff' is set true,
   *  the event loop will exit once there are no remaining active events in
-  *  the system. 
+  *  the system.
  **/
 class EventManager {
 
@@ -79,12 +79,12 @@ class EventManager {
     void                 eventLoop();
 
 
-    evid_t               addTimerEvent  ( EventTimerHandler * handler, 
+    evid_t               addTimerEvent  ( EventTimerHandler * handler,
                                           uint32_t            sec,
                                           uint32_t            usec,
                                           int                 count = 0 );
 
-    evid_t               addTimerEvent  ( EventTimerHandler * handler, 
+    evid_t               addTimerEvent  ( EventTimerHandler * handler,
                                           time_t abstime );
 
     evid_t               addIOEvent     ( EventIOHandler    * handler,
@@ -115,7 +115,7 @@ class EventManager {
 
     const std::string&   getErrorStr() const { return this->_errstr; }
 
- 
+
   public:
 
     /**  static functions for manipulating <time.h> struct timeval.
@@ -182,11 +182,10 @@ class EventManager {
     bool                      _debug;
 
     static int                _maxfdp;
- 
+
 };
 
 }  // namespace
 
 
 #endif  // _TCANETPP_EVENTMANAGER_H_
-

@@ -1,7 +1,7 @@
 /**
   * @file Whois.h
   *
-  * Copyright (c) 2002,2008,2009 Timothy Charlton Arland
+  * Copyright (c) 2002-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -45,7 +45,7 @@ class Whois {
     virtual ~Whois();
 
 
-    std::string   query ( const std::string & query, 
+    std::string   query ( const std::string & query,
                           const std::string & host = "" );
 
     std::string   getErrorStr() const;
@@ -59,10 +59,8 @@ class Whois {
     Socket *            _sock;
     std::string         _host;
     std::string         _errstr;
-
 };
 
 }  // namespace
 
 #endif  // _TCANETPP_WHOIS_H_
-

@@ -1,7 +1,7 @@
-/** 
+/**
   * @file NetworkDevice.h
   *
-  * Copyright (c) 2002,2008 Timothy Charlton Arland 
+  * Copyright (c) 2002-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
 
  **/
@@ -52,12 +52,12 @@ class NetworkDevice {
 
     virtual ~NetworkDevice();
 
-    
+
     void    operator=   ( const NetworkDevice & device );
     bool    operator==  ( const NetworkDevice & device ) const;
     bool    operator<   ( const NetworkDevice & device ) const;
- 
-    
+
+
     bool                setDevice       ( const std::string & host );
     bool                setDevice       ( const IpAddr      & addr );
 
@@ -100,18 +100,18 @@ class NetworkDevice {
     void                status ( int s );
     const int&          status() const;
 
-    void                errorStr       ( const std::string & err ); 
+    void                errorStr       ( const std::string & err );
     std::string         errorStr() const;
- 
+
     void                setInterfaces  ( IfList & ifv );
     IfList&             getInterfaces();
 
 
   public:
 
-    static 
-    std::string         SetDeviceVersion ( NetworkDevice & dev, 
-                                           const std::string & desc ); 
+    static
+    std::string         SetDeviceVersion ( NetworkDevice & dev,
+                                           const std::string & desc );
 
   private:
 
@@ -120,23 +120,20 @@ class NetworkDevice {
     IpAddr              _deviceAddr;
     int                 _deviceId;
     std::string         _deviceName;
-    
+
     std::string         _readComm;
     std::string         _writeComm;
     std::string         _version;
     std::string         _sysDescr;
-    std::string         _model;      
+    std::string         _model;
     std::string         _location;
     std::string         _serial;
     std::string         _errStr;
 
     int                 _status;
     bool                _pollable;
-    
 };
-
 
 }  // namespace
 
 #endif  // _TCANETPP_NETWORKDEVICE_H_
-

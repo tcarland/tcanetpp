@@ -1,10 +1,10 @@
-/** 
+/**
   * @file tcanetpp_types.h
   *
-  *   This header provides various defintions and typedefs that help to ensure 
+  *   This header provides various defintions and typedefs that help to ensure
   * cross-platform compilation, primarily between Unix and Win32.
-  *   
-  * Copyright (c) 2002,2008 Timothy Charlton Arland 
+  *
+  * Copyright (c) 2002-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -12,8 +12,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -21,8 +21,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
 **/
 #ifndef _TCANETPP_TYPES_H_
@@ -94,8 +94,8 @@ typedef uint32_t                ipv4addr_t;
 typedef uint64_t                evid_t;       // event registration id
 
 
-/** Structure defining either an IPv4 or IPv6 Address and 
- *  its associated mask length in bits representing 
+/** Structure defining either an IPv4 or IPv6 Address and
+ *  its associated mask length in bits representing
  *  the a.b.c.d/mb or xxxx:xxxx::/mb cidr format.
  *  This definition exists here vs _ip header for the
  *  extern C support since it is used within the patricia.
@@ -113,4 +113,3 @@ typedef struct ip_prefix {
 
 
 #endif // _TCANETPP_TYPES_H_
-

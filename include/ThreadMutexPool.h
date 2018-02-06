@@ -1,7 +1,7 @@
 /**
   * @file ThreadMutexPool.h
   *
-  * Copyright (c) 2008,2009 Timothy Charlton Arland 
+  * Copyright (c) 2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_THREADMUTEXPOOL_H_
@@ -40,8 +40,8 @@ namespace tcanetpp {
 typedef std::list< ThreadLock* >  ThreadLockPool;
 
 
-/**  A class for managing a resource pool of pthread mutex's 
-  *  represented by a tcanetpp::ThreadLock instance. 
+/**  A class for managing a resource pool of pthread mutex's
+  *  represented by a tcanetpp::ThreadLock instance.
  **/
 class ThreadMutexPool {
 
@@ -58,7 +58,7 @@ class ThreadMutexPool {
 
     void         MinPoolSize ( size_t size );
     size_t       MinPoolSize();
-    
+
     void         MaxPoolSize ( size_t size );
     size_t       MaxPoolSize();
 
@@ -71,7 +71,7 @@ class ThreadMutexPool {
 
     void         createMutexes();
 
-    
+
   private:
 
     ThreadLockPool    _mutexIn;
@@ -82,11 +82,8 @@ class ThreadMutexPool {
     int               _lockcnt;
     int               _lockmin;
     int               _lockmax;
-
 };
-
 
 } // namespace
 
 #endif // _TCANETPP_THREADMUTEXPOOL_H_
-

@@ -3,7 +3,7 @@
   *
   * For handling struct addrinfo and getaddrinfo/getnameinfo
   *
-  * Copyright (c) 2012-2015 Timothy Charlton Arland
+  * Copyright (c) 2012-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -33,9 +33,7 @@
 #include "tcanetpp_ip.h"
 
 
-
 namespace tcanetpp {
-
 
 /**  The AddrInfo class provides a convenient object for
   *  creating and manipulating struct addrinfo objects
@@ -55,7 +53,7 @@ class AddrInfo {
     static AddrInfoFactory  factory;
 
   private:
-    
+
     AddrInfo  ( const AddrInfo    & ai );
     AddrInfo&  operator= ( const AddrInfo & ai );
 
@@ -63,9 +61,9 @@ class AddrInfo {
 
     AddrInfo();
 
-    AddrInfo ( const std::string & name, 
+    AddrInfo ( const std::string & name,
                const std::string & service = "" );
-    
+
     AddrInfo ( struct addrinfo   * ai );
 
     ~AddrInfo();
@@ -175,4 +173,3 @@ class AddrInfo {
 } // namespace
 
 #endif // _TCANETPP_ADDRINFO_H_
-

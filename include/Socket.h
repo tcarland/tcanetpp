@@ -3,8 +3,8 @@
   *
   *    The base Socket class providing an object-oriented
   * interface to sockets for both Unix and Win32 platforms.
-  * 
-  * Copyright (c) 2002,2010-2015 Timothy Charlton Arland 
+  *
+  * Copyright (c) 2002,2010-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -12,8 +12,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -21,8 +21,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_SOCKET_H_
@@ -67,7 +67,7 @@ typedef enum SocketType
 /**  SocketException class for fatal Socket class errors */
 class SocketException : public Exception {
   public:
-    SocketException ( const std::string & errstr ) 
+    SocketException ( const std::string & errstr )
         : Exception(errstr) {}
     virtual ~SocketException() {}
 };
@@ -75,7 +75,7 @@ class SocketException : public Exception {
 
 
 /**  The Socket class represents a BSD style socket using either
-  *  the GNU C Library or Winsock2 in the case of WIN32 hosts and 
+  *  the GNU C Library or Winsock2 in the case of WIN32 hosts and
   *  provides an object-oriented interface for performing socket
   *  io.
  **/
@@ -94,9 +94,9 @@ class Socket {
 
 
     /**   A Socket factory class used to create a derived Socket class
-      * for UDP based sockets. Since UDP is connectionless, there is 
-      * no listen socket descriptor, yet maintaining a separate client 
-      * instance of the Socket class can be useful. For this we need a 
+      * for UDP based sockets. Since UDP is connectionless, there is
+      * no listen socket descriptor, yet maintaining a separate client
+      * instance of the Socket class can be useful. For this we need a
       * copy of the same descriptor which this factory makes possible.
      **/
     class UdpSocketFactory : public SocketFactory {
@@ -113,56 +113,56 @@ class Socket {
 
     static SocketFactory  factory;
     static ipv6addr_t     ipv6addr_any;
-	
+
 
   public:
-	
+
     Socket();
 
     Socket ( ipv4addr_t   ipaddr,
              uint16_t     port,
              SocketType   type,
-             int          protocol );
-    
+             int          protocol ) noexcept(false);
+
     Socket ( ipv6addr_t   ipaddr,
              uint16_t     port,
              SocketType   type,
-             int          protocol );
+             int          protocol ) noexcept(false);
 
     Socket ( sockaddr_t * sa,
              uint16_t     port,
              SocketType   type,
-             int          protocol );
+             int          protocol ) noexcept(false);
 
     Socket ( addrinfo   * ai );
 
     virtual ~Socket();
-	
-	
+
+
   protected:
-	
+
     Socket ( sockfd_t   & fd,
              sockaddr_t & csock,
              SocketType   type,
              int          protocol );
-	
+
   public:
-    
+
     virtual int         init ( bool block = false );
-    
+
     int                 bind();
     int                 listen();
-    
+
     virtual int         connect();
     virtual void        close();
     virtual void        shutdown ( int shut );
-    
+
     Socket*             accept();
     Socket*             accept ( SocketFactory & factory );
-    
+
     virtual bool        isConnected();
     bool                isServerSocket() const;
-    
+
     ipv4addr_t          getAddress() const;
     const std::string&  getAddressString() const;
     const std::string&  getHostString() const;
@@ -172,10 +172,10 @@ class Socket {
     const std::string&  getAddrString() const { return this->getAddressString(); }
     const std::string&  getAddrStr() const    { return this->getAddressString(); }
     const std::string&  getHostStr() const    { return this->getHostString(); }
-    
+
     const sockfd_t&     getDescriptor() const;
     const sockfd_t&     getFD() const         { return this->getDescriptor(); }
-    
+
     const SocketType&   getSocketType() const;
     const int&          getSocketProtocol() const;
     const uint16_t&     getPort() const;
@@ -186,65 +186,62 @@ class Socket {
     int                 setSocketOption ( int level, int optname, int optval );
     int                 setSocketOption ( SocketOption  sockopt );
     SocketOption        getSocketOption ( SocketOption  sockopt );
-    
+
     void                setBlocking();
     void                setNonBlocking();
     bool                isBlocking();
-    
+
     const std::string&  getErrorString() const;
     const std::string&  errorStr() const { return this->getErrorString(); }
-    
+
     virtual ssize_t     read     ( void       * vptr, size_t n );
     virtual ssize_t     write    ( const void * vptr, size_t n );
     virtual ssize_t     readFrom ( void       * vptr, size_t n,
                                    sockaddr_t & csock );
-            
-    
+
+
   public:
-    
+
     static void         Block    ( Socket           * s );
     static void         Unblock  ( Socket           * s );
-    
+
     static bool         IsValidDescriptor ( const sockfd_t & fd );
     static void         ResetDescriptor   ( sockfd_t       & fd );
 
     static uint16_t     IpChkSum ( uint16_t * t, int n );
-   
+
 
   protected:
-    
+
     ssize_t             nwriten  ( const void * vptr, size_t n );
     ssize_t             nreadn   ( void * vptr, size_t n );
-    
-    
-    static void InitializeSocket ( sockfd_t & fd, IpAddr & addr, 
+
+
+    static void InitializeSocket ( sockfd_t & fd, IpAddr & addr,
                                    int socktype,  int proto ) noexcept(false);
-    
-    
+
+
   protected:
-    
+
     std::string            _addrstr;
     std::string            _hoststr;
     std::string            _errstr;
-    
-    
+
+
   private:
-    
+
     sockfd_t               _fd;
     IpAddr                 _ipaddr;
     SocketType             _socktype;
     int                    _proto;
     uint16_t               _port;
-    
+
     bool                   _bound;
     bool                   _connected;
     bool                   _block;
     bool                   _noUdpClose;
-    
 };
-
 
 } // namespace
 
 #endif //  _TCANETPP_SOCKET_H_
-

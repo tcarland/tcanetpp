@@ -4,7 +4,7 @@
   *     EventIO represents an I/O event (eg. Socket descriptor)
   *   for the EventManager.
   *
-  * Copyright (c) 2002,2008-2012 Timothy Charlton Arland
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -28,7 +28,6 @@
 #ifndef _TCANETPP_EVENTIO_H_
 #define _TCANETPP_EVENTIO_H_
 
-
 #include "tcanetpp_types.h"
 
 
@@ -38,9 +37,8 @@ class EventManager;
 class EventIOHandler;
 
 
-
 /**  The EventIO struct represents an IO event. When an event is fired,
-  *  a const pointer to this struct is provided to the associated io 
+  *  a const pointer to this struct is provided to the associated io
   *  event handler. ( see EventHandlers.h )
  **/
 struct EventIO {
@@ -55,8 +53,8 @@ struct EventIO {
     bool               enabled;   // boolean indicating whether event is valid.
     bool               isServer;  // IO socket event is a server socket.
 
-    EventIO() 
-        : evid(0),    evmgr(NULL),    handler(NULL), 
+    EventIO()
+        : evid(0),    evmgr(NULL),    handler(NULL),
           rock(NULL), enabled(false), isServer(false)
     {
         Socket::ResetDescriptor(this->sfd);
@@ -69,6 +67,5 @@ struct EventIO {
 };
 
 }  // namespace
-
 
 #endif  // _TCANETPP_EVENTIO_H_

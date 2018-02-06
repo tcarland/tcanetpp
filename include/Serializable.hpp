@@ -1,7 +1,7 @@
 /**
   * @file Serializable.hpp
   *
-  * Copyright (c) 2008,2009 Timothy Charlton Arland
+  * Copyright (c) 2008-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -33,9 +33,7 @@ namespace tcanetpp {
 
 /**  An interface that can be used to serialize objects and/or messages */
 class Serializable {
-
-public:
-
+  public:
     virtual ~Serializable() {}
 
     virtual ssize_t  serialize   ( char * buffer, size_t buffer_len ) const = 0;
@@ -43,11 +41,8 @@ public:
 
     virtual size_t   size() const = 0;
     virtual uint16_t message_type() const = 0;
-
 };
-
 
 } // namespace
 
 #endif  //  _TCANETPP_SERIALIZABLE_HPP_
-

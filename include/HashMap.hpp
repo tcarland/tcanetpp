@@ -1,8 +1,8 @@
-/** 
+/**
   * @file HashMap.hpp
   *
 
-  * Copyright (c) 2002,2008-2015 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -10,8 +10,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -19,8 +19,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_HASHMAP_HPP_
@@ -47,7 +47,7 @@ class HashMap {
     struct keyeq {
         bool operator() ( const std::string & a,
                           const std::string & b ) const
-        { 
+        {
             return ( a.compare(b) == 0 );
         }
     };
@@ -57,7 +57,7 @@ class HashMap {
     typedef typename Hash::iterator                    iterator;
     typedef typename Hash::const_iterator              const_iterator;
 
-    
+
   public:
 
     HashMap() {}
@@ -65,7 +65,7 @@ class HashMap {
     virtual ~HashMap() { this->clear(); }
 
 
-    ValueType& operator[]  ( const std::string & key ) 
+    ValueType& operator[]  ( const std::string & key )
     {
         return _hash[key.c_str()];
     }
@@ -82,7 +82,7 @@ class HashMap {
 
     void  erase ( iterator iter )           { _hash.erase(iter); }
     void  erase ( const std::string & key ) { _hash.erase(key.c_str()); }
-        
+
 
     size_t          size() const  { return _hash.size();  }
     void            clear()       { return _hash.clear(); }
@@ -93,14 +93,12 @@ class HashMap {
     const_iterator  begin() const { return _hash.begin(); }
     const_iterator  end()   const { return _hash.end();   }
 
-    
+
   private:
 
     Hash       _hash;
-
 };
 
 } // namespace
-    
-#endif  // _TCANETPP_HASHMAP_HPP_
 
+#endif  // _TCANETPP_HASHMAP_HPP_

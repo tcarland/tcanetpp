@@ -1,7 +1,7 @@
 /**
   * @file ThreadLock.cpp
   *
-  * Copyright (c) 2002,2008,2009 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
 **/
 #define _TCANETPP_THREADLOCK_CPP_
@@ -63,11 +63,11 @@ ThreadAutoMutex::~ThreadAutoMutex()
   *  condition variable intended primarily for providing wait/notify
   *  behavior to a derived Thread object. The methods lock(), tryLock(),
   *  and unlock() each exhibit the behaviors of the corresponding pthread
-  *  calls to pthread_mutex_(lock|trylock|unlock). 
-  *  This class was NOT intended to offer any additional safety or deadlock 
+  *  calls to pthread_mutex_(lock|trylock|unlock).
+  *  This class was NOT intended to offer any additional safety or deadlock
   *  protection from the misuse of a pthread mutex, but is perfectly safe
   *  if used correctly.
- **/ 
+ **/
 
 ThreadLock::ThreadLock()
 {
@@ -85,7 +85,7 @@ ThreadLock::~ThreadLock()
 /* ----------------------------------------------------------------------- */
 
 
-/**  Obtains the lock. This is a blocking operation which 
+/**  Obtains the lock. This is a blocking operation which
   *  returns 1 on success.
  **/
 int
@@ -98,8 +98,8 @@ ThreadLock::lock()
 
 
 /**  Trys to obtain the lock. The lock will be acquired if it
-  *  is available and the function will return 1. A return of 
-  *  0 indicates the lock failed (EBUSY), and -1 is returned 
+  *  is available and the function will return 1. A return of
+  *  0 indicates the lock failed (EBUSY), and -1 is returned
   *  in case of a pthread failure in pthread_mutex_trylock()
  **/
 int
@@ -125,11 +125,11 @@ ThreadLock::unlock()
 }
 
 /* ----------------------------------------------------------------------- */
- 
+
 
 /**  A blocking wait condition.
   *
-  *  As with the pthreads API, the mutex must be locked first. 
+  *  As with the pthreads API, the mutex must be locked first.
  **/
 int
 ThreadLock::wait()
@@ -161,7 +161,7 @@ ThreadLock::waitFor ( time_t usec )
 
     return this->waitFor(&to);
 }
-  
+
 /**  A timed wait that blocks for given number of seconds.
   *  As with the pthreads API, the mutex must be locked first.
   *
@@ -189,7 +189,7 @@ ThreadLock::notify()
 {
     return(::pthread_cond_signal(&_items));
 }
- 
+
 
 /**  Signals all threads waiting on the lock */
 int
@@ -204,4 +204,3 @@ ThreadLock::notifyAll()
 
 
 //  _TCANETPP_THREADLOCK_CPP_
-

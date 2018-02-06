@@ -4,7 +4,7 @@
   *     EventTimer represents a timer based event within the
   *   EventManager.
   *
-  * Copyright (c) 2002,2008-2012 Timothy Charlton Arland
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -28,25 +28,23 @@
 #ifndef _TCANETPP_EVENTTIMER_H_
 #define _TCANETPP_EVENTTIMER_H_
 
-
 #include "tcanetpp_types.h"
 
 
 namespace tcanetpp {
 
-
 class EventManager;
 class EventTimerHandler;
 
 
-/**  A timer event within the EventManager is tracked by an instance of 
-  *  this object. When the event fires, the event handler invoked is 
+/**  A timer event within the EventManager is tracked by an instance of
+  *  this object. When the event fires, the event handler invoked is
   *  provided a reference to this object.
  **/
 struct EventTimer {
     evid_t              evid;      // event id
 
-    EventManager*       evmgr;     // evmgr owning this event 
+    EventManager*       evmgr;     // evmgr owning this event
     EventTimerHandler*  handler;   // event handler for this event.
 
     uint32_t            count;     // number of times to fire event (0 == forever)
@@ -56,12 +54,12 @@ struct EventTimer {
     struct timeval      abstime;   // absolute timeval used to track event time
     bool                absolute;  // boolean indicating a single shot event.
     bool                enabled;   // boolean indicating whether event is active.
-     
+
     EventTimer()
-        : evid(0),   evmgr(NULL), handler(NULL), 
-          count(0),  fired(0),    evsec(0), 
-          evusec(0), absolute(false), 
-          enabled(false) 
+        : evid(0),   evmgr(NULL), handler(NULL),
+          count(0),  fired(0),    evsec(0),
+          evusec(0), absolute(false),
+          enabled(false)
     {}
 
     bool operator== ( const EventTimer & timer )
@@ -75,11 +73,8 @@ struct EventTimer {
             return( this->evsec < timer.evsec );
         return( this->evusec < timer.evusec );
     }
-
 };
-
 
 }  // namespace
 
 #endif  // _TCANETPP_EVENTTIMER_H_
-

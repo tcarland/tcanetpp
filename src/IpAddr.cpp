@@ -4,7 +4,7 @@
   * Class for holding a struct sockaddr for representing either
   * an IPv4 or IPv6 address.
   *
-  * Copyright (c) 2010 Timothy Charlton Arland
+  * Copyright (c) 2010-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -123,7 +123,7 @@ IpAddr::~IpAddr()
 //-------------------------------------------------------------------//
 
 IpAddr&
-IpAddr::operator= ( const IpAddr & ipaddr ) 
+IpAddr::operator= ( const IpAddr & ipaddr )
 {
     if ( this != &ipaddr ) {
         this->_mb = ipaddr.getPrefixLen();
@@ -359,7 +359,7 @@ IpAddr::ntop ( const ipv4addr_t & addr )
 
     if ( dst != NULL )
         ipstr.assign(ip);
-    
+
     return ipstr;
 }
 
@@ -392,11 +392,11 @@ IpAddr::ntop ( const sockaddr_t * sock )
     switch ( sock->ss_family )
     {
         case AF_INET:
-            dst = ::inet_ntop(sock->ss_family, &((struct sockaddr_in*)sock)->sin_addr.s_addr, 
+            dst = ::inet_ntop(sock->ss_family, &((struct sockaddr_in*)sock)->sin_addr.s_addr,
                   ip, INET6_ADDRSTRLEN);
             break;
         case AF_INET6:
-            dst = ::inet_ntop(sock->ss_family, &((struct sockaddr_in6*)sock)->sin6_addr, 
+            dst = ::inet_ntop(sock->ss_family, &((struct sockaddr_in6*)sock)->sin6_addr,
                   ip, INET6_ADDRSTRLEN);
             break;
     }
@@ -438,7 +438,7 @@ IpAddr::ether_ntop ( const ethaddr_t * ethaddr )
 {
     std::string  ethstr;
     char hwaddr[18];
-    
+
     if ( ethaddr == NULL )
         return ethstr;
 
@@ -455,7 +455,7 @@ IpAddr::ether_ntop ( const ethaddr_t * ethaddr )
 //-------------------------------------------------------------------//
 
 /**  Legacy function to return the range of IP Addresses for a given
-  *  mask length. If @param subnet_pos is not NULL, it is populated 
+  *  mask length. If @param subnet_pos is not NULL, it is populated
   *  with the octet position of the range based on the mask length.
   *  eg. a /21 would give the address range for the 3rd octet.
  **/
@@ -493,7 +493,7 @@ IpAddr::GetIpv6Range ( uint8_t mb )
 //-------------------------------------------------------------------//
 
 uint32_t
-IpAddr::RandomValue ( double range ) 
+IpAddr::RandomValue ( double range )
 {
     if ( tcanet_seeded() == 0 )
         tcanet_seed();
@@ -545,7 +545,7 @@ IpAddr::RandomPrefix ( ipv4addr_t agg, uint8_t masklen )
 
 //-------------------------------------------------------------------//
 
-/**  Function indicating whether the provided IPv4 address is 
+/**  Function indicating whether the provided IPv4 address is
   *  the base network address for the given mask length.
  **/
 bool
@@ -554,7 +554,7 @@ IpAddr::IsBasePrefix ( const ipv4addr_t & pfx, uint8_t mb )
     return(IpAddr::ToBasePrefix(pfx, mb) == pfx);
 }
 
-/**  Converts an IPv4 address and mask length to the base 
+/**  Converts an IPv4 address and mask length to the base
   *  network address prefix.
  **/
 ipv4addr_t
@@ -572,7 +572,7 @@ IpAddr::ToBasePrefix ( const ipv4addr_t & pfx, uint8_t mb )
     return addr;
 }
 
-/**  Converts an IPv6 address (network portion) and mask length to the base 
+/**  Converts an IPv6 address (network portion) and mask length to the base
   *  network address prefix.
  **/
 ipv6addr_t
@@ -699,7 +699,7 @@ IpAddr::ToIpAddr6 ( const std::string & str, IpAddr & ipaddr )
 
 //-------------------------------------------------------------------//
 
-/**  Returns the IPv4 address representation of the provided mask 
+/**  Returns the IPv4 address representation of the provided mask
   *  length. eg. /24 would return the integer version of 255.255.255.0.
  **/
 ipv4addr_t
@@ -801,4 +801,3 @@ IpAddr::DeAggregate ( const IpAddr & pfx, uint8_t mb, IpAddrList & v )
 } // namespace
 
 // _TCANETPP_IPADDR_CPP_
-

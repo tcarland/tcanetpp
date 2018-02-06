@@ -1,7 +1,7 @@
 /**
   * @file HeirarchicalStringTree.hpp
   *
-  * Copyright (c) 2008,2009 Timothy Charlton Arland
+  * Copyright (c) 2008-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -162,6 +162,4 @@ class HeirarchicalStringTree {
 
 #include "HeirarchicalStringTree.hxx"
 
-
 #endif // _TCANETPP_HEIRARCHICALSTRINGTREE_HPP_
-

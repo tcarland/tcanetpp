@@ -1,9 +1,9 @@
-/** 
+/**
   * @file EventManager.cpp
   *
   *   Class for handling multiplexing data I/O and timer events.
-  * 
-  * Copyright (c) 2002,2008-2016 Timothy Charlton Arland 
+  *
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -11,8 +11,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -20,8 +20,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #define _TCANETPP_EVENTMANAGER_CPP_
@@ -49,7 +49,7 @@ int EventManager::_maxfdp = MAX_FDVAL;
 
 
 /**  Predicate for locating events that are no longer valid. */
-class FindStaleIOEvents 
+class FindStaleIOEvents
 {
     explicit FindStaleIOEvents() {}
     bool operator() ( const EventIO & io ) {
@@ -66,12 +66,12 @@ EventManager::EventManager ( bool dieoff )
       _lastid(0),
       _minevu(DEFAULT_EVU),
       _dieoff(dieoff),
-      _alarm(false), 
+      _alarm(false),
       _debug(false)
 {}
 
 
-EventManager::~EventManager() 
+EventManager::~EventManager()
 {}
 
 
@@ -81,7 +81,7 @@ EventManager::~EventManager()
   *  for the number of times the event should fire (0 = forever).
  **/
 evid_t
-EventManager::addTimerEvent ( EventTimerHandler * handler, 
+EventManager::addTimerEvent ( EventTimerHandler * handler,
                               uint32_t sec, uint32_t usec, int count )
 {
     EventTimer  timer;
@@ -114,16 +114,16 @@ EventManager::addTimerEvent ( EventTimerHandler * handler,
 
 #   ifdef EV_DEBUG
     printf("id %lu:  %u sec - %u msec - %d count\n", timer.evid, sec, usec, count);
-#   endif 
-    
+#   endif
+
     return timer.evid;
 }
 
 
-/**  Creates a new timer event with the provided @param handler and 
-  *  @param abstime  as the absolute time the event will fire, meaning 
-  *  the event will fire just once. It is up to the user to ensure the 
-  *  absolute time given is in the future relative to the EventManager's 
+/**  Creates a new timer event with the provided @param handler and
+  *  @param abstime  as the absolute time the event will fire, meaning
+  *  the event will fire just once. It is up to the user to ensure the
+  *  absolute time given is in the future relative to the EventManager's
   *  clock.
  **/
 evid_t
@@ -137,7 +137,7 @@ EventManager::addTimerEvent ( EventTimerHandler * handler, time_t abstime )
 #   ifdef EV_DEBUG
     printf("EventManager::addTimerEvent()\n");
 #   endif
-    
+
     timer.evid      = this->getNewEventId();
 
     if ( timer.evid == 0 )
@@ -164,22 +164,22 @@ EventManager::addTimerEvent ( EventTimerHandler * handler, time_t abstime )
   *  @param sfd is the file handle to track for the given I/O event.
   *  @param rock is a user provided void* for associating user data with the event.
   *  @param isServer  provides for special handling of the file descriptor and any
-  *   reads on this descriptor result in the EventIOHandler::handle_accept() to be 
+  *   reads on this descriptor result in the EventIOHandler::handle_accept() to be
   *   called instead of the handle_read() function.
  **/
 evid_t
-EventManager::addIOEvent ( EventIOHandler * handler, const sockfd_t & sfd, 
+EventManager::addIOEvent ( EventIOHandler * handler, const sockfd_t & sfd,
                            void * rock, bool isServer )
 {
     EventIO  io;
 
-    if ( handler == NULL ) 
+    if ( handler == NULL )
     {
         _errstr = "Invalid event handler";
         return 0;
     }
 
-    if ( ! Socket::IsValidDescriptor(sfd) ) 
+    if ( ! Socket::IsValidDescriptor(sfd) )
     {
         _errstr = "Invalid IO Descriptor";
         return 0;
@@ -204,7 +204,7 @@ EventManager::addIOEvent ( EventIOHandler * handler, const sockfd_t & sfd,
     if ( io.isServer )
         printf("server ");
     printf("socket %d id: %lu\n", sfd, io.evid);
-#   endif 
+#   endif
 
     _clients[io.evid] = io;
 
@@ -212,18 +212,18 @@ EventManager::addIOEvent ( EventIOHandler * handler, const sockfd_t & sfd,
 }
 
 
-/**  Removes the event associated to the given event id. */
+/**  Removes the event associated with the given event id. */
 bool
 EventManager::removeEvent ( const evid_t & id )
 {
     EventTimerMap::iterator   tIter;
     EventIOMap::iterator      cIter;
-   
+
 #   ifdef EV_DEBUG
     printf("EventManager::removeEvent() %lu\n", id);
 #   endif
 
-    if ( (tIter = _timers.find(id)) != _timers.end() ) 
+    if ( (tIter = _timers.find(id)) != _timers.end() )
     {
         if ( tIter->second.enabled )
             this->destroyEvent(tIter->second);
@@ -232,9 +232,9 @@ EventManager::removeEvent ( const evid_t & id )
         return true;
     }
 
-    if ( (cIter = _clients.find(id)) != _clients.end() ) 
+    if ( (cIter = _clients.find(id)) != _clients.end() )
     {
-        if ( cIter->second.enabled ) 
+        if ( cIter->second.enabled )
         {
             FD_CLR(cIter->second.sfd, &_rset);
             FD_CLR(cIter->second.sfd, &_wset);
@@ -250,7 +250,7 @@ EventManager::removeEvent ( const evid_t & id )
 }
 
 
-/**  The main entry point to the EventManager System. This method blocks
+/**  The main entry point to the EventManager system. This method blocks
   *  until the EventManager is signaled or terminates on its own.
  **/
 void
@@ -264,15 +264,15 @@ EventManager::eventLoop()
 #   ifdef EV_DEBUG
     printf("EventManager::eventLoop()\n");
 #   endif
-    
-    while ( ! _alarm ) 
+
+    while ( ! _alarm )
     {
         FD_ZERO(&_rset);
         FD_ZERO(&_wset);
         FD_ZERO(&_xset);
 
         // set IO events
-        for ( cIter = _clients.begin(); cIter != _clients.end(); ++cIter ) 
+        for ( cIter = _clients.begin(); cIter != _clients.end(); ++cIter )
         {
             EventIO & io = cIter->second;
 
@@ -289,7 +289,7 @@ EventManager::eventLoop()
         // validate timer events
         this->verifyTimers();
 
-        // set minimum event sleep interval 
+        // set minimum event sleep interval
         ::memset(&to, 0, sizeof(struct timeval));
         to.tv_usec = _minevu;
 
@@ -301,7 +301,7 @@ EventManager::eventLoop()
 
 
         // select on our fdsets
-        if ( (rdy = ::select(_maxfdp, &_rset, &_wset, &_xset, &to)) < 0 ) 
+        if ( (rdy = ::select(_maxfdp, &_rset, &_wset, &_xset, &to)) < 0 )
         {
 #           ifdef WIN32
             int err = WSAGetLastError();
@@ -316,7 +316,7 @@ EventManager::eventLoop()
         EventManager::GetTimeOfDay(&now);
 
         // handle io events
-        for ( cIter = _clients.begin(); cIter != _clients.end(); cIter++ ) 
+        for ( cIter = _clients.begin(); cIter != _clients.end(); cIter++ )
         {
             EventIO & io = cIter->second;
 
@@ -339,7 +339,7 @@ EventManager::eventLoop()
             }
         }
 
-        for ( cIter = _clients.begin(); cIter != _clients.end(); ) 
+        for ( cIter = _clients.begin(); cIter != _clients.end(); )
         {
             if ( ! cIter->second.enabled )
                 _clients.erase(cIter++);
@@ -364,10 +364,10 @@ EventManager::eventLoop()
     // cleanup timers
     this->clearTimers();
 
-#   ifdef EV_DEBUG 
+#   ifdef EV_DEBUG
     printf("EventManager::eventLoop() finished\n");
 #   endif
-    
+
     return;
 }
 
@@ -439,7 +439,7 @@ EventManager::activeClients() const
 
 
 /**  Checks the validity of an event id. An event id is considered valid
-  *  when the event id's associated Event object is currently active 
+  *  when the event id's associated Event object is currently active
   *  within the EventManager (ie. exists and ->isEnabled())
  **/
 bool
@@ -474,7 +474,7 @@ EventManager::verifyTimers()
 
     this->_minevu = DEFAULT_EVU;
 
-    for ( tIter = _timers.begin(); tIter != _timers.end(); ) 
+    for ( tIter = _timers.begin(); tIter != _timers.end(); )
     {
         EventTimer & timer = tIter->second;
 
@@ -496,14 +496,14 @@ EventManager::checkTimers ( const timeval & now )
 {
     EventTimerMap::iterator  tIter;
 
-    for ( tIter = _timers.begin(); tIter != _timers.end(); tIter++ ) 
+    for ( tIter = _timers.begin(); tIter != _timers.end(); tIter++ )
     {
         EventTimer & timer = tIter->second;
 
         if ( ! timer.enabled )
             continue;
 
-        if ( timer.abstime.tv_sec == 0 ) 
+        if ( timer.abstime.tv_sec == 0 )
         {
             timer.abstime = now;
             timer.abstime.tv_sec  += timer.evsec;
@@ -512,12 +512,12 @@ EventManager::checkTimers ( const timeval & now )
         }
 
         bool fired = false;
-       
-        if ( timer.abstime.tv_sec < now.tv_sec ) 
+
+        if ( timer.abstime.tv_sec < now.tv_sec )
         {
             fired = true;
-        } 
-        else if ( timer.abstime.tv_sec == now.tv_sec ) 
+        }
+        else if ( timer.abstime.tv_sec == now.tv_sec )
         {
             if ( timer.evusec > 0 ) {
                 if  ( timer.abstime.tv_usec <= now.tv_usec )
@@ -527,12 +527,12 @@ EventManager::checkTimers ( const timeval & now )
             }
         }
 
-        if ( fired ) 
+        if ( fired )
         {
             timer.abstime = now;
             timer.fired++;
 
-            timer.handler->timeout(timer);
+            timer.handler->fired(timer);
 
             if ( timer.absolute || (timer.count > 0 && timer.fired == timer.count) ) {
                 timer.enabled = false;
@@ -567,7 +567,7 @@ EventManager::clearStaleEvents()
     EventTimerMap::iterator  tIter;
 
     for ( tIter = _timers.begin(); tIter != _timers.end(); ++tIter )
-        if ( ! tIter->second.enabled ) 
+        if ( ! tIter->second.enabled )
             _timers.erase(tIter);
 
     EventIOMap::iterator  iIter;
@@ -598,7 +598,7 @@ EventManager::destroyEvent ( EventIO & io )
     io.enabled = false;
     return;
 }
-  
+
 
 void
 EventManager::destroyEvent ( EventTimer & timer )
@@ -607,7 +607,7 @@ EventManager::destroyEvent ( EventTimer & timer )
         timer.handler->finished(timer);
     timer.enabled = false;
 }
-    
+
 
 void
 EventManager::setDebug ( bool d )
@@ -630,7 +630,7 @@ EventManager::getNewEventId()
 
     EventSet::iterator  sIter;
 
-    while ( id != _lastid ) 
+    while ( id != _lastid )
     {
         if ( (sIter = _events.find(id)) == _events.end() && id != 0 )
             break;
@@ -809,7 +809,6 @@ EventManager::NanoSleep ( uint64_t & ns )
 //---------------------------------------------------------------//
 
 
-} // namespace 
+} // namespace
 
 //  _TCANETPP_EVENTMANAGER_CPP_
-

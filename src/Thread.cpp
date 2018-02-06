@@ -1,7 +1,7 @@
-/** 
+/**
   * @file Thread.cpp
-  * 
-  * Copyright (c) 2002,2008-2015 Timothy Charlton Arland 
+  *
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
 **/
 #define _TCANETPP_THREAD_CPP_
@@ -67,8 +67,8 @@ Thread::~Thread()
 
 /* -------------------------------------------------------------- */
 /** Initiates the start of the thread by creating the underlying thread object.
- *  If the underlying call to the thread create() fails, a ThreadException is 
- *  thrown. Once start() succeeds, the new thread will initiate via the  
+ *  If the underlying call to the thread create() fails, a ThreadException is
+ *  thrown. Once start() succeeds, the new thread will initiate via the
  *  threadEntry function.
  **/
 void
@@ -111,7 +111,7 @@ Thread::start()
 
 
 /**  Forcibly stops the thread, and if not detached from the thread it will
- *   attempt to join the thread. A ThreadException is thrown if the join 
+ *   attempt to join the thread. A ThreadException is thrown if the join
  *   fails.
  **/
 void
@@ -138,7 +138,7 @@ Thread::stop()
 
 /* -------------------------------------------------------------- */
 
-/**  Sets a thread identity or name.  The thread will automatically be given 
+/**  Sets a thread identity or name.  The thread will automatically be given
  *   a name consisting of "Thread_x" where x is the thread id.  This
  *   method overrides that default name.
  **/
@@ -171,8 +171,8 @@ Thread::isRunning()
     return this->_running;
 }
 
-/**  Sets the _Alarm boolean to true. This has no other behavior and 
- *   is nothing but a convenience state flag for the derived object 
+/**  Sets the _Alarm boolean to true. This has no other behavior and
+ *   is nothing but a convenience state flag for the derived object
  *   to utilize in its 'run()' implementation.
  **/
 void
@@ -193,7 +193,7 @@ Thread::yield()
 
 /* -------------------------------------------------------------- */
 
-/**  Sets the stack size of the Thread. This method should be 
+/**  Sets the stack size of the Thread. This method should be
   *  called prior to starting the Thread.
  **/
 bool
@@ -237,8 +237,8 @@ Thread::getStackSize ( size_t & stksz )
 
 /* -------------------------------------------------------------- */
 
-/**  Sets the CPU Affinity of the Thread object or essentially 
-  *  which CPU should run this Thread. This can be called prior 
+/**  Sets the CPU Affinity of the Thread object or essentially
+  *  which CPU should run this Thread. This can be called prior
   *  to starting the Thread, or while it is running.
  **/
 bool
@@ -271,7 +271,7 @@ Thread::setCpuAffinity ( long cpu )
     return true;
 }
 
-/**  Provides the current CPU Affinity of the Thread object by 
+/**  Provides the current CPU Affinity of the Thread object by
   *  setting the provided cpu_set_t.
  **/
 bool
@@ -401,7 +401,7 @@ Thread::setPriorityAttr ( int prio )
     return(::pthread_attr_setschedparam(&_attr, &param));
 }
 
-/**  Provides the current Thread priority by setting 
+/**  Provides the current Thread priority by setting
   *  @param prio to pthread priority attribute.
  **/
 int
@@ -548,4 +548,3 @@ Thread::GetSchedulerPolicyName ( int policy )
 } // namespace
 
 //  _TCANETPP_THREAD_CPP_
-

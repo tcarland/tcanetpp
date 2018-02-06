@@ -1,7 +1,7 @@
 /**
   * @file LogFacility.cpp
   *
-  * Copyright (c) 2002,2008-2015 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
 **/
 #define _TCANETPP_LOGFACILITY_CPP_
@@ -90,14 +90,14 @@ LogFacility::InitThreaded ( bool trylock )
 /**  Opens a new logstream to the given logfile.
   *  @param logname  is the log name key used to identify the associated
   *   and underlying log stream.
-  *  @param prefix   is a log prefix automatically prepended to any 
+  *  @param prefix   is a log prefix automatically prepended to any
   *   messages sent to the log stream.
   *  @param filename is the path and name of the logfile to create.
-  *  @param append   is a boolean indicating whether an existing file 
+  *  @param append   is a boolean indicating whether an existing file
   *   of the same name should be appended or truncated.
  */
 bool
-LogFacility::OpenLogFile ( const std::string & logname, 
+LogFacility::OpenLogFile ( const std::string & logname,
                            const std::string & prefix,
                            const std::string & filename,
                            bool append )
@@ -191,8 +191,8 @@ LogFacility::AddLogStream ( const std::string & logname, const std::string & pre
 /*@}*/
 
 
-/**  Removes and returns a pointer to the logstream identified by the 
-  *  given logstream. If @param del is true, NULL is returned and the 
+/**  Removes and returns a pointer to the logstream identified by the
+  *  given logstream. If @param del is true, NULL is returned and the
   *  associated logstream is free'd.
  **/
 std::ostream*
@@ -244,7 +244,7 @@ LogFacility::RemoveLogStreams ( bool del )
     for ( sIter = _StreamMap.begin(); sIter != _StreamMap.end(); ++sIter ) {
         if ( sIter->second.logStream == NULL || sIter->second.logStream == &std::cout )
             continue;
-        
+
         if ( del )
             delete sIter->second.logStream;
     }
@@ -301,7 +301,7 @@ LogFacility::SetEnabled ( const std::string & logname, bool enabled )
  *   not exist. For this reason, the actual boolean indicating whether
  *   an existing stream is 'enabled' is a pass-by-value parameter.
  *   @param logname  is the name of the log stream in question.
- *   @param enabled  is a boolean reference that is set to the 
+ *   @param enabled  is a boolean reference that is set to the
  *   current condition of the provided logstream.
  */
 bool
@@ -364,7 +364,7 @@ LogFacility::GetVerbose()
 
 // ----------------------------------------------------------------------
 
-/** Returns a boolean indicating the current status of the 
+/** Returns a boolean indicating the current status of the
   * LogFacility by ensuring that active log streams exist.
  **/
 bool
@@ -388,7 +388,7 @@ LogFacility::IsOpen()
     }
 
     LogFacility::Unlock();
-    
+
     return open;
 }
 
@@ -397,7 +397,7 @@ LogFacility::IsOpen()
   *  current logstream within the LogFacility.
  **/
 bool
-LogFacility::IsOpen ( const std::string & logname ) 
+LogFacility::IsOpen ( const std::string & logname )
 {
     bool open = false;
 
@@ -431,8 +431,8 @@ LogFacility::LogMessage ( const std::string & entry, int level, bool newline )
 }
 
 void
-LogFacility::LogMessage ( const std::string & logname, 
-                          const std::string & entry, 
+LogFacility::LogMessage ( const std::string & logname,
+                          const std::string & entry,
                           int   level,
                           bool  newline )
 {
@@ -445,7 +445,7 @@ LogFacility::LogMessage ( const std::string & logname,
 
     if ( level == LOGFAC_DEBUG && ! LogFacility::GetDebug() )
         return;
-               
+
     if ( logname.empty() || LogFacility::_Broadcast )
         LogFacility::LogToAllStreams(entry, newline);
     else
@@ -464,7 +464,7 @@ LogFacility::LogToAllStreams ( const std::string & entry, bool newline )
 
     StreamMap::iterator              sIter;
     std::list<std::string>::iterator dIter;
-  
+
     if ( ! LogFacility::Lock() )
         return;
 
@@ -509,7 +509,7 @@ LogFacility::LogToAllStreams ( const std::string & entry, bool newline )
 
 /**  Send a log message to a specific logstream */
 void
-LogFacility::LogToStream ( const std::string & logname, 
+LogFacility::LogToStream ( const std::string & logname,
                            const std::string & entry,
                            bool  newline )
 {
@@ -567,10 +567,10 @@ LogFacility::CloseSyslog()
     return;
 }
 
-/** Closes the log stream associated with the given logname. If 
+/** Closes the log stream associated with the given logname. If
   * @param del is true, the logstream is deleted and NULL is returned;
   * otherwise the associated logstream pointer is returned. Note that
-  * the delete flag is not necessary for logfiles opened via 
+  * the delete flag is not necessary for logfiles opened via
   * OpenLogFile() only those added manually via AddLogStream().
  **/
 std::ostream*
@@ -638,7 +638,7 @@ LogFacility::GetLogPrefix ( const std::string & logName )
     return prefix;
 }
 
-/**  Sets the default log stream to use for log messages 
+/**  Sets the default log stream to use for log messages
   *  (when no logname is provided to LogMessage()).
  **/
 bool
@@ -661,9 +661,9 @@ LogFacility::GetDefaultLogName()
 
 // ----------------------------------------------------------------------
 
-/**  RotateLogFile will automatically rotate a file log each day based 
+/**  RotateLogFile will automatically rotate a file log each day based
   *  on the 'localtime' result of the provided time. Each logstream tracks
-  *  the day of year value, so if this function is called within the same 
+  *  the day of year value, so if this function is called within the same
   *  day, the log will not be rotated (and the function returns false).
   *  When called with a time that is of a different day of year, the existing
   *  log stream is closed and a new logstream is created based on the logname
@@ -686,8 +686,8 @@ LogFacility::RotateLogFile ( const std::string & logName, const time_t & now )
     bool       rotated = false;
 
    ::localtime_r(&now, &ltm);
-   
-    if ( sIter->second.today != ltm.tm_yday ) 
+
+    if ( sIter->second.today != ltm.tm_yday )
     {
         LogFacility::CloseLogFile(logName);
 
@@ -704,7 +704,7 @@ LogFacility::RotateLogFile ( const std::string & logName, const time_t & now )
 
 // ----------------------------------------------------------------------
 
-/**  Determines whether the log timestamp should be displayed for the 
+/**  Determines whether the log timestamp should be displayed for the
   *  given logname.
  **/
 bool
@@ -724,7 +724,7 @@ LogFacility::ShowLogTime ( const std::string & logname, bool showTime )
 }
 
 /**  Sets the current time to be used for timestamped log messages.
-  *  This should be set regularily by an applications main loop as 
+  *  This should be set regularily by an applications main loop as
   *  the LogFacility will not update the current time automatically.
  **/
 void
@@ -732,7 +732,7 @@ LogFacility::SetLogTime ( const time_t & now )
 {
     if ( LogFacility::Lock() ) {
         LogFacility::_LogTime  = now;
-    
+
         if ( LogFacility::_LogTime > 0 )
             LogFacility::_LogTimeStr = LogFacility::GetTimeString(now);
         LogFacility::Unlock();
@@ -786,7 +786,7 @@ LogFacility::GetDayOfYear ( const time_t & now )
     struct tm  ltm;
     ::localtime_r(&now, &ltm);
     int      today = 0;
-    
+
     today = ltm.tm_yday;
 
     return today;
@@ -816,7 +816,7 @@ LogFacility::InitLogMessage ( const std::string & logname )
 
 bool
 LogFacility::Lock()
-{ 
+{
 #   ifndef WIN32
 #   ifdef PTHREADS
     if ( LogFacility::_InitLock && LogFacility::_TryLock ) {
@@ -840,15 +840,12 @@ LogFacility::Unlock()
     if ( LogFacility::_InitLock )
         LogFacility::_Lock.unlock();
 #   endif
-#   endif 
+#   endif
     return;
 }
 
 // ----------------------------------------------------------------------
 
-
 } // namespace
 
-
 //  _TCANETPP_LOGFACILITY_CPP_
-

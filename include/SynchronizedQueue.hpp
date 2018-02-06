@@ -1,9 +1,9 @@
-/**   
+/**
   * @file SynchronizedQueue.hpp
   *
   *   A thread-safe wrapper to the STL queue.
-  *  
-  * Copyright (c) 2002,2008,2009 Timothy Charlton Arland 
+  *
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -11,8 +11,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -20,8 +20,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_QUEUE_HPP_
@@ -31,7 +31,6 @@ extern "C" {
 # include <errno.h>
 }
 #include <queue>
-
 
 #include "ThreadLock.h"
 
@@ -46,7 +45,7 @@ namespace tcanetpp {
   *  STL queue container. If the queue is used with pointers,
   *  care must be taken to properly delete the resources prior
   *  to destruction by popping all pointers off the queue first.
-  *  Alternatively, the class can be derived and the clear() method 
+  *  Alternatively, the class can be derived and the clear() method
   *  can be implemented to do this.
  **/
 template<class ValueType> class SynchronizedQueue {
@@ -54,12 +53,12 @@ template<class ValueType> class SynchronizedQueue {
   public:
 
     SynchronizedQueue ( size_t maxsize = DEFAULT_QUEUE_MAXSIZE )
-        : _maxSize(maxsize) 
+        : _maxSize(maxsize)
     {}
 
-    virtual ~SynchronizedQueue() 
-    { 
-        this->clear(); 
+    virtual ~SynchronizedQueue()
+    {
+        this->clear();
     }
 
     /**  Pushes an object onto the queue and returns a positive value
@@ -91,8 +90,8 @@ template<class ValueType> class SynchronizedQueue {
         return 1;
     }
 
-    /**  This locks and waits the calling thread on the underlying mutex 
-      *  until notified via the notify() method. 
+    /**  This locks and waits the calling thread on the underlying mutex
+      *  until notified via the notify() method.
      **/
     int  wait()
     {
@@ -112,7 +111,7 @@ template<class ValueType> class SynchronizedQueue {
     }
 
     /**  Will lock the calling thread for the time specified.
-      *  @param  ts  is a timespec struct specifying the 
+      *  @param  ts  is a timespec struct specifying the
       *  length of time to wait.
      **/
     int  waitFor ( const timespec * ts )
@@ -143,11 +142,11 @@ template<class ValueType> class SynchronizedQueue {
     }
 
     /**@{
-      *  Returns a boolean indicating whether the queue is empty. 
+      *  Returns a boolean indicating whether the queue is empty.
      **/
     inline bool empty()
-    { 
-        return this->isEmpty(); 
+    {
+        return this->isEmpty();
     }
 
     bool isEmpty()
@@ -164,9 +163,9 @@ template<class ValueType> class SynchronizedQueue {
     }
     /*@}*/
 
-    /**  Clears or empties the queue of all objects. If this is a 
+    /**  Clears or empties the queue of all objects. If this is a
       *  container of object pointers, no resources would be free'd
-      *  resulting in a leak, in which case the queue should be 
+      *  resulting in a leak, in which case the queue should be
       *  cleared manually.
      **/
     virtual void clear()
@@ -209,11 +208,8 @@ template<class ValueType> class SynchronizedQueue {
     std::queue<ValueType>    _queue;
     size_t                   _maxSize;
     ThreadLock               _mutex;
-
 };
-
 
 }  // namespace
 
 #endif  //  _TCANETPP_QUEUE_HPP_
-

@@ -1,7 +1,7 @@
 /**
   * @file patricia.c
   *
-  * Copyright (c) 2002,2008,2013 Timothy Charlton Arland
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
 **/
 #define _TCANETPP_PATRICIA_C_
@@ -33,7 +33,7 @@
 
 
 static const
-char PT_version[] = "patricia v1.94 2013/04/20 tcarland@gmail.com";
+char PT_version[] = "patricia v1.95 2017/04/20 tcarland@gmail.com";
 
 
 static int    freecnt    = 0;
@@ -88,15 +88,15 @@ PT_visitR ( ptNode_t * node, int bit, nodeHandler_t handler )
 {
     int i;
 
-    if ( node->bit <= bit ) 
+    if ( node->bit <= bit )
     {
-        for ( i = 0; i < PT_MASKLEN; i++ ) 
+        for ( i = 0; i < PT_MASKLEN; i++ )
         {
             if ( (node->rocks[i]) && handler )
                 handler(node->key, node->host, i, node->rocks[i]);
         }
-    } 
-    else 
+    }
+    else
     {
         PT_visitR(node->llink, node->bit, handler);
         PT_visitR(node->rlink, node->bit, handler);
@@ -108,12 +108,12 @@ PT_visitR ( ptNode_t * node, int bit, nodeHandler_t handler )
 static void
 PT_visitR_node ( ptNode_t * node, int bit, pvtNodeHandler_t handler )
 {
-    if ( node->bit <= bit ) 
+    if ( node->bit <= bit )
     {
-        if ( handler ) 
+        if ( handler )
             handler(node);
-    } 
-    else 
+    }
+    else
     {
         PT_visitR_node(node->llink, node->bit, handler);
         PT_visitR_node(node->rlink, node->bit, handler);
@@ -123,15 +123,15 @@ PT_visitR_node ( ptNode_t * node, int bit, pvtNodeHandler_t handler )
 
 //  Visits all nodes recursively looking for a match to the given prefix.
 static void
-PT_visitR_match ( ptNode_t * node, int bit, matchHandler_t handler, 
+PT_visitR_match ( ptNode_t * node, int bit, matchHandler_t handler,
                   prefix_t * search, prefix_t * result )
 {
-    if ( node->bit <= bit ) 
+    if ( node->bit <= bit )
     {
-        if ( handler ) 
+        if ( handler )
             handler(node, search, result);
-    } 
-    else 
+    }
+    else
     {
         PT_visitR_match(node->llink, node->bit, handler, search, result);
         PT_visitR_match(node->rlink, node->bit, handler, search, result);
@@ -148,18 +148,18 @@ PT_searchR ( ptNode_t * node, uint64_t key, int bit )
 
     if ( PT_GETBIT(key, node->bit) == 0 )
         return PT_searchR(node->llink, key, node->bit);
-    
+
     return PT_searchR(node->rlink, key, node->bit);
 }
 
-//  recursive insert into the trie 
+//  recursive insert into the trie
 static ptNode_t*
-PT_insertR ( ptNode_t * head, prefix_t * pfx, int bit, 
+PT_insertR ( ptNode_t * head, prefix_t * pfx, int bit,
              ptNode_t * p,    void   * rock )
 {
     ptNode_t * node = NULL;
 
-    if ( (head->bit >= bit) || (head->bit <= p->bit) ) 
+    if ( (head->bit >= bit) || (head->bit <= p->bit) )
     {
         node = PT_new(pfx, bit, 0, 0, rock);
 
@@ -190,7 +190,7 @@ PT_removeR ( ptNode_t * node, prefix_t * pfx, int bit )
     void  * rock = NULL;
     uint64_t key = PT_getNetworkAddr(pfx);
 
-    if ( node->bit <= bit ) 
+    if ( node->bit <= bit )
     {
         if ( node->key == key && node->rocks[pfx->mb] ) {
             rock = node->rocks[pfx->mb];
@@ -198,7 +198,7 @@ PT_removeR ( ptNode_t * node, prefix_t * pfx, int bit )
         }
         return rock;
     }
-    
+
     if ( PT_GETBIT(key, node->bit) == 0 )
         return PT_removeR(node->llink, pfx, node->bit);
 
@@ -217,9 +217,9 @@ PT_freeNodesR ( ptNode_t * head, ptNode_t * node, int bit, nodeHandler_t handler
     PT_freeNodesR(head, node->llink, node->bit, handler);
     PT_freeNodesR(head, node->rlink, node->bit, handler);
 
-    if ( node != head ) 
+    if ( node != head )
     {
-        for ( i = 0; i < PT_MASKLEN; i++ ) 
+        for ( i = 0; i < PT_MASKLEN; i++ )
         {
             if ( node->rocks[i] && handler )
                 handler(node->key, node->host, i, node->rocks[i]);
@@ -236,7 +236,7 @@ static uint64_t
 PT_basePrefix ( uint64_t addr, uint16_t mb )
 {
     uint64_t  mask;
-    
+
     mask  = 0xffffffffffffffff;
     mask  = mask >> (64 - mb) << (64 - mb);
     addr &= htonll(mask);
@@ -250,14 +250,14 @@ PT_matchLongHandler ( ptNode_t * node, prefix_t * search, prefix_t * result )
 {
     uint64_t key;
     int      i;
-    
+
     key = PT_getNetworkAddr(search);
-    
-    for ( i = 0; i < (PT_MASKLEN + 1); i++ ) 
+
+    for ( i = 0; i < (PT_MASKLEN + 1); i++ )
     {
-        if ( node->rocks[i] && PT_basePrefix(key, i) == node->key )  
+        if ( node->rocks[i] && PT_basePrefix(key, i) == node->key )
         {
-            if ( i > result->mb ) 
+            if ( i > result->mb )
             {
                 if ( node->key == node->host ) {
                     result->addrA = 0;
@@ -283,7 +283,7 @@ PT_countNodesHandler ( ptNode_t * node )
 
 //  callback used by pt_size() to count allocated children
 static void
-PT_countChildrenHandler ( uint64_t addrA, uint64_t addrB, 
+PT_countChildrenHandler ( uint64_t addrA, uint64_t addrB,
                           uint16_t mb,    void * rock )
 {
     if ( rock )
@@ -328,13 +328,13 @@ pt_insert ( ptNode_t * head, prefix_t * pfx, void * rock )
 
     key  = PT_getNetworkAddr(pfx);
     node = PT_searchR(head->llink, key, -1);
-    
-    if ( key != node->key ) 
+
+    if ( key != node->key )
     {
         result = 1;
         for ( bit = 0; PT_GETBIT(key, bit) == PT_GETBIT(node->key, bit); bit++ );
         head->llink = PT_insertR(head->llink, pfx, bit, head, rock);
-    } 
+    }
     else if ( ! node->rocks[pfx->mb] )
     {
         result = 1;
@@ -368,7 +368,7 @@ pt_exists ( ptNode_t * head, prefix_t * pfx )
 
 
 /**  Function to provide an exact match to the provided key.
-  *  @param head  is the node from which to match. 
+  *  @param head  is the node from which to match.
   *  @param pfx   is the IP Prefix to match.
   *  Returns the associated void*, or NULL if there is no match.
  **/
@@ -404,7 +404,7 @@ pt_matchLongest ( ptNode_t * head, prefix_t * pfx )
 
     key  = PT_getNetworkAddr(pfx);
     key  = PT_basePrefix(key, pfx->mb);
-    
+
     if ( pfx->addrA == 0 ) {
         search.addrA = 0;
         search.addrB = key;
@@ -461,13 +461,13 @@ int
 pt_nodes ( ptNode_t * head )
 {
     nodecnt = 0;
-    
+
     if ( head->llink != NULL ) {
         PT_visitR_node(head->llink, -1, &PT_countNodesHandler);
     } else {
         return -1;
     }
-    
+
     return nodecnt;
 }
 
@@ -501,7 +501,7 @@ pt_is_ipv4 ( ptNode_t * node )
   *  node of the tree.
  **/
 ipv4addr_t
-pt_to_ipv4 ( ptNode_t * node ) 
+pt_to_ipv4 ( ptNode_t * node )
 {
     ipv4addr_t  ip;
     uint32_t  * ptr;
@@ -512,7 +512,7 @@ pt_to_ipv4 ( ptNode_t * node )
         ptr = (uint32_t*) &node->host;
         ip  = ptr[0];
     }
-        
+
     return ip;
 }
 
@@ -539,4 +539,3 @@ pt_version()
 
 
 //  _TCANETPP_PATRICIA_C_
-

@@ -9,7 +9,7 @@
   *    If thread safety is needed, care should be exercised
   * to properly synchronize function calls.
   *
-  * Copyright (c) 2002,2008,2013 Timothy Charlton Arland
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -17,8 +17,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -26,8 +26,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_PATRICIA_H_
@@ -78,7 +78,7 @@ void*       pt_matchLongest ( ptNode_t * head, prefix_t * key );
 
 void        pt_visit        ( ptNode_t * head, nodeHandler_t handler );
 void        pt_visit_node   ( ptNode_t * head, pvtNodeHandler_t handler );
- 
+
 int         pt_nodes        ( ptNode_t * head );
 int         pt_size         ( ptNode_t * head );
 
@@ -96,4 +96,3 @@ const char* pt_version();
 
 
 #endif  //  _TCANETPP_PATRICIA_H_
-

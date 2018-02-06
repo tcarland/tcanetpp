@@ -1,10 +1,10 @@
-/** 
+/**
   * @file Serializer.cpp
   *
   *   Serialization functions which can be used by objects that are
   * 'Serializable'.
   *
-  * Copyright (c) 2002,2008 Timothy Charlton Arland
+  * Copyright (c) 2002-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -281,8 +281,6 @@ Serializer::Unpack ( const char * buffer, size_t buflen, uint64_t & val )
     return sizeof(val);
 }
 
-
 } // namespace
 
 // _TCANETPP_SERIALIZER_CPP_
-

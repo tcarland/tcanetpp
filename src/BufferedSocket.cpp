@@ -1,7 +1,7 @@
-/**  
+/**
   * @file  BufferedSocket.cpp
   *
-  * Copyright (c) 2002,2008,2009 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tca@charltontechnology.net
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
   *
   * $Id: BufferedSocket.cpp,v 0.3 2009/01/03 03:02:00 tca Exp $
@@ -45,11 +45,11 @@ BufferedSocket::BufferedSocketFactory::operator() ( sockfd_t         & fd,
 }
 
 
-BufferedSocket::BufferedSocket() 
+BufferedSocket::BufferedSocket()
     : Socket(),
       _rbuffer(NULL),
       _wbuffer(NULL),
-      _wbx(false) 
+      _wbx(false)
 {}
 
 BufferedSocket::BufferedSocket ( ipv4addr_t ip, uint16_t port, SocketType type, int proto )
@@ -110,7 +110,7 @@ BufferedSocket::~BufferedSocket()
 // ----------------------------------------------------------------------
 
 /** Initialized the BufferedSocket object by creating the underlying socket
-  * descriptor and configuring the blocking of the socket. Additionally, 
+  * descriptor and configuring the blocking of the socket. Additionally,
   * a BufferedSocket object sets the receive buffer 64k bytes.
  **/
 int
@@ -123,8 +123,8 @@ BufferedSocket::init ( bool block )
 
 // ----------------------------------------------------------------------
 
-/** Reads at most n bytes from the socket and writes to the provided 
-  * buffer. Returns the number of bytes read, or 0 if blocked, or a 
+/** Reads at most n bytes from the socket and writes to the provided
+  * buffer. Returns the number of bytes read, or 0 if blocked, or a
   * negative value indicating a read error.
  **/
 ssize_t
@@ -169,9 +169,9 @@ BufferedSocket::close()
 
 // ----------------------------------------------------------------------
 
-/** Flushes the write buffer, if applicable, of any data still waiting 
-  * to be sent, returning the number of bytes successfully flushed, 0 if 
-  * there was no data to flush, or a negative value indicating a write 
+/** Flushes the write buffer, if applicable, of any data still waiting
+  * to be sent, returning the number of bytes successfully flushed, 0 if
+  * there was no data to flush, or a negative value indicating a write
   * error.
  **/
 ssize_t
@@ -307,7 +307,7 @@ BufferedSocket::bufferedWrite ( const void *vptr, size_t n )
         return -1;
 
     wt = 0;
-    
+
     // handle buffers first
     if ( _wbx && _wbuffer->readAvailable() > 0 ) {
         r = this->flush();
@@ -343,9 +343,9 @@ BufferedSocket::bufferedWrite ( const void *vptr, size_t n )
 
 // ----------------------------------------------------------------------
 
-/** Performs a continuous read of the socket buffering data in the 
+/** Performs a continuous read of the socket buffering data in the
   * internal read buffer until a read block occurs or the buffer is full.
-  * Returns the number of bytes read, 0 if blocked, or a negative 
+  * Returns the number of bytes read, 0 if blocked, or a negative
   * indicating a read error.
  **/
 ssize_t
@@ -388,4 +388,3 @@ BufferedSocket::bufferData()
 
 
 //  _TCANETPP_BUFFEREDSOCKET_CPP_
-//
