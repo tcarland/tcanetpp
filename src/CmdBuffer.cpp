@@ -1,7 +1,7 @@
 /**
   * @file CmdBuffer.cpp
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -64,19 +64,19 @@ CmdBuffer::CmdBuffer ( const std::string & cmd, size_t bufsize )
 CmdBuffer::~CmdBuffer()
 {
     if ( _init )
-        this->Close();
+        this->close();
     if ( _cmdbuf )
         delete _cmdbuf;
 }
 
 
 bool
-CmdBuffer::Open ( const std::string & cmd )
+CmdBuffer::open ( const std::string & cmd )
 {
     FILE * f = NULL;
 
     if ( _init )
-        this->Close();
+        this->close();
 
     if ( (f = ::popen(cmd.c_str(), "r")) == NULL ) {
         _errstr = "CmdBuffer::Open() error in popen, failed to open pipe stream";
@@ -99,7 +99,7 @@ CmdBuffer::Open ( const std::string & cmd )
 
 
 void
-CmdBuffer::Close()
+CmdBuffer::close()
 {
     if ( _init && _cmdbuf ) {
         _cmdbuf->close();
@@ -136,6 +136,7 @@ CmdBuffer::haveData() const
     return true;
 }
 
+
 strmsz_t
 CmdBuffer::inAvail()
 {
@@ -144,6 +145,7 @@ CmdBuffer::inAvail()
 
     return _cmdbuf->in_avail();
 }
+
 
 std::string
 CmdBuffer::getLine()
@@ -192,11 +194,13 @@ CmdBuffer::putLine ( const std::string & line )
     return true;
 }
 
+
 std::string
 CmdBuffer::getCommand() const
 {
     return _cmd;
 }
+
 
 std::string
 CmdBuffer::getErrorStr() const
@@ -204,18 +208,19 @@ CmdBuffer::getErrorStr() const
     return _errstr;
 }
 
+
 char
 CmdBuffer::getEOL() const
 {
     return _eol;
 }
 
+
 void
 CmdBuffer::setEOL ( char eol )
 {
     _eol = eol;
 }
-
 
 } // namespace
 

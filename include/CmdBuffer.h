@@ -1,7 +1,7 @@
 /**
   * @file CmdBuffer.h
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -31,7 +31,6 @@
 
 #if defined __GNUC__ && (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 # include <ext/stdio_filebuf.h>
-//using __gnu_cxx::stdio_filebuf;
 #endif
 
 #define MINIMUM_CMDBUFFER_SIZE  16
@@ -55,16 +54,14 @@ class CmdBuffer {
   public:
 
     CmdBuffer ( size_t bufsize = DEFAULT_CMDBUFFER_SIZE ) noexcept(false);
-
     CmdBuffer ( const std::string & cmd, size_t bufsize = DEFAULT_CMDBUFFER_SIZE )
         noexcept(false);
 
     virtual ~CmdBuffer();
 
 
-    bool         Open              ( const std::string & cmd );
-    void         Close();
-
+    bool         open              ( const std::string & cmd );
+    void         close();
 
     bool         putLine           ( const std::string & line );
     std::string  getLine();
@@ -80,7 +77,6 @@ class CmdBuffer {
 
     char         getEOL() const;
     void         setEOL ( char eol );
-
 
   private:
 
