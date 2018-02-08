@@ -2,8 +2,8 @@
   * @file PrefixTree.h
   *
   *   A STL wrapper to the patricia tree (patricia.h)
-  *    
-  * Copyright (c) 2002,2008-2016 Timothy Charlton Arland 
+  *
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -11,8 +11,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -20,8 +20,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_PREFIXTREE_HPP_
@@ -38,19 +38,18 @@ extern "C" {
 #include "IpAddr.h"
 
 
-
 namespace tcanetpp {
 
 
 /**    A C++ template that wraps the use of the radix tree implementation
-  *  from 'patricia.h'. 
-  *  
+  *  from 'patricia.h'.
+  *
   *    The underlying trie handles user data as void pointers so as a result,
-  *  this template, although not type specific, must be instantiated as a 
+  *  this template, although not type specific, must be instantiated as a
   *  container of object pointers.
   *
   *  The following example demonstrates usage:
-  *  
+  *
   *  {
   *    PrefixTree<Object*>  pt;
   *
@@ -60,11 +59,11 @@ namespace tcanetpp {
   *    if ( pt.insert(pfx, obj) )
   *        printf("Insert succeeded\n");
   *  }
-  *  
+  *
  **/
-template<class T> 
+template<class T>
 class PrefixTree {
- 
+
   public:
 
     PrefixTree ( bool implicit_lock = false )
@@ -111,7 +110,7 @@ class PrefixTree {
         return object;
     }
 
-   
+
     T    exactMatch ( const IpAddr & p )
     {
         prefix_t  c  = p.getPrefixType();
@@ -119,7 +118,7 @@ class PrefixTree {
         this->lock();
         T   object = (T) pt_match(_pt, &c);
         this->unlock();
-            
+
         return object;
     }
 
@@ -139,7 +138,7 @@ class PrefixTree {
     int  size()
     {
         int sz = 0;
-        
+
         this->lock();
         sz  = pt_size(_pt);
         this->unlock();
@@ -147,15 +146,15 @@ class PrefixTree {
         return sz;
     }
 
-    
+
     int  nodes()
     {
         int cnt = 0;
-        
+
         this->lock();
         cnt  = pt_nodes(_pt);
         this->unlock();
-        
+
         return cnt;
     }
 
@@ -244,11 +243,9 @@ class PrefixTree {
 #   ifdef USE_PTHREADS
     pthread_mutex_t              _mutex;
 #   endif
-
 };
 
 } // namespace
 
 
 #endif  //  _TCANETPP_PREFIXTREE_HPP_
-

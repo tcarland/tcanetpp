@@ -3,7 +3,7 @@
   *
   * For handling struct addrinfo and getaddrinfo/getnameinfo
   *
-  * Copyright (c) 2010 Timothy Charlton Arland
+  * Copyright (c) 2010-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -323,7 +323,7 @@ AddrInfo::GetAddrInfo ( const std::string & host,
 
 
 int
-AddrInfo::GetAddrInfo ( const std::string & host, 
+AddrInfo::GetAddrInfo ( const std::string & host,
                         const std::string & svc,
                         const addrinfo    * hints,
                         addrinfo         ** res )

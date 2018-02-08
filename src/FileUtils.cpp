@@ -1,7 +1,7 @@
 /**
   * @file FileUtils.cpp
   *
-  * Copyright (c) 2002,2008,2011 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
 **/
 #define _TCANETPP_FILEUTILS_CPP_
@@ -74,7 +74,7 @@ time_t
 FileUtils::LastTouched ( const std::string & filename )
 {
     filestat_t  sb;
-    
+
     if ( ! FileUtils::InitFileStat(filename, &sb) )
         return 0;
 
@@ -88,7 +88,7 @@ FileUtils::IsDirectory ( const std::string & dirname )
 
     if ( ! FileUtils::InitFileStat(dirname, &sb) )
         return false;
-    
+
 #   ifdef WIN32
     if ( S_IFDIR & sb.st_mode )
         return true;
@@ -108,7 +108,7 @@ FileUtils::IsSymlink ( const std::string & filename )
 
     if ( ! FileUtils::InitFileStat(filename, &sb) )
         return false;
-    
+
 #   ifndef WIN32
     if ( S_ISLNK(sb.st_mode) )
         return true;
@@ -124,7 +124,7 @@ FileUtils::IsBlockDevice ( const std::string & filename )
 
     if ( ! FileUtils::InitFileStat(filename, &sb) )
         return false;
-    
+
 #   ifndef WIN32
     if ( S_ISBLK(sb.st_mode) )
         return true;
@@ -134,7 +134,7 @@ FileUtils::IsBlockDevice ( const std::string & filename )
 }
 
 
-bool 
+bool
 FileUtils::GetFilenames ( const std::string & path, FileNameList & files, bool recursive )
 {
 #ifdef WIN32
@@ -161,7 +161,7 @@ FileUtils::GetFilenames ( const std::string & path, FileNameList & files, bool r
         dname = path + "/" + dname;
 
         if ( FileUtils::IsDirectory(dname.c_str()) ) {
-            if ( recursive ) 
+            if ( recursive )
                 FileUtils::GetFilenames(dname, files, true);
         } else {
             files.push_back(dname);
@@ -191,7 +191,7 @@ FileUtils::GetFilenames ( const std::string & path, FileNameList & files, bool r
         dname = path + "/" + dname;
 
         if ( FileUtils::IsDirectory(dname) ) {
-            if ( recursive ) 
+            if ( recursive )
                 FileUtils::GetFilenames(dname, files, true);
         } else {
             files.push_back(dname);
@@ -199,7 +199,7 @@ FileUtils::GetFilenames ( const std::string & path, FileNameList & files, bool r
     }
 
     ::closedir(dirp);
-#endif 
+#endif
 
     return true;
 }
@@ -224,4 +224,3 @@ FileUtils::GetCurrentPath()
 
 
 }  // namespace
-

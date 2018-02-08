@@ -48,7 +48,7 @@ class EventTimerHandler {
   
     virtual ~EventTimerHandler() {}
   
-    virtual void timeout  ( const EventTimer & timer ) = 0;
+    virtual void fired    ( const EventTimer & timer ) = 0;
     virtual void finished ( const EventTimer & timer ) = 0;
 };
 

@@ -1,7 +1,7 @@
 /**
   * @file Whois.cpp
   *
-  * Copyright (c) 2002,2008,2009 Timothy Charlton Arland
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -223,7 +223,7 @@ int main ( int argc, char ** argv )
 
     std::cout << " host  = " << host << std::endl;
     std::cout << " query = " << query << std::endl << std::endl;
-     
+
     Whois  who(host);
     std::string r = who.query(query);
     std::cout << " result = '" << r << "'" << std::endl;

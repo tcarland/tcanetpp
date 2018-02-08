@@ -1,7 +1,7 @@
 /**
   * @file HeirarchicalStringTree.hxx
   *
-  * Copyright (c) 2008,2009 Timothy Charlton Arland
+  * Copyright (c) 2008-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -379,4 +379,3 @@ HeirarchicalStringTree<ValueType>::depthFirstTraversal ( Node * node, Predicate_
 } // namespace
 
 #endif // _TCANETPP_HEIRARCHICALSTRINGTREE_HXX_
-

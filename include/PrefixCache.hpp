@@ -1,7 +1,7 @@
 /**
   * @file PrefixCache.hpp
   *
-  * Copyright (c) 2008,2009 Timothy Charlton Arland
+  * Copyright (c) 2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -37,7 +37,7 @@ namespace tcanetpp {
 
 
 /**  Used as the Radix Node in the underlying PrefixTree of a
- *   PrefixCache instance. The PrefixCacheItem wraps the 
+ *   PrefixCache instance. The PrefixCacheItem wraps the
  *   given ValueType with an associated timer.
  **/
 template <typename ValueType>
@@ -80,17 +80,17 @@ class PrefixCacheItem {
 };
 
 
-/**  The PrefixCache class provides an interface for tracking objects 
+/**  The PrefixCache class provides an interface for tracking objects
  *   by a given IPV4 Prefix. It uses an underlying Radix Tree (patricia)
- *   as the data structure, which is written in C and uses pointers to 
- *   store the user data, so as a result the PrefixCache will only 
+ *   as the data structure, which is written in C and uses pointers to
+ *   store the user data, so as a result the PrefixCache will only
  *   work with a 'ValueType' pointer.
  **/
 template <typename ValueType>
 class PrefixCache {
 
   public:
-    
+
     typedef PrefixCacheItem<ValueType>        CacheItem;
     typedef typename CacheItem::CachePair     CachePair;
     typedef typename CacheItem::TimerSet      CacheTimerSet;
@@ -110,8 +110,8 @@ class PrefixCache {
     virtual ~PrefixCache() {}
 
 
-    /**  Performs a lookup of the given 'Prefix', and return false if 
-     *   the prefix already exists or insert fails and true on 
+    /**  Performs a lookup of the given 'Prefix', and return false if
+     *   the prefix already exists or insert fails and true on
      *   successful insert.
      **/
     bool insert ( IpAddr & p, ValueType item, const time_t & now )
@@ -158,8 +158,8 @@ class PrefixCache {
     }
 
 
-    /**  Performs an exact match of the given Prefix and returns 
-     *   return the success of the lookup and sets the provided 
+    /**  Performs an exact match of the given Prefix and returns
+     *   return the success of the lookup and sets the provided
      *   template object parameter accordingly.
      **/
     bool  match  ( const IpAddr & p, ValueType & val )
@@ -175,7 +175,7 @@ class PrefixCache {
     }
 
     /**  Performs a longest match lookup for the given Prefix
-     *   and returns the success of the lookup setting the 
+     *   and returns the success of the lookup setting the
      *   target parameter accordingly.
      **/
     bool longestMatch ( IpAddr & p, ValueType & val )
@@ -190,7 +190,7 @@ class PrefixCache {
         return true;
     }
 
-    /**  Updates the timer for the given Prefix to the provided 
+    /**  Updates the timer for the given Prefix to the provided
      *   time plus the configured cache timeout interval.
      *   Returns false if the prefix is not found.
      **/
@@ -213,7 +213,7 @@ class PrefixCache {
 
 
     /**  Expires any entries that are older than the given time.
-     *   @param now  is the expire time to use when determining 
+     *   @param now  is the expire time to use when determining
      *   what elements should be considered stale.
      *   @param itemlist  is a reference to a list of cache items
      *   that is populated with all removed items considered stale.
@@ -222,7 +222,7 @@ class PrefixCache {
     {
         CacheItem     *ci, *cr = NULL;
         TimerSetIter   tIter, rIter;
-        
+
         tIter = _timers.begin();
 
         while ( tIter != _timers.end() && tIter->first < now ) {
@@ -230,7 +230,7 @@ class PrefixCache {
 
             if ( ci )
                 itemlist.push_back(ci->getValue());
-            
+
             rIter = tIter;
             ++tIter;
             _timers.erase(rIter);
@@ -246,7 +246,7 @@ class PrefixCache {
     }
 
     /**  The number of entries in the cache. */
-    size_t size() 
+    size_t size()
     {
         return this->_pt->size();
     }
@@ -271,9 +271,6 @@ class PrefixCache {
     time_t              _cacheTimeout;
 };
 
-
 }  // namespace
 
-
 #endif  //  _TCANETPP_PREFIXCACHE_HPP_
-

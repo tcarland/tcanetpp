@@ -3,16 +3,16 @@
   *
   *   A collection of static methods for c++ string manipulation.
   *
-  * Copyright (c) 2002,2008 Timothy Charlton Arland 
+  * Copyright (c) 2002-2018 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
-  * @section LICENSE 
+  * @section LICENSE
   *
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -20,8 +20,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
 **/
 #define _TCANETPP_STRINGUTILS_CPP_
@@ -47,7 +47,7 @@ StringUtils::MAXLINE = TCANET_BIGSTRLINE;
 
 // ----------------------------------------------------------------------
 
-/**@{  Indicates whether a given string starts or ends with the provided 
+/**@{  Indicates whether a given string starts or ends with the provided
   *    prefix or suffix, respectively.
  **/
 bool
@@ -58,8 +58,8 @@ StringUtils::startsWith ( const std::string & str, const std::string & prefix )
     if ( str.size() < prefix.size() )
         return false;
 
-    for ( sIter = str.begin(), pIter = prefix.begin(); 
-          pIter != prefix.end(); 
+    for ( sIter = str.begin(), pIter = prefix.begin();
+          pIter != prefix.end();
           ++sIter, ++pIter )
     {
         if ( *sIter != *pIter )
@@ -260,7 +260,7 @@ StringUtils::toHexString ( const uint8_t * buf, size_t len, size_t offset )
     hx += rt;
     lt -= rt;
     ptr = buf;
-    
+
     for ( i = 0; i < len; ++i )
     {
         if ( ::isprint(*ptr) )
@@ -274,7 +274,7 @@ StringUtils::toHexString ( const uint8_t * buf, size_t len, size_t offset )
 
     ::snprintf(hx, lt, "\n");
     hexl.assign(hexc);
-    
+
     return hexl;
 }
 
@@ -335,7 +335,7 @@ StringUtils::strip ( std::string & str, char c )
 
 // ----------------------------------------------------------------------
 
-/**  Strips inline comments from a given string line. Valid inline or 
+/**  Strips inline comments from a given string line. Valid inline or
   *  to end of line comments are '#', ';', and '//'
  **/
 void
@@ -351,10 +351,10 @@ StringUtils::stripComments ( std::string & strline )
 
     if ( (indx = strline.find("//")) != std::string::npos )
         strline = strline.substr(0, indx);
-    
+
     return;
 }
- 
+
 void
 StringUtils::replaceTabs ( std::string & strline )
 {
@@ -362,7 +362,7 @@ StringUtils::replaceTabs ( std::string & strline )
     while ( (indx = strline.find_first_of('\t')) != std::string::npos ) {
         strline.erase(indx, 1);
         strline.insert(indx, 8, ' ');
-    } 
+    }
     return;
 }
 
@@ -370,7 +370,7 @@ StringUtils::replaceTabs ( std::string & strline )
 
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
-//   Widechar support for the same methods including conversion from 
+//   Widechar support for the same methods including conversion from
 //   wide to narrow/ascii and back.
 #ifdef TCANETPP_WIDECHAR
 
@@ -406,7 +406,7 @@ StringUtils::endsWith ( const std::wstring & str, const std::wstring & suffix )
 
     indx = str.rfind(suffix);
 
-    if ( indx == std::wstring::npos ) 
+    if ( indx == std::wstring::npos )
         return false;
     if ( (str.length() - indx) == suffix.length() )
         return true;
@@ -539,7 +539,7 @@ StringUtils::trim ( std::wstring & str )
 {
     while ( isspace(str[0]) )
         str.erase(0,1);
-    
+
     while ( isspace(str[str.length() - 1]) )
         str.erase(str.length() - 1, str.length());
 
@@ -573,7 +573,7 @@ StringUtils::strip ( std::wstring & str, wchar_t c )
 
 // ----------------------------------------------------------------------
 
-/**  Strips inline comments from a given string line. Valid inline or 
+/**  Strips inline comments from a given string line. Valid inline or
   *  to end of line comments are '#', ';', and '//'
  **/
 void
@@ -586,13 +586,13 @@ StringUtils::stripComments ( std::wstring & wstrline )
 
     if ( (indx = wstrline.find_first_of(';')) != std::string::npos )
         wstrline = wstrline.substr(0, indx);
-    
+
     if ( (indx = wstrline.find(L"//")) != std::string::npos )
         wstrline = wstrline.substr(0, indx);
-    
+
     return;
 }
- 
+
 void
 StringUtils::replaceTabs ( std::wstring & wstrline )
 {
@@ -602,7 +602,7 @@ StringUtils::replaceTabs ( std::wstring & wstrline )
         wstrline.erase(indx, 1);
         wstrline.insert(indx, 8, ' ');
     }
-    
+
     return;
 }
 
@@ -623,7 +623,7 @@ StringUtils::ctowstr ( const std::string & str )
 
     if ( tmp == NULL )
         return wstr;
-    
+
     wstr = std::wstring(tmp);
     ::free(tmp);
 
@@ -662,4 +662,3 @@ StringUtils::wtocstr ( const std::wstring & wstr )
 
 
 // _TCANETPP_STRINGUTILS_CPP_
-

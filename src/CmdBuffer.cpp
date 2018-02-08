@@ -1,7 +1,7 @@
 /**
-  * @file CmdBuffer.cpp 
+  * @file CmdBuffer.cpp
   *
-  * Copyright (c) 2002,2008-2015 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #define _TCANETPP_CMDBUFFER_CPP_
@@ -34,7 +34,7 @@ namespace tcanetpp {
 const char*  CmdBuffer::EOL = "\n";
 
 
-CmdBuffer::CmdBuffer ( size_t bufsize ) 
+CmdBuffer::CmdBuffer ( size_t bufsize )
     : _cmdbuf(NULL),
       _file(NULL),
       _bufsize(bufsize),
@@ -64,19 +64,19 @@ CmdBuffer::CmdBuffer ( const std::string & cmd, size_t bufsize )
 CmdBuffer::~CmdBuffer()
 {
     if ( _init )
-        this->Close();
+        this->close();
     if ( _cmdbuf )
         delete _cmdbuf;
 }
 
 
 bool
-CmdBuffer::Open ( const std::string & cmd )
+CmdBuffer::open ( const std::string & cmd )
 {
     FILE * f = NULL;
 
     if ( _init )
-        this->Close();
+        this->close();
 
     if ( (f = ::popen(cmd.c_str(), "r")) == NULL ) {
         _errstr = "CmdBuffer::Open() error in popen, failed to open pipe stream";
@@ -99,7 +99,7 @@ CmdBuffer::Open ( const std::string & cmd )
 
 
 void
-CmdBuffer::Close()
+CmdBuffer::close()
 {
     if ( _init && _cmdbuf ) {
         _cmdbuf->close();
@@ -136,6 +136,7 @@ CmdBuffer::haveData() const
     return true;
 }
 
+
 strmsz_t
 CmdBuffer::inAvail()
 {
@@ -144,6 +145,7 @@ CmdBuffer::inAvail()
 
     return _cmdbuf->in_avail();
 }
+
 
 std::string
 CmdBuffer::getLine()
@@ -162,14 +164,14 @@ void
 CmdBuffer::getAllLines ( StringBuffer & lines )
 {
     std::string line = "";
-    
+
     //lines = std::vector<std::string>();
     lines.clear();
 
     if ( ! _init )
         return;
 
-    while ( this->haveData() ) 
+    while ( this->haveData() )
     {
         line = this->getLine();
         lines.push_back(line);
@@ -192,11 +194,13 @@ CmdBuffer::putLine ( const std::string & line )
     return true;
 }
 
+
 std::string
 CmdBuffer::getCommand() const
 {
     return _cmd;
 }
+
 
 std::string
 CmdBuffer::getErrorStr() const
@@ -204,11 +208,13 @@ CmdBuffer::getErrorStr() const
     return _errstr;
 }
 
+
 char
 CmdBuffer::getEOL() const
 {
     return _eol;
 }
+
 
 void
 CmdBuffer::setEOL ( char eol )
@@ -216,8 +222,6 @@ CmdBuffer::setEOL ( char eol )
     _eol = eol;
 }
 
-
 } // namespace
 
-//  _TCANETPP_CMDBUFFER_CPP_ 
-
+//  _TCANETPP_CMDBUFFER_CPP_

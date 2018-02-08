@@ -1,13 +1,13 @@
 /**
   * @file CircularBuffer.h
   *
-  *   A circular buffer implementation which allows for direct access and 
-  *  interaction to the underlying buffer. This was originally designed 
-  *  to read inbound udp fast while avoiding an additional memcpy's that 
-  *  occur in a std read/write function calls. The get/set ptr functions 
+  *   A circular buffer implementation which allows for direct access and
+  *  interaction to the underlying buffer. This was originally designed
+  *  to read inbound udp fast while avoiding an additional memcpy's that
+  *  occur in a std read/write function calls. The get/set ptr functions
   *  should be used with caution.
   *
-  * Copyright (c) 2001 Timothy Charlton Arland 
+  * Copyright (c) 2001-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -15,8 +15,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -24,8 +24,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_CIRCULARBUFFER_H_
@@ -51,7 +51,6 @@ namespace tcanetpp {
 #define MIN_CIRBUFFER_SIZE       1
 #define MAX_CIRBUFFER_SIZE       (4294967295U)
 #define DEFAULT_CIRBUFFER_SIZE   (1024000U)
-#define CIRBUFFER_VERSION        "v1.98"
 
 
 // ----------------------------------------------------------------------
@@ -62,8 +61,8 @@ namespace tcanetpp {
 
 class BufferException : public Exception {
   public:
-    BufferException ( const std::string & s_err ) 
-        : Exception(s_err) 
+    BufferException ( const std::string & s_err )
+        : Exception(s_err)
     {}
 };
 
@@ -76,7 +75,7 @@ class BufferException : public Exception {
   *  It is also useful to use the safe read()/write() methods which guarantee
   *  safe operation as well as truly treating the buffer as circular. The
   *  use case as a packet buffer is intended to allow the buffer to hold many
-  *  datagrams efficiently at once for bulk reads in larger buffering scenarios 
+  *  datagrams efficiently at once for bulk reads in larger buffering scenarios
   *  and unlike most buffers, it is truly circular, allowing writes to wrap and
   *  essentially trail the read position.
  **/
@@ -84,59 +83,53 @@ class CircularBuffer {
 
   public:
 
-    CircularBuffer ( size_t totalsize = DEFAULT_CIRBUFFER_SIZE );
-
-    CircularBuffer ( const CircularBuffer & buffer );
-
+    CircularBuffer ( size_t totalsize = DEFAULT_CIRBUFFER_SIZE )
+        noexcept(false);
+    CircularBuffer ( const CircularBuffer & buffer )
+        noexcept(false);
     ~CircularBuffer();
+
 
     CircularBuffer& operator= ( const CircularBuffer & cb );
 
-
     size_t          read    ( void       * buff, size_t n );
     size_t          write   ( const void * buff, size_t n );
- 
+
     size_t          readAvailable() const;
     size_t          writeAvailable() const;
 
     size_t          reverse ( size_t offset );
     size_t          skip    ( size_t offset );
 
-    bool            resize  ( size_t buffsize );
+    bool            resize  ( size_t buffsize ) noexcept(false);
 
     void            clear();
     inline  void    reset()       { return this->clear(); }
     inline size_t   size() const  { return this->_buffsize; }
 
-
   public:
 
     char*           getWritePtr ( size_t * size );
-    void            setWritePtr ( size_t   offset ) noexcept(false);
+    bool            setWritePtr ( size_t   offset );
 
     char*           getReadPtr  ( size_t * size );
-    void            setReadPtr  ( size_t   offset ) noexcept(false);
-    
+    bool            setReadPtr  ( size_t   offset );
+
     size_t          readPtrAvailable() const;
     size_t          writePtrAvailable() const;
-
-    static
-    const char*     Version();
-
 
   private:
 
     void            init() noexcept(false);
     bool            isWrapped() const;
 
-
   private:
 
-    char*          _buffer;    
+    char*          _buffer;
     char*          _readPtr;
     char*          _writePtr;
-    char*          _endPtr;   
-    char*          _wrapPtr;   
+    char*          _endPtr;
+    char*          _wrapPtr;
 
     size_t         _buffsize;
 
@@ -146,4 +139,3 @@ class CircularBuffer {
 
 
 #endif //  _TCANETPP_CIRCULARBUFFER_H_
-

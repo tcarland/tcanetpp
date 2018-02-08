@@ -4,7 +4,7 @@
   * Class for holding a struct sockaddr for representing either
   * an IPv4 or IPv6 address.
   *
-  * Copyright (c) 2012-2015 Timothy Charlton Arland
+  * Copyright (c) 2012-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -136,11 +136,9 @@ class IpAddr {
 
     sockaddr_t          _saddr;
     uint8_t             _mb;
-
 };
 
 } // namespace
 
 
 #endif // _TCANETPP_IPADDR_H_
-

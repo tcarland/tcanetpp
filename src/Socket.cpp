@@ -1,10 +1,10 @@
-/** 
+/**
   * @file Socket.h
   *
   *   The base Socket class providing an object-oriented
   * interface to sockets for both Unix and Win32 platforms.
-  * 
-  * Copyright (c) 2002,2008,2009 Timothy Charlton Arland 
+  *
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -12,8 +12,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -21,8 +21,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #define _TCANETPP_SOCKET_CPP_
@@ -94,7 +94,7 @@ Socket::Socket ( ipv4addr_t ipaddr, uint16_t port, SocketType type, int protocol
       _noUdpClose(false)
 {
     Socket::ResetDescriptor(this->_fd);
-    
+
     if ( _socktype <= SOCKTYPE_NONE || _socktype > SOCKTYPE_RAW )
         throw SocketException("Socket error: Invalid Socket type");
     if ( _proto < 0 || _proto > 255 )
@@ -103,7 +103,7 @@ Socket::Socket ( ipv4addr_t ipaddr, uint16_t port, SocketType type, int protocol
         throw SocketException("Socket error: Invalid IP Address");
 
     sockaddr_in * sock;
-    
+
     sock           = (struct sockaddr_in*) _ipaddr.getSockAddr();
     sock->sin_port = htons(port);
     _addrstr       = IpAddr::ntop(ipaddr);
@@ -195,7 +195,7 @@ Socket::Socket ( addrinfo * ai )
         _socktype = SOCKTYPE_SERVER;
 
     _ipaddr  = IpAddr((sockaddr_t*) ai->ai_addr);
- 
+
     if ( _ipaddr.getFamily() == AF_INET ) {
         sockaddr_in * sock  = (sockaddr_in*) _ipaddr.getSockAddr();
         _port    = ntohs(sock->sin_port);
@@ -219,20 +219,20 @@ Socket::Socket ( sockfd_t & fd, sockaddr_t & csock, SocketType type, int protoco
       _block(false),
       _noUdpClose(false)
 {
-    if ( Socket::IsValidDescriptor(this->_fd) ) 
+    if ( Socket::IsValidDescriptor(this->_fd) )
     {
         if ( _proto == IPPROTO_TCP )
             _connected  = true;
         else if ( _proto == IPPROTO_UDP )
             _noUdpClose = true;
         _bound = true;
-    } 
-    else 
+    }
+    else
     {
         _connected = false;
         _bound     = false;
     }
-    
+
     if ( _ipaddr.getFamily() == AF_INET )
     {
         sockaddr_in * sock;
@@ -265,7 +265,7 @@ Socket::~Socket()
 int
 Socket::init ( bool block )
 {
-    if ( ! Socket::IsValidDescriptor(_fd) ) 
+    if ( ! Socket::IsValidDescriptor(_fd) )
     {
         try {
             Socket::InitializeSocket(_fd, _ipaddr, _socktype, _proto);
@@ -274,24 +274,24 @@ Socket::init ( bool block )
             return -1;
         }
     }
-      
-    if ( _socktype == SOCKTYPE_SERVER ) 
+
+    if ( _socktype == SOCKTYPE_SERVER )
     {
         this->setSocketOption(SocketOption::SetReuseAddr(1));
-        
+
         if ( ! this->bind() )
             return -1;
         if ( _proto == SOCKET_TCP )
             this->listen();
     }
-    
+
     _block = block;
 
     if ( ! _block )
         Socket::Unblock(this);
     else
         Socket::Block(this);
-        
+
     return 1;
 }
 
@@ -307,9 +307,9 @@ Socket::bind()
             _errstr = "Socket::bind() socket is not initialized";
         return r;
     }
-        
+
     r = ::bind(_fd, (struct sockaddr*) _ipaddr.getSockAddr(), sizeof(sockaddr_t));
-    
+
     if ( r != 0 ) {
         _errstr = "Socket::bind() Failed to bind";
 #       ifndef WIN32
@@ -318,9 +318,9 @@ Socket::bind()
 #       endif
         return -1;
     }
-    
+
     _bound = true;
-    
+
     return 1;
 }
 
@@ -331,14 +331,14 @@ Socket::listen()
 {
     if ( _socktype != SOCKTYPE_SERVER || _proto != IPPROTO_TCP )
         return 0;
-        
+
     if ( ! this->_bound )
         this->bind();
-        
+
     ::listen(_fd, 1);
-    
+
     _connected = true;
-    
+
     return 1;
 }
 
@@ -349,7 +349,7 @@ Socket::connect()
 {
     if ( _socktype != SOCKTYPE_CLIENT )
         return -1;
-        
+
     if ( _connected )
         return 1;
 
@@ -373,7 +373,7 @@ Socket::connect()
             return 0;
         else if ( errno == ECONNREFUSED )
             _errstr = "Socket::connect() Connection Refused";
-        else 
+        else
             _errstr = "Socket::connect() Error in connect attempt";
 
         char  serr[ERRORSTRLEN];
@@ -395,12 +395,12 @@ Socket::connect()
 void
 Socket::close()
 {
-   if ( ! this->_noUdpClose ) 
+   if ( ! this->_noUdpClose )
    {
-        if ( Socket::IsValidDescriptor(_fd) ) 
+        if ( Socket::IsValidDescriptor(_fd) )
         {
            _connected = false;
-     
+
 #          ifdef WIN32
            ::closesocket(this->_fd);
 #          else
@@ -417,15 +417,15 @@ Socket::close()
 
 /**  Shutdowns half or the full connection.
   *
-  *  @param shut  is the integer value representing which halves of 
+  *  @param shut  is the integer value representing which halves of
   *  the connection to shut. '0' shuts the receive, '1' shuts the send,
   *  and 2 shuts both the send and the receive.
- **/ 
+ **/
 void
 Socket::shutdown ( int shut )
 {
 #   ifdef WIN32
-    
+
     if ( shut == 0 ) {
         ::shutdown(_fd, SD_RECEIVE);
     } else if ( shut == 1 ) {
@@ -434,13 +434,13 @@ Socket::shutdown ( int shut )
         ::shutdown(_fd, SD_BOTH);
         _connected = false;
     }
-    
+
 #   else
-    
+
     ::shutdown(_fd, shut);
-    
+
 #   endif
-    
+
     return;
 }
 
@@ -452,9 +452,9 @@ Socket::accept()
     return this->accept(Socket::factory);
 }
 
-/**  The SocketFactory provides a mechanism for instantiating derived Socket 
-  *  objects while properly maintaining this interface. A derived implementation 
-  *  would also derive the SocketFactory class in order to instantiate the 
+/**  The SocketFactory provides a mechanism for instantiating derived Socket
+  *  objects while properly maintaining this interface. A derived implementation
+  *  would also derive the SocketFactory class in order to instantiate the
   *  derived type prior to casting back to the base Socket* type.
  **/
 Socket*
@@ -494,12 +494,12 @@ bool
 Socket::isConnected()
 {
 #   ifdef WIN32
-    
+
     if ( ! Socket::IsValidDescriptor(_fd) )
         _connected = false;
 
     return _connected;
-    
+
 #   else
 
     if ( !_connected || _proto == IPPROTO_UDP )
@@ -511,14 +511,14 @@ Socket::isConnected()
     wset.fd     = this->getDescriptor();
     wset.events = POLLOUT | POLLERR;
 
-    if ( poll(&wset, 1, 0) < 0 ) 
+    if ( poll(&wset, 1, 0) < 0 )
     {
         if ( errno == EINTR )
             return true;
 
         if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
             _errstr = serr;
-        
+
         return false;
     }
 
@@ -663,7 +663,7 @@ Socket::setSocketOption ( int level, int optname, int optval )
     return 1;
 }
 
-int 
+int
 Socket::setSocketOption ( SocketOption opt )
 {
     return this->setSocketOption(opt.level(),
@@ -770,12 +770,12 @@ Socket::Unblock ( Socket * s )
         return;
 
 #   ifdef WIN32
-    
+
     unsigned long  on = 1;
     ioctlsocket(s->getFD(), FIONBIO, &on);
-    
+
 #   else
-    
+
     int flags = ::fcntl(s->getDescriptor(), F_GETFL, 0);
     ::fcntl(s->getDescriptor(), F_SETFL, flags | O_NONBLOCK);
 
@@ -786,18 +786,18 @@ Socket::Unblock ( Socket * s )
 
 /** Static function to set a Socket to blocking */
 void
-Socket::Block ( Socket * s ) 
+Socket::Block ( Socket * s )
 {
     if ( s == NULL )
         return;
 
 #   ifdef WIN32
-    
+
     unsigned long  on = 0;
     ioctlsocket(s->getFD(), FIONBIO, &on);
-    
-#   else 
-    
+
+#   else
+
     int  flags  = ::fcntl(s->getDescriptor(), F_GETFL, 0);
     ::fcntl(s->getDescriptor(), F_SETFD, flags & ~O_NONBLOCK);
 
@@ -816,15 +816,15 @@ bool
 Socket::IsValidDescriptor ( const sockfd_t & fd )
 {
 #   ifdef WIN32
-    if ( fd <= 0 ) 
+    if ( fd <= 0 )
         return false;
 #   else
-    if ( fd < 0 ) 
+    if ( fd < 0 )
         return false;
 #   endif
     return true;
 }
-    
+
 void
 Socket::ResetDescriptor ( sockfd_t & fd )
 {
@@ -847,9 +847,9 @@ Socket::nwriten ( const void * vptr, size_t n )
 
     nleft = n;
 
-    while ( nleft > 0 ) 
+    while ( nleft > 0 )
     {
-        if ( (nwritten = ::send(_fd, ptr, nleft, 0)) <= 0 ) 
+        if ( (nwritten = ::send(_fd, ptr, nleft, 0)) <= 0 )
         {
 #           ifdef WIN32
 
@@ -888,36 +888,36 @@ Socket::nreadn ( void * vptr, size_t n )
     size_t nleft;
     int    nread;
     char*  ptr;
- 
+
     ptr   = (char*) vptr;
     nleft = n;
 
-    while ( nleft > 0 ) 
+    while ( nleft > 0 )
     {
-        if ( (nread = ::recv(_fd, ptr, nleft, 0)) < 0 ) 
+        if ( (nread = ::recv(_fd, ptr, nleft, 0)) < 0 )
         {
 #           ifdef WIN32
-                
+
             int  err  = WSAGetLastError();
-            if ( err == WSAEINTR ) 
+            if ( err == WSAEINTR )
                 nread = 0;
             else if ( err == WSAEWOULDBLOCK )
                 return(n-nleft);
             else
                 return -1;
-                
+
 #           else
-            
+
             if ( errno == EINTR )
                 nread = 0;
-            else if ( errno == EWOULDBLOCK || errno == EAGAIN || errno == EINPROGRESS )  
+            else if ( errno == EWOULDBLOCK || errno == EAGAIN || errno == EINPROGRESS )
                 return(n-nleft);
             else
                 return -1;
-            
+
 #           endif
-        } 
-        else if ( nread == 0 ) 
+        }
+        else if ( nread == 0 )
         {
             return -1;
         }
@@ -926,7 +926,7 @@ Socket::nreadn ( void * vptr, size_t n )
     }
 
     return(n-nleft);
-    
+
 }
 
 // ----------------------------------------------------------------------
@@ -937,7 +937,7 @@ Socket::InitializeSocket ( sockfd_t & fd, IpAddr & addr, int socktype, int proto
 {
     std::string errstr = "Socket::initSocket() Fatal Error ";
 
-    if ( socktype == SOCKTYPE_RAW ) 
+    if ( socktype == SOCKTYPE_RAW )
     {
         fd = ::socket(addr.getFamily(), SOCK_RAW, proto);
     }
@@ -953,7 +953,7 @@ Socket::InitializeSocket ( sockfd_t & fd, IpAddr & addr, int socktype, int proto
         }
     }
 
-    if ( ! Socket::IsValidDescriptor(fd) ) 
+    if ( ! Socket::IsValidDescriptor(fd) )
     {
 #       ifdef WIN32
         errstr.append(": Failed to initialize socket");
@@ -1008,5 +1008,4 @@ Socket::IpChkSum ( uint16_t * t, int n )
 
 } // namespace
 
-//  _TCANETPP_SOCKET_CPP_ 
-
+//  _TCANETPP_SOCKET_CPP_

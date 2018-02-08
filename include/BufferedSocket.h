@@ -1,7 +1,7 @@
-/** 
+/**
   * @file BufferedSocket.h
   *
-  * Copyright (c) 2002 Timothy Charlton Arland 
+  * Copyright (c) 2002-2018 Timothy Charlton Arland 
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_BUFFEREDSOCKET_H_
@@ -90,27 +90,27 @@ class BufferedSocket : public Socket {
     virtual int      init  ( bool block = false );
     virtual ssize_t  read  ( void * vptr, size_t n );
     virtual ssize_t  write ( const void * vptr, size_t n );
-    
+
     virtual ssize_t  bufferData();
-    
+
     /*  BufferedSocket methods  */
 
-    virtual ssize_t  flush(); 
+    virtual ssize_t  flush();
     virtual void     clear();
     virtual void     close();
-    
+
     virtual size_t   dataAvailable();
     size_t           readAvailable() { return this->dataAvailable(); }
     virtual size_t   flushAvailable();
     size_t           writeAvailable() { return this->flushAvailable(); }
-    
+
     virtual size_t   reverse ( size_t offset );
     virtual size_t   skip    ( size_t offset );
 
     /*  Get/Set methods for buffer sizes  */
     void             rxBufferSize ( size_t sz );
     size_t           rxBufferSize();
-    
+
     void             txBufferSize ( size_t sz );
     size_t           txBufferSize();
 
@@ -125,7 +125,7 @@ class BufferedSocket : public Socket {
 
     virtual ssize_t  bufferedWrite ( const void * vptr, size_t n );
 
-    
+
   protected:
 
     CircularBuffer*     _rbuffer;
@@ -140,4 +140,3 @@ class BufferedSocket : public Socket {
 
 
 #endif // _TCANETPP_BUFFEREDSOCKET_H_
-

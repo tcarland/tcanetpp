@@ -1,7 +1,7 @@
-/** 
+/**
   * @file CmdBuffer.h
   *
-  * Copyright (c) 2002,2008-2015 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -9,8 +9,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -18,8 +18,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_CMDBUFFER_H_
@@ -31,7 +31,6 @@
 
 #if defined __GNUC__ && (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 # include <ext/stdio_filebuf.h>
-//using __gnu_cxx::stdio_filebuf;
 #endif
 
 #define MINIMUM_CMDBUFFER_SIZE  16
@@ -48,23 +47,21 @@ typedef std::streamsize                 strmsz_t;
 
 
 /**  Provides a simpler wrapper to the gnu_cxx:stdio_filebuf interface
-  *  offering the buffering system file io such as stdout, for parsing. 
+  *  offering the buffering system file io such as stdout, for parsing.
  **/
 class CmdBuffer {
 
   public:
 
     CmdBuffer ( size_t bufsize = DEFAULT_CMDBUFFER_SIZE ) noexcept(false);
-
     CmdBuffer ( const std::string & cmd, size_t bufsize = DEFAULT_CMDBUFFER_SIZE )
         noexcept(false);
 
     virtual ~CmdBuffer();
 
 
-    bool         Open              ( const std::string & cmd );
-    void         Close();
-
+    bool         open              ( const std::string & cmd );
+    void         close();
 
     bool         putLine           ( const std::string & line );
     std::string  getLine();
@@ -80,7 +77,6 @@ class CmdBuffer {
 
     char         getEOL() const;
     void         setEOL ( char eol );
-
 
   private:
 
@@ -99,4 +95,3 @@ class CmdBuffer {
 } // namespace
 
 #endif // _TCANETPP_CMDBUFFER_H_
-

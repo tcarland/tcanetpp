@@ -4,7 +4,7 @@
   * Convenience header for pulling in a few tcanetpp common headers
   * to provide an entry point for header inclusion by applications.
   *
-  * Copyright (c) 2002,2008 Timothy Charlton Arland
+  * Copyright (c) 2002-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -41,4 +41,3 @@
 
 
 #endif _TCANETPP_H_
-

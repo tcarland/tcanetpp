@@ -1,11 +1,11 @@
-/** 
+/**
   *  @file LogFacility.h
   *
-  *    Logging facility supporting multiple, concurrent 
-  *  logging i/o streams in a thread-safe manner. Supports syslog(unix), 
+  *    Logging facility supporting multiple, concurrent
+  *  logging i/o streams in a thread-safe manner. Supports syslog(unix),
   *  file logging, or stdc++ iostream*
   *
-  * Copyright (c) 2004,2008-2015 Timothy Charlton Arland 
+  * Copyright (c) 2004,2008-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -13,8 +13,8 @@
   * This file is part of tcanetpp.
   *
   * tcanetpp is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU Lesser General Public License as 
-  * published by the Free Software Foundation, either version 3 of 
+  * it under the terms of the GNU Lesser General Public License as
+  * published by the Free Software Foundation, either version 3 of
   * the License, or (at your option) any later version.
   *
   * tcanetpp is distributed in the hope that it will be useful,
@@ -22,8 +22,8 @@
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   * GNU Lesser General Public License for more details.
   *
-  * You should have received a copy of the GNU Lesser General Public 
-  * License along with tcanetpp.  
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with tcanetpp.
   * If not, see <http://www.gnu.org/licenses/>.
  **/
 #ifndef _TCANETPP_LOGFACILITY_H_
@@ -53,7 +53,7 @@ namespace tcanetpp {
 typedef enum LogLevel
 {
     LOGFAC_EMERG   = 0,
-    LOGFAC_ALERT   = 1, 
+    LOGFAC_ALERT   = 1,
     LOGFAC_ERR     = 3,
     LOGFAC_WARN    = 4,
     LOGFAC_NOTICE  = 5,
@@ -74,60 +74,60 @@ class LogFacility {
 
 
     static bool           InitThreaded    ( bool trylock = false );
-    
+
 
     /*  open log methods */
 
     static bool           OpenLogFile     ( const std::string & logname,
-                                            const std::string & prefix, 
-                                            const std::string & filename, 
+                                            const std::string & prefix,
+                                            const std::string & filename,
                                             bool append = true );
-    
-    static bool           OpenSyslog      ( const std::string & prefix, 
+
+    static bool           OpenSyslog      ( const std::string & prefix,
                                             int facility );
-    
+
     static bool           OpenLogStream   ( const std::string & logname,
                                             const std::string & prefix,
                                             std::ostream * stream );
-    
-    
-    static bool           AddLogStream    ( const std::string & logname, 
+
+
+    static bool           AddLogStream    ( const std::string & logname,
                                             const std::string & prefix,
                                             std::ostream * stream );
-    
+
     /* close log methods */
 
     static std::ostream*  RemoveLogStream ( const std::string & logname,
                                             bool del  = false );
 
     static void           RemoveLogStreams( bool del  = false );
-    
+
 
     static void           CloseSyslog();
-    static std::ostream*  CloseLogFile    ( const std::string & logname, 
+    static std::ostream*  CloseLogFile    ( const std::string & logname,
                                             bool del  = false );
 
     static void           CloseLogFacility();
 
 
     /*  log messages */
-    
-    static void           LogMessage      ( LogFacility::Message & logmsg, 
+
+    static void           LogMessage      ( LogFacility::Message & logmsg,
                                             int level = LOGFAC_NOTICE );
 
-    static void           LogMessage      ( const std::string & entry, 
+    static void           LogMessage      ( const std::string & entry,
                                             int   level   = LOGFAC_NOTICE,
                                             bool  newline = true );
 
     static void           LogMessage      ( const std::string & logname,
                                             const std::string & entry,
-                                            int   level   = LOGFAC_NOTICE, 
+                                            int   level   = LOGFAC_NOTICE,
                                             bool  newline = true );
 
 
     static void           LogToAllStreams ( const std::string & entry,
                                             bool  newline = true );
-   
+
     static void           LogToStream     ( const std::string & logname,
                                             const std::string & entry,
                                             bool  newline = true );
@@ -140,10 +140,10 @@ class LogFacility {
     static void           SetDefaultLogPrefix ( const std::string & prefix );
     static std::string    GetDefaultLogPrefix() { return LogFacility::GetLogPrefix(); }
 
-    static void           SetLogPrefix    ( const std::string & logname, 
+    static void           SetLogPrefix    ( const std::string & logname,
                                             const std::string & prefix );
     static std::string    GetLogPrefix    ( const std::string & logname = "" );
-    
+
 
     static bool           ShowLogTime     ( const std::string & logname, bool showTime );
     static void           SetLogTime      ( const time_t & now );
@@ -182,7 +182,7 @@ private:
 
 private:
 
-    struct LogStream 
+    struct LogStream
     {
         std::string    logName;
         std::string    logPrefix;
@@ -240,11 +240,8 @@ private:
     static bool                  _Syslog;
     static bool                  _Debug;
     static int                   _VerboseLvl;
-
 };
-
 
 } // namespace
 
 #endif  // _TCANETPP_LOGFACILITY_H_
-
