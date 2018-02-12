@@ -56,7 +56,7 @@ CmdBuffer::CmdBuffer ( const std::string & cmd, size_t bufsize )
 {
     if ( (bufsize < MINIMUM_CMDBUFFER_SIZE) || (bufsize > MAXIMUM_CMDBUFFER_SIZE) )
         throw ( Exception("CmdBuffer error, buffersize out of bounds") );
-    if ( ! this->Open(cmd) )
+    if ( ! this->open(cmd) )
         throw ( Exception(this->_errstr) );
 }
 
