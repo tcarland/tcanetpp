@@ -15,29 +15,29 @@ endif
 #-------------------#
 
 ifdef TCAMAKE_DEBUG
-  OPT_FLAGS =       -g 
+  OPT_FLAGS =       -g
 # -DEV_DEBUG
 endif
 
-OPT_FLAGS +=	    -fPIC -O2 
+OPT_FLAGS +=	    -fPIC -O2
 CCSHARED += 	    -Wl,-soname,$@
 #CXXFLAGS =         -std=c++0x
 
-INCLUDES =	    -Iinclude
+INCLUDES =          -Iinclude
 LIBS =
 
 PT_OBJS =           src/patricia.o
-TH_OBJS = 	    src/Thread.o src/ThreadLock.o src/ThreadMutexPool.o
+TH_OBJS =           src/Thread.o src/ThreadLock.o src/ThreadMutexPool.o
 CMDBUF_OBJS =       src/CmdBuffer.o
 
-OBJS =		    src/SocketOption.o src/Socket.o src/BufferedSocket.o \
+OBJS =	            src/SocketOption.o src/Socket.o src/BufferedSocket.o \
                     src/CircularBuffer.o src/Serializer.o \
-		    src/Whois.o src/EventManager.o \
-		    src/IpAddr.o src/AddrInfo.o \
-		    src/StringUtils.o src/FileStat.o src/FileUtils.o \
-		    src/LogFacility.o src/tcanetpp_random.o \
-		    src/patricia.o src/DeviceMap.o \
-		    src/NetworkDevice.o src/NetworkInterface.o
+                    src/Whois.o src/EventManager.o \
+                    src/IpAddr.o src/AddrInfo.o \
+                    src/StringUtils.o src/FileStat.o src/FileUtils.o \
+                    src/LogFacility.o src/tcanetpp_random.o \
+                    src/patricia.o src/DeviceMap.o \
+                    src/NetworkDevice.o src/NetworkInterface.o
 
 ifdef USE_PTHREADS
 OBJS +=		    $(TH_OBJS)
@@ -56,11 +56,11 @@ include ${TOPDIR}/tcamake/project_defs
 
 # ---------------------------------------------
 
-lib: arlib 
+lib: arlib
 
 arlib: lib/libtcanetpp.a
 
-solib: libtcanetpp.so.1.1.5
+solib: libtcanetpp.so.1.1.6
 
 libtcapt: lib/libtcapt.a
 
@@ -84,7 +84,7 @@ lib/libtcanetpp.a: ${OBJS}
 	$(make-lib-rule)
 	@echo
 
-libtcanetpp.so.1.1.5: ${OBJS}
+libtcanetpp.so.1.1.6: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)
@@ -107,7 +107,7 @@ clean:
 	$(RM) $(ALL_OBJS) \
 	src/*.d src/*.D src/*.bd src/*.o lib/*.bd *.bd
 	@echo
-	
+
 test-clean:
 	( cd test; $(MAKE) distclean )
 	@echo
@@ -135,4 +135,3 @@ else
 	@echo "TCAMAKE_PREFIX is not set. Install not performed"
 	@echo "  eg. export TCAMAKE_PREFIX=/usr/local"
 endif
-

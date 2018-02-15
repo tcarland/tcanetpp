@@ -1,7 +1,7 @@
 /**
   * @file Thread.cpp
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -157,7 +157,7 @@ Thread::threadName() const
 }
 
 pthread_t
-Thread::threadId() const
+Thread::threadId()
 {
     return this->_tid;
 }
@@ -166,7 +166,7 @@ Thread::threadId() const
 
 /**  Indicates whether the thread is currently in the run state. */
 bool
-Thread::isRunning()
+Thread::isRunning() const
 {
     return this->_running;
 }
@@ -179,6 +179,12 @@ void
 Thread::setAlarm()
 {
     _Alarm = true;
+}
+
+bool
+Thread::getAlarm() const
+{
+    return this->_Alarm;
 }
 
 /**  Yields the thread by calling the pthread 'sched_yield()' function. This
@@ -287,13 +293,13 @@ Thread::getCpuAffinity ( cpu_set_t & cpus )
 //#if defined (_POSIX_THREAD_PRIORITY_SCHEDULING)
 
 int
-Thread::getMinPriority ( int policy )
+Thread::getMinPriority ( int policy ) const
 {
     return(::sched_get_priority_min(policy));
 }
 
 int
-Thread::getMaxPriority ( int policy )
+Thread::getMaxPriority ( int policy ) const
 {
     return(::sched_get_priority_max(policy));
 }
@@ -432,7 +438,7 @@ Thread::setScope ( int scope )
 
 /**  Returns the value of the Thread's current contention scope. */
 int
-Thread::getScope()
+Thread::getScope() const
 {
     int scope = 0;
 
@@ -452,7 +458,7 @@ Thread::setInheritSched ( int inherit )
 }
 
 int
-Thread::getInheritSched()
+Thread::getInheritSched() const
 {
     int inherit = 0;
 

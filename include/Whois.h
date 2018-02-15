@@ -32,7 +32,6 @@
 
 namespace tcanetpp  {
 
-
 #define MAX_READS_IN_BLOCK 20
 #define DEFAULT_WHOIS_PORT 43
 
@@ -41,9 +40,9 @@ class Whois {
 
   public:
 
-    Whois ( const std::string & host = "" );
+    Whois ( const std::string & host = "",
+            uint16_t            port = DEFAULT_WHOIS_PORT );
     virtual ~Whois();
-
 
     std::string   query ( const std::string & query,
                           const std::string & host = "" );
