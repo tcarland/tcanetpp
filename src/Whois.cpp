@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-
 #include "Whois.h"
 #include "IpAddr.h"
 #include "AddrInfo.h"
@@ -36,10 +35,10 @@
 namespace tcanetpp {
 
 
-Whois::Whois ( const std::string & host )
+Whois::Whois ( const std::string & host, uint16_t port )
     : _sock(NULL)
 {
-    this->init(host);
+    this->init(host, port);
 }
 
 
@@ -58,17 +57,11 @@ Whois::init ( const std::string & host, uint16_t port )
     if ( port == 0 )
         port = DEFAULT_WHOIS_PORT;
 
-    if ( _sock != NULL )
-    {
-        if ( host == _host && port == DEFAULT_WHOIS_PORT )
-            return;
+    if ( _sock != NULL ) {
         _sock->close();
         delete _sock;
         _sock = NULL;
     }
-
-    if ( host.empty() )
-        return;
 
     IpAddrList   addrs;
     AddrInfo::GetAddrList(host, addrs);
@@ -142,14 +135,14 @@ Whois::query ( const std::string & query, const std::string & host )
     x = 0;
     while ( (rr = _sock->read(&ch, sizeof(ch))) >= 0 )
     {
-        if ( rr == 0 ) {
+        if ( rr == 0 )
+        {
             x++;
             ld = ldiv(x, y);
-            if ( x >= MAX_READS_IN_BLOCK ) {
+            if ( x >= MAX_READS_IN_BLOCK )
                 break;
-            } else if ( ld.rem == 0 && result.empty() ) {
+            else if ( ld.rem == 0 && result.empty() )
                 sleep(1);
-            }
             continue;
         }
         x = 0;
@@ -203,7 +196,8 @@ int main ( int argc, char ** argv )
         }
     }
 
-    if ( argc > 3 ) {
+    if ( argc > 3 )
+    {
         int ac = 3;
         query.append(argv[ac]);
         ac++;
@@ -213,12 +207,10 @@ int main ( int argc, char ** argv )
         }
     }
 
-    if ( hoststr != NULL && strlen(hoststr) > 0 )
-    {
+    if ( hoststr != NULL && strlen(hoststr) > 0 ) {
         host = hoststr;
         free(hoststr);
-    }
-    else
+    } else
         usage();
 
     std::cout << " host  = " << host << std::endl;

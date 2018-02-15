@@ -80,12 +80,13 @@ class Thread {
     void                start() noexcept(false);
     void                stop()  noexcept(false);
 
-    bool                isRunning();
+    bool                getAlarm() const;
+    bool                isRunning() const;
     void                yield();
 
     void                threadName      ( const std::string & name );
     const std::string&  threadName() const;
-    pthread_t           threadId() const;
+    pthread_t           threadId();
 
     const std::string&  getErrorStr() const;
 
@@ -96,8 +97,8 @@ class Thread {
     bool                getCpuAffinity  ( cpu_set_t & cpus );
 
     /* scheduling parameters */
-    int                 getMinPriority  ( int policy );
-    int                 getMaxPriority  ( int policy );
+    int                 getMinPriority  ( int policy ) const;
+    int                 getMaxPriority  ( int policy ) const;
 
     int                 setScheduler    ( int policy, int prio );
 
@@ -108,10 +109,10 @@ class Thread {
     int                 getPriorityAttr ( int & prio );
 
     bool                setScope        ( int scope );
-    int                 getScope();
+    int                 getScope() const;
 
     bool                setInheritSched ( int inherit = PTHREAD_INHERIT_SCHED );
-    int                 getInheritSched();
+    int                 getInheritSched() const;
 
 
     static long         MaxCPUs();
