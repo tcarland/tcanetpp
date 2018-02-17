@@ -746,6 +746,10 @@ EventManager::TimespecDiffNS ( const timespec * t2, const timespec * t1 )
     return diff;
 }
 
+
+/** Normalize the timespec by ensuring nanoseconds is indeed less
+  * than one second.
+ **/
 void
 EventManager::TimespecNorm ( timespec * ts )
 {
@@ -757,6 +761,7 @@ EventManager::TimespecNorm ( timespec * ts )
         ts->tv_sec++;
         ts->tv_nsec -= NSEC_PER_SEC;
     }
+
     return;
 }
 

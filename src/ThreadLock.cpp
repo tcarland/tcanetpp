@@ -1,7 +1,7 @@
 /**
   * @file ThreadLock.cpp
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -46,16 +46,24 @@ namespace tcanetpp {
  **/
 ThreadAutoMutex::ThreadAutoMutex ( ThreadLock * lock, bool sync )
     : _mutex(lock),
-      _sync(sync)
+      _sync(sync),
+      _locked(false)
 {
     if ( this->_sync )
-        this->_mutex->lock();
+        if ( this->_mutex->lock() )
+            _locked = true;
 }
 
 ThreadAutoMutex::~ThreadAutoMutex()
 {
     if ( this->_sync )
         this->_mutex->unlock();
+}
+
+bool
+ThreadAutoMutex::isLocked() const
+{
+    return _locked;
 }
 
 /* ----------------------------------------------------------------------- */

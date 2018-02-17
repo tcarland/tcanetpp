@@ -151,13 +151,9 @@ template<class ValueType> class SynchronizedQueue {
 
     bool isEmpty()
     {
-        bool empty = true;
+        ThreadAutoMutex mutex(&this->_mutex);
 
-        if ( this->lock() < 0 )
-            return empty;
-
-        empty = _queue.empty();
-        this->unlock();
+        bool empty = _queue.empty();
 
         return empty;
     }
@@ -170,13 +166,10 @@ template<class ValueType> class SynchronizedQueue {
      **/
     virtual void clear()
     {
-        if ( this->lock() < 0 )
-            return;
+        ThreadAutoMutex mutex(&this->_mutex);
 
         while ( !_queue.empty() )
             _queue.pop();
-
-         this->unlock();
     }
 
     /**  Returns the maximum queue size allowed. */
@@ -188,9 +181,8 @@ template<class ValueType> class SynchronizedQueue {
     /**  @param maxsz sets the maximum queue size accordingly */
     inline void maxSize ( size_t maxsz )
     {
-        this->lock();
+        ThreadAutoMutex mutex(&this->_mutex);
         _maxSize = maxsz;
-        this->unlock();
     }
 
     inline int  lock()

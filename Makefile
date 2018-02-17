@@ -60,7 +60,7 @@ lib: arlib
 
 arlib: lib/libtcanetpp.a
 
-solib: libtcanetpp.so.1.1.6
+solib: libtcanetpp.so.1.1.7
 
 libtcapt: lib/libtcapt.a
 
@@ -84,7 +84,7 @@ lib/libtcanetpp.a: ${OBJS}
 	$(make-lib-rule)
 	@echo
 
-libtcanetpp.so.1.1.6: ${OBJS}
+libtcanetpp.so.1.1.7: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)

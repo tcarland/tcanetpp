@@ -39,14 +39,25 @@ namespace tcanetpp {
 class ThreadLock;
 
 
+/** Automutex provides a clean way to synchronize around a
+  * given method by instantiating one on the stack:
+  * void soStuffSafely() {
+  *   ThreadAutoMutex auto(this->_lock);
+  *   //do stuff safely;
+  *   return;
+  * }
+ **/
 class ThreadAutoMutex {
   public:
     ThreadAutoMutex ( ThreadLock * lock, bool sync = true );
     virtual ~ThreadAutoMutex();
 
-  private:
+    virtual bool isLocked() const;
+
+  protected:
     ThreadLock *  _mutex;
     bool          _sync;
+    bool          _locked;
 };
 
 
@@ -81,6 +92,6 @@ class ThreadLock {
     pthread_cond_t     _items;
 };
 
-}  // namespace 
+}  // namespace
 
 #endif  // _TCANETPP_THREADLOCK_H_
