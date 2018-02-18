@@ -151,11 +151,7 @@ template<class ValueType> class SynchronizedQueue {
 
     bool isEmpty()
     {
-        ThreadAutoMutex mutex(&this->_mutex);
-
-        bool empty = _queue.empty();
-
-        return empty;
+        return _queue.empty();
     }
     /*@}*/
 

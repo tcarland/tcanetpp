@@ -29,7 +29,7 @@
 
 
 #define TCANETPP_VERSION_TS  "02.14.2018"
-#define TCANETPP_VERSION     "1.1.8"
+#define TCANETPP_VERSION     "1.1.9"
 
 // widechar support
 // comment to disable

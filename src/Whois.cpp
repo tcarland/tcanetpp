@@ -55,9 +55,10 @@ Whois::~Whois()
 void
 Whois::init ( const std::string & host, uint16_t port )
 {
+    if ( host.empty() )
+        return;
     if ( port == 0 )
         port = DEFAULT_WHOIS_PORT;
-
     if ( _sock != NULL ) {
         _sock->close();
         delete _sock;
@@ -104,26 +105,16 @@ Whois::init ( const std::string & host, uint16_t port )
 
 
 std::string
-Whois::query ( const std::string & query, const std::string & host )
+Whois::query ( const std::string & query, const std::string & host, uint16_t port )
 {
     std::string  str, result;
     ssize_t      rr   = 0;
-    uint16_t     port = DEFAULT_WHOIS_PORT;
     long         x, y = 10;
     char         ch;
     ldiv_t       ld;
 
-    if ( ! host.empty() ) {
-        int indx = 0;
-        if ( (indx = StringUtils::IndexOf(host, ":")) > 0 ) {
-            str  = host.substr(0, indx);
-            port = StringUtils::FromString<uint16_t>(host.substr(indx+1));
-        } else {
-            str  = host;
-        }
-
-        this->init(str, port);
-    }
+    if ( ! host.empty() )
+        this->init(host, port);
 
     if ( _sock == NULL ) { // throw or error
         _errstr = "Failed to init socket";
