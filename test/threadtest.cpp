@@ -70,7 +70,7 @@ class InputThread : public Thread {
             EventManager::NanoSleep(stime);
 
             msg = this->threadName();
-            msg.append(":").append(StringUtils::toString(val));
+            msg.append(":").append(StringUtils::ToString(val));
 
             mstr = (char*) ::malloc(msg.length() + 1);
             if ( mstr == NULL )
@@ -279,7 +279,7 @@ int main ( int argc, char **argv )
     for ( int i = 0; i < xCnt; i++ )
     {
         std::string thname = iname;
-        thname.append("_").append(StringUtils::toString(i));
+        thname.append("_").append(StringUtils::ToString(i));
 
         ith = new InputThread(queue, xInt);
         ith->threadName(thname);
@@ -295,7 +295,7 @@ int main ( int argc, char **argv )
     for ( int i = 0; i < yCnt; i++ )
     {
         std::string thname = oname;
-        thname.append("_").append(StringUtils::toString(i));
+        thname.append("_").append(StringUtils::ToString(i));
 
         oth = new OutputThread(queue, yInt);
         oth->threadName(thname);
@@ -311,7 +311,7 @@ int main ( int argc, char **argv )
         sleep(2);
         qsz = queue->size();
 
-        LogFacility::LogMessage("Queue size is " + StringUtils::toString(qsz));
+        LogFacility::LogMessage("Queue size is " + StringUtils::ToString(qsz));
     }
     
     LogFacility::LogMessage("Alarm received, stopping threads");

@@ -348,11 +348,11 @@ NetworkDevice::setDevice ( const std::string & host )
         return this->setDevice(addr);
 
     //  this is very CDP specific which often returns 'serial_num (host)'
-    } else if ( (indx = StringUtils::indexOf(host, "(")) > 0 ) {
+    } else if ( (indx = StringUtils::IndexOf(host, "(")) > 0 ) {
         _serial     = host.substr(0, indx);
         _deviceName = host.substr((indx + 1), host.length());
 
-        if ( (endx = StringUtils::indexOf(_deviceName, ")")) > 0 )
+        if ( (endx = StringUtils::IndexOf(_deviceName, ")")) > 0 )
             _deviceName.erase(endx);
 
     } else {
@@ -439,13 +439,13 @@ NetworkDevice::SetDeviceVersion ( NetworkDevice & dev, const std::string & desc 
     std::string  ver, vs;
     std::vector<std::string>  stok;
 
-    StringUtils::split(desc, '\n', std::back_inserter(stok));
+    StringUtils::Split(desc, '\n', std::back_inserter(stok));
 
     if ( stok.size() >= 2 ) {
         vs   = stok[1];
         stok.clear();
 
-        StringUtils::split(vs, ',', std::back_inserter(stok));
+        StringUtils::Split(vs, ',', std::back_inserter(stok));
         vs = "";
         if ( stok.size() >= 2 ) {
             vs   = stok[0];
@@ -455,7 +455,7 @@ NetworkDevice::SetDeviceVersion ( NetworkDevice & dev, const std::string & desc 
         ver  = desc;
     }
 
-    StringUtils::trim(ver);
+    StringUtils::Trim(ver);
 
     IpAddr zero;
     if ( dev.deviceAddr() == zero )
@@ -467,7 +467,7 @@ NetworkDevice::SetDeviceVersion ( NetworkDevice & dev, const std::string & desc 
     /* old ios detection stuff
     if ( vs.length() == 0 )
         dev.ios(0);
-    else if ( StringUtils::indexOf(vs, "IOS") >= 0 )
+    else if ( StringUtils::IndexOf(vs, "IOS") >= 0 )
         dev.ios(1);
     else
         dev.ios(-1);

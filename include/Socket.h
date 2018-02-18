@@ -150,17 +150,21 @@ class Socket {
 
     virtual int         init ( bool block = false );
 
-    int                 bind();
-    int                 listen();
-
     virtual int         connect();
     virtual void        close();
     virtual void        shutdown ( int shut );
+    virtual bool        isConnected();
 
+    virtual ssize_t     read     ( void       * vptr, size_t n );
+    virtual ssize_t     write    ( const void * vptr, size_t n );
+    virtual ssize_t     readFrom ( void       * vptr, size_t n,
+                                   sockaddr_t & csock );
+
+    int                 bind();
+    int                 listen();
     Socket*             accept();
     Socket*             accept ( SocketFactory & factory );
 
-    virtual bool        isConnected();
     bool                isServerSocket() const;
 
     ipv4addr_t          getAddress() const;
@@ -193,12 +197,6 @@ class Socket {
 
     const std::string&  getErrorString() const;
     const std::string&  errorStr() const { return this->getErrorString(); }
-
-    virtual ssize_t     read     ( void       * vptr, size_t n );
-    virtual ssize_t     write    ( const void * vptr, size_t n );
-    virtual ssize_t     readFrom ( void       * vptr, size_t n,
-                                   sockaddr_t & csock );
-
 
   public:
 

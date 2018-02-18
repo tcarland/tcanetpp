@@ -202,7 +202,7 @@ HeirarchicalStringTree<ValueType>::find ( const std::string & absoluteName )
     StringList      branchNames;
     BranchNodeList  branches;
 
-    StringUtils::split(absoluteName, _delim, std::back_inserter(branchNames));
+    StringUtils::Split(absoluteName, _delim, std::back_inserter(branchNames));
 
     this->branchToNodes(branchNames.begin(), branchNames.end(),
                         std::back_inserter(branches));
@@ -223,7 +223,7 @@ HeirarchicalStringTree<ValueType>::insert ( const std::string & absoluteName,
     StringList      branchNames;
     BranchNodeList  branches;
 
-    StringUtils::split(absoluteName, _delim, std::back_inserter(branchNames));
+    StringUtils::Split(absoluteName, _delim, std::back_inserter(branchNames));
 
     if ( branchNames.empty() )
         return NULL;

@@ -42,21 +42,23 @@ class Whois {
 
     Whois ( const std::string & host = "",
             uint16_t            port = DEFAULT_WHOIS_PORT );
+
     virtual ~Whois();
 
-    std::string   query ( const std::string & query,
-                          const std::string & host = "" );
 
-    std::string   getErrorStr() const;
+    virtual std::string  query ( const std::string & query,
+                                 const std::string & host = "" );
+
+
+    const std::string&   getErrorStr() const;
 
   protected:
 
-    void          init  ( const std::string & host, uint16_t port = 0 );
-
+    virtual void  init  ( const std::string & host,
+                          uint16_t     port = 0 );
   private:
 
     Socket *            _sock;
-    std::string         _host;
     std::string         _errstr;
 };
 

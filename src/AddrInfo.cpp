@@ -286,7 +286,7 @@ AddrInfo::getError() const
 AddrInfo*
 AddrInfo::GetAddrInfo ( const std::string & host, uint16_t port, const addrinfo * hints )
 {
-    std::string svc = StringUtils::toString<uint16_t>(port);
+    std::string svc = StringUtils::ToString<uint16_t>(port);
 
     return AddrInfo::GetAddrInfo(host, svc, hints);
 }

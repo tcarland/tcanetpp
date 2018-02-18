@@ -30,27 +30,27 @@ int main() {
     std::cout << "mb = " << mb << std::endl;
     std::cout << "mbb = " << mbb << std::endl;
 
-    uint16_t uintmb = StringUtils::fromString<uint16_t>(mbs);
+    uint16_t uintmb = StringUtils::FromString<uint16_t>(mbs);
 
 
     std::cout << "string of '" << mbs << "' converted to '" << uintmb << "'"
         << std::endl;
 
-    intc = StringUtils::fromString<uint16_t>(ints);
+    intc = StringUtils::FromString<uint16_t>(ints);
     std::cout << "string of '" << ints << "' converted to uint16 of '" << intc << "'"
         << std::endl;
 
-    mbs = StringUtils::toString(mb);
+    mbs = StringUtils::ToString(mb);
     std::cout << "uint8 of " << mb << " converted to '" << mbs << "'" 
         << std::endl;
-    mbs = StringUtils::toString(mbb);
+    mbs = StringUtils::ToString(mbb);
     std::cout << "uint16 of " << mbb << " converted to '" << mbs << "'" 
         << std::endl;
     
     
     std::vector<std::string>  stok;
     
-    StringUtils::split(cidrStr, '/', std::back_inserter(stok));
+    StringUtils::Split(cidrStr, '/', std::back_inserter(stok));
     
     if ( stok.size() >= 1 )
         addrstr = stok[0];
@@ -59,7 +59,7 @@ int main() {
 	return -1;
 
     if ( stok.size() == 2 )
-	uintmb = StringUtils::fromString<uint16_t>(stok[1]);
+	uintmb = StringUtils::FromString<uint16_t>(stok[1]);
 
     std::cout << "string of '" << stok[1] << "' converted to '" << uintmb << "'"
         << std::endl;

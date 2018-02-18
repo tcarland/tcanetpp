@@ -15,7 +15,7 @@ int main ( int argc, char ** argv )
     size_t  maxsize  = MAX_CIRBUFFER_SIZE;
 
     if ( argc == 2 )
-        buffsize = StringUtils::fromString<size_t>(argv[1]);
+        buffsize = StringUtils::FromString<size_t>(argv[1]);
 
     CircularBuffer * buff  = new CircularBuffer(buffsize);
     std::string      bstr  = "0123456789";

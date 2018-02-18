@@ -30,7 +30,7 @@ int main ( int argc, char **argv )
     for ( i = 1; i < argc; ++i ) {
         input = argv[i];
 
-        if ( StringUtils::indexOf(input, ".") >= 0 ) {  // ipv4
+        if ( StringUtils::IndexOf(input, ".") >= 0 ) {  // ipv4
             IpAddr::ToIpAddr(input, pfx);
 
             ip = pfx.getPrefix();
@@ -40,7 +40,7 @@ int main ( int argc, char **argv )
                       << input << "  ==  "  << std::setiosflags(std::ios::right) << std::setw(20)
                       << ip << " / " << mb  << std::resetiosflags(std::ios::right) << std::endl;
 
-        } else if ( StringUtils::indexOf(input, ":") >= 0 ) {  // ipv6
+        } else if ( StringUtils::IndexOf(input, ":") >= 0 ) {  // ipv6
             ipv6addr_t  ip6addr;
 
             r = IpAddr::pton(input, ip6addr);
@@ -62,17 +62,17 @@ int main ( int argc, char **argv )
         } else {  // uint32_t representation of an ipv4 addr
             int indx = 0;
 
-            if ( (indx = StringUtils::indexOf(input, "/")) > 0 ) {
+            if ( (indx = StringUtils::IndexOf(input, "/")) > 0 ) {
                 std::string ips = input.substr(0, indx);
                 std::string mbs = input.substr(indx+1);
 
-                StringUtils::trim(ips);
-                StringUtils::trim(mbs);
+                StringUtils::Trim(ips);
+                StringUtils::Trim(mbs);
                 
-                ip = StringUtils::fromString<uint32_t>(ips);
-                mb = StringUtils::fromString<uint16_t>(mbs);
+                ip = StringUtils::FromString<uint32_t>(ips);
+                mb = StringUtils::FromString<uint16_t>(mbs);
             } else {
-                ip = StringUtils::fromString<uint32_t>(input);
+                ip = StringUtils::FromString<uint32_t>(input);
                 mb = 32;
             }
 

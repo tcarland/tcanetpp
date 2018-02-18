@@ -132,7 +132,7 @@ BufferedSocket::read ( void * vptr, size_t n )
 {
     ssize_t  rt = 0;
 
-    if ( (rt = this->bufferData()) < 0 )
+    if ( (rt = this->readToBuffer()) < 0 )
         return rt;
 
     return _rbuffer->read(vptr, n);
@@ -343,13 +343,13 @@ BufferedSocket::bufferedWrite ( const void *vptr, size_t n )
 
 // ----------------------------------------------------------------------
 
-/** Performs a continuous read of the socket buffering data in the
+/** Performs a continuous read of the socket, buffering data to the
   * internal read buffer until a read block occurs or the buffer is full.
   * Returns the number of bytes read, 0 if blocked, or a negative
   * indicating a read error.
  **/
 ssize_t
-BufferedSocket::bufferData()
+BufferedSocket::readToBuffer()
 {
     char    *wptr;
     size_t   size;

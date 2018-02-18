@@ -30,6 +30,7 @@
 #include "Whois.h"
 #include "IpAddr.h"
 #include "AddrInfo.h"
+#include "StringUtils.h"
 
 
 namespace tcanetpp {
@@ -66,7 +67,7 @@ Whois::init ( const std::string & host, uint16_t port )
     IpAddrList   addrs;
     AddrInfo::GetAddrList(host, addrs);
 
-    if ( addrs.empty() ) { // error
+    if ( addrs.empty() ) {
         _errstr = "GetHostAddrList failed to resolve any addresses";
         return;
     }
@@ -94,8 +95,9 @@ Whois::init ( const std::string & host, uint16_t port )
     if ( ! _sock->isConnected() )  {
         delete _sock;
         _sock = NULL;
+        _errstr = "Connection attempts failed to host: ";
+        _errstr.append(host);
     }
-    _host  = host;
 
     return;
 }
@@ -105,13 +107,23 @@ std::string
 Whois::query ( const std::string & query, const std::string & host )
 {
     std::string  str, result;
-    ssize_t      rr  = 0;
+    ssize_t      rr   = 0;
+    uint16_t     port = DEFAULT_WHOIS_PORT;
+    long         x, y = 10;
     char         ch;
     ldiv_t       ld;
-    long         x, y = 10;
 
-    if ( ! host.empty() )
-        this->init(host);
+    if ( ! host.empty() ) {
+        int indx = 0;
+        if ( (indx = StringUtils::IndexOf(host, ":")) > 0 ) {
+            str  = host.substr(0, indx);
+            port = StringUtils::FromString<uint16_t>(host.substr(indx+1));
+        } else {
+            str  = host;
+        }
+
+        this->init(str, port);
+    }
 
     if ( _sock == NULL ) { // throw or error
         _errstr = "Failed to init socket";
@@ -152,7 +164,8 @@ Whois::query ( const std::string & query, const std::string & host )
     return result;
 }
 
-std::string
+
+const std::string&
 Whois::getErrorStr() const
 {
     return _errstr;
@@ -161,13 +174,9 @@ Whois::getErrorStr() const
 }  // namespace
 
 
-
 #ifdef TWHOIS_MAIN
 
 #include <iostream>
-
-using namespace tcanetpp;
-
 
 void usage()
 {
@@ -216,13 +225,13 @@ int main ( int argc, char ** argv )
     std::cout << " host  = " << host << std::endl;
     std::cout << " query = " << query << std::endl << std::endl;
 
-    Whois  who(host);
+    tcanetpp::Whois  who(host);
+
     std::string r = who.query(query);
     std::cout << " result = '" << r << "'" << std::endl;
 
     return 0;
 }
-
 #endif  // TWHOIS_MAIN
 
 // _TCANETPP_WHOIS_CPP_

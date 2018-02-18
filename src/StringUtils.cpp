@@ -3,7 +3,7 @@
   *
   *   A collection of static methods for c++ string manipulation.
   *
-  * Copyright (c) 2002-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -51,7 +51,7 @@ StringUtils::MAXLINE = TCANET_BIGSTRLINE;
   *    prefix or suffix, respectively.
  **/
 bool
-StringUtils::startsWith ( const std::string & str, const std::string & prefix )
+StringUtils::StartsWith ( const std::string & str, const std::string & prefix )
 {
     std::string::const_iterator  sIter, pIter;
 
@@ -70,7 +70,7 @@ StringUtils::startsWith ( const std::string & str, const std::string & prefix )
 }
 
 bool
-StringUtils::endsWith ( const std::string & str, const std::string & suffix )
+StringUtils::EndsWith ( const std::string & str, const std::string & suffix )
 {
     std::string::const_reverse_iterator  sIter, pIter;
 
@@ -94,7 +94,7 @@ StringUtils::endsWith ( const std::string & str, const std::string & suffix )
 
 /**  Returns a string representing the character at the provided index. */
 std::string
-StringUtils::charAt ( const std::string & str, size_t index )
+StringUtils::CharAt ( const std::string & str, size_t index )
 {
     return str.substr(index, index + 1);
 }
@@ -103,19 +103,19 @@ StringUtils::charAt ( const std::string & str, size_t index )
 
 /**@{   Indicates string equality with or without considering case */
 bool
-StringUtils::equals ( const std::string & strA, const std::string & strB )
+StringUtils::Equals ( const std::string & stra, const std::string & strb )
 {
-    return( strA.compare(strB) == 0 );
+    return( stra.compare(strb) == 0 );
 }
 
 bool
-StringUtils::equalsIgnoreCase ( const std::string & strA, const std::string & strB )
+StringUtils::EqualsIgnoreCase ( const std::string & stra, const std::string & strb )
 {
-    std::string  a = strA;
-    std::string  b = strB;
+    std::string  a = stra;
+    std::string  b = strb;
 
-    StringUtils::toLowerCase(a);
-    StringUtils::toLowerCase(b);
+    StringUtils::ToLowerCase(a);
+    StringUtils::ToLowerCase(b);
 
     return( a.compare(b) == 0 );
 }
@@ -127,13 +127,13 @@ StringUtils::equalsIgnoreCase ( const std::string & strA, const std::string & st
   *    @param str or a negative value if no match.
  **/
 int
-StringUtils::indexOf ( const std::string & str, const std::string & match )
+StringUtils::IndexOf ( const std::string & str, const std::string & match )
 {
-    return StringUtils::indexOf(str, match, 0);
+    return StringUtils::IndexOf(str, match, 0);
 }
 
 int
-StringUtils::indexOf ( const std::string & str, const std::string & match, size_t from )
+StringUtils::IndexOf ( const std::string & str, const std::string & match, size_t from )
 {
     std::string::size_type  indx;
 
@@ -147,13 +147,13 @@ StringUtils::indexOf ( const std::string & str, const std::string & match, size_
 }
 
 int
-StringUtils::lastIndexOf ( const std::string & str, const std::string & match )
+StringUtils::LastIndexOf ( const std::string & str, const std::string & match )
 {
-    return StringUtils::lastIndexOf(str, match, str.length());
+    return StringUtils::LastIndexOf(str, match, str.length());
 }
 
 int
-StringUtils::lastIndexOf ( const std::string & str, const std::string & match, size_t from )
+StringUtils::LastIndexOf ( const std::string & str, const std::string & match, size_t from )
 {
     std::string::size_type  indx;
 
@@ -171,16 +171,16 @@ StringUtils::lastIndexOf ( const std::string & str, const std::string & match, s
 
 /**@{  Transforms the provided string.  */
 std::string
-StringUtils::toLowerCase ( const std::string & str )
+StringUtils::ToLowerCase ( const std::string & str )
 {
     std::string  tmp = str;
-    StringUtils::toLowerCase(tmp);
+    StringUtils::ToLowerCase(tmp);
     return tmp;
 }
 
 
 void
-StringUtils::toLowerCase ( std::string & str )
+StringUtils::ToLowerCase ( std::string & str )
 {
     std::string::size_type  i;
     for ( i = 0; i < str.length(); i++ )
@@ -190,16 +190,16 @@ StringUtils::toLowerCase ( std::string & str )
 
 
 std::string
-StringUtils::toUpperCase ( const std::string & str )
+StringUtils::ToUpperCase ( const std::string & str )
 {
     std::string  tmp = str;
-    StringUtils::toUpperCase(tmp);
+    StringUtils::ToUpperCase(tmp);
     return tmp;
 }
 
 
 void
-StringUtils::toUpperCase ( std::string & str )
+StringUtils::ToUpperCase ( std::string & str )
 {
     std::string::size_type  i;
     for ( i = 0; i < str.length(); i++ )
@@ -212,7 +212,7 @@ StringUtils::toUpperCase ( std::string & str )
 
 /**  Converts the provided buffer to a human readable, formatted hex string */
 std::string
-StringUtils::toHexString ( const uint8_t * buf, size_t len, size_t offset )
+StringUtils::ToHexString ( const uint8_t * buf, size_t len, size_t offset )
 {
     const uint8_t *ptr;
     std::string    hexl;
@@ -283,15 +283,15 @@ StringUtils::toHexString ( const uint8_t * buf, size_t len, size_t offset )
 
 /**@{  Trims the whitespace at the front and back of the string. */
 std::string
-StringUtils::trim ( const std::string & str )
+StringUtils::Trim ( const std::string & str )
 {
     std::string  tmp = str;
-    StringUtils::trim(tmp);
+    StringUtils::Trim(tmp);
     return tmp;
 }
 
 void
-StringUtils::trim ( std::string & str )
+StringUtils::Trim ( std::string & str )
 {
     while ( isspace(str[0]) )
         str.erase(0,1);
@@ -311,7 +311,7 @@ StringUtils::trim ( std::string & str )
   *  string.
  **/
 void
-StringUtils::strip ( std::string & str, const std::string & rem )
+StringUtils::Strip ( std::string & str, const std::string & rem )
 {
     std::string::size_type indx = 0;
 
@@ -322,7 +322,7 @@ StringUtils::strip ( std::string & str, const std::string & rem )
 }
 
 void
-StringUtils::strip ( std::string & str, char c )
+StringUtils::Strip ( std::string & str, char c )
 {
     std::string::size_type indx = 0;
 
@@ -339,7 +339,7 @@ StringUtils::strip ( std::string & str, char c )
   *  to end of line comments are '#', ';', and '//'
  **/
 void
-StringUtils::stripComments ( std::string & strline )
+StringUtils::StripComments ( std::string & strline )
 {
     std::string::size_type indx = 0;
 
@@ -356,7 +356,7 @@ StringUtils::stripComments ( std::string & strline )
 }
 
 void
-StringUtils::replaceTabs ( std::string & strline )
+StringUtils::ReplaceTabs ( std::string & strline )
 {
     std::string::size_type indx = 0;
     while ( (indx = strline.find_first_of('\t')) != std::string::npos ) {
@@ -387,7 +387,7 @@ extern "C" {
 // ----------------------------------------------------------------------
 
 bool
-StringUtils::startsWith ( const std::wstring & str, const std::wstring & prefix )
+StringUtils::StartsWith ( const std::wstring & str, const std::wstring & prefix )
 {
     std::wstring::size_type  indx;
 
@@ -400,7 +400,7 @@ StringUtils::startsWith ( const std::wstring & str, const std::wstring & prefix 
 
 
 bool
-StringUtils::endsWith ( const std::wstring & str, const std::wstring & suffix )
+StringUtils::EndsWith ( const std::wstring & str, const std::wstring & suffix )
 {
     std::wstring::size_type  indx;
 
@@ -417,7 +417,7 @@ StringUtils::endsWith ( const std::wstring & str, const std::wstring & suffix )
 // ----------------------------------------------------------------------
 
 std::wstring
-StringUtils::charAt ( const std::wstring & str, size_t index )
+StringUtils::CharAt ( const std::wstring & str, size_t index )
 {
     return str.substr(index, index + 1);
 }
@@ -425,33 +425,33 @@ StringUtils::charAt ( const std::wstring & str, size_t index )
 // ----------------------------------------------------------------------
 
 bool
-StringUtils::equals ( const std::wstring & strA, const std::wstring & strB )
+StringUtils::Equals ( const std::wstring & stra, const std::wstring & strb )
 {
-    return(strA.compare(strB) == 0);
+    return(stra.compare(strb) == 0);
 }
 
 
 bool
-StringUtils::equalsIgnoreCase ( const std::wstring & strA, const std::wstring & strB )
+StringUtils::EqualsIgnoreCase ( const std::wstring & stra, const std::wstring & strb )
 {
-    std::wstring a = strA;
-    std::wstring b = strB;
-    StringUtils::toLowerCase(a);
-    StringUtils::toLowerCase(b);
+    std::wstring a = stra;
+    std::wstring b = strb;
+    StringUtils::ToLowerCase(a);
+    StringUtils::ToLowerCase(b);
     return( a.compare(b) == 0 );
 }
 
 // ----------------------------------------------------------------------
 
 int
-StringUtils::indexOf ( const std::wstring & str, const std::wstring & match )
+StringUtils::IndexOf ( const std::wstring & str, const std::wstring & match )
 {
-    return StringUtils::indexOf(str, match, 0);
+    return StringUtils::IndexOf(str, match, 0);
 }
 
 
 int
-StringUtils::indexOf ( const std::wstring & str, const std::wstring & match, size_t from )
+StringUtils::IndexOf ( const std::wstring & str, const std::wstring & match, size_t from )
 {
     std::wstring::size_type  indx;
 
@@ -466,14 +466,14 @@ StringUtils::indexOf ( const std::wstring & str, const std::wstring & match, siz
 
 
 int
-StringUtils::lastIndexOf ( const std::wstring & str, const std::wstring & match )
+StringUtils::LastIndexOf ( const std::wstring & str, const std::wstring & match )
 {
-    return StringUtils::lastIndexOf(str, match, str.length());
+    return StringUtils::LastIndexOf(str, match, str.length());
 }
 
 
 int
-StringUtils::lastIndexOf ( const std::wstring & str, const std::wstring & match, size_t from )
+StringUtils::LastIndexOf ( const std::wstring & str, const std::wstring & match, size_t from )
 {
     std::wstring::size_type  indx;
 
@@ -489,16 +489,16 @@ StringUtils::lastIndexOf ( const std::wstring & str, const std::wstring & match,
 // ----------------------------------------------------------------------
 
 std::wstring
-StringUtils::toLowerCase ( const std::wstring & str )
+StringUtils::ToLowerCase ( const std::wstring & str )
 {
     std::wstring  tmp = str;
-    StringUtils::toLowerCase(tmp);
+    StringUtils::ToLowerCase(tmp);
     return tmp;
 }
 
 
 void
-StringUtils::toLowerCase ( std::wstring & str )
+StringUtils::ToLowerCase ( std::wstring & str )
 {
     for ( uint32_t i = 0; i < str.length(); i++ )
         str[i] = tolower( (int) str[i] );
@@ -507,16 +507,16 @@ StringUtils::toLowerCase ( std::wstring & str )
 
 
 std::wstring
-StringUtils::toUpperCase ( const std::wstring & str )
+StringUtils::ToUpperCase ( const std::wstring & str )
 {
     std::wstring  tmp = str;
-    StringUtils::toUpperCase(tmp);
+    StringUtils::ToUpperCase(tmp);
     return tmp;
 }
 
 
 void
-StringUtils::toUpperCase ( std::wstring & str )
+StringUtils::ToUpperCase ( std::wstring & str )
 {
     for ( uint32_t i = 0; i < str.length(); i++ )
         str[i] = toupper( (int) str[i] );
@@ -526,16 +526,16 @@ StringUtils::toUpperCase ( std::wstring & str )
 // ----------------------------------------------------------------------
 
 std::wstring
-StringUtils::trim ( const std::wstring & str )
+StringUtils::Trim ( const std::wstring & str )
 {
     std::wstring  tmp = str;
-    StringUtils::trim(tmp);
+    StringUtils::Trim(tmp);
     return tmp;
 }
 
 
 void
-StringUtils::trim ( std::wstring & str )
+StringUtils::Trim ( std::wstring & str )
 {
     while ( isspace(str[0]) )
         str.erase(0,1);
@@ -549,7 +549,7 @@ StringUtils::trim ( std::wstring & str )
 // ----------------------------------------------------------------------
 
 void
-StringUtils::strip ( std::wstring & str, const std::wstring & rem )
+StringUtils::Strip ( std::wstring & str, const std::wstring & rem )
 {
     std::wstring::size_type indx = 0;
 
@@ -560,7 +560,7 @@ StringUtils::strip ( std::wstring & str, const std::wstring & rem )
 }
 
 void
-StringUtils::strip ( std::wstring & str, wchar_t c )
+StringUtils::Strip ( std::wstring & str, wchar_t c )
 {
     std::wstring::size_type indx = 0;
 
@@ -577,7 +577,7 @@ StringUtils::strip ( std::wstring & str, wchar_t c )
   *  to end of line comments are '#', ';', and '//'
  **/
 void
-StringUtils::stripComments ( std::wstring & wstrline )
+StringUtils::StripComments ( std::wstring & wstrline )
 {
     std::wstring::size_type indx = 0;
 
@@ -594,7 +594,7 @@ StringUtils::stripComments ( std::wstring & wstrline )
 }
 
 void
-StringUtils::replaceTabs ( std::wstring & wstrline )
+StringUtils::ReplaceTabs ( std::wstring & wstrline )
 {
     std::wstring::size_type indx = 0;
 
@@ -610,7 +610,7 @@ StringUtils::replaceTabs ( std::wstring & wstrline )
 
 /**@{  Provides conversion between ascii and wide strings  */
 std::wstring
-StringUtils::ctowstr ( const std::string & str )
+StringUtils::CtoWstr ( const std::string & str )
 {
     std::wstring  wstr = L"";
     wchar_t      *tmp  = NULL;
@@ -632,7 +632,7 @@ StringUtils::ctowstr ( const std::string & str )
 
 
 std::string
-StringUtils::wtocstr ( const std::wstring & wstr )
+StringUtils::WtoCstr ( const std::wstring & wstr )
 {
     std::string  str = "";
     char        *tmp = NULL;

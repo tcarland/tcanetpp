@@ -250,19 +250,19 @@ int main ( int argc, char ** argv )
     {
         switch ( optChar ) {
             case 'c':
-                count = StringUtils::fromString<int>(optarg);
+                count = StringUtils::FromString<int>(optarg);
                 break;
             case 'd':
                 debug = true;
                 break;
             case 'i':
-                interval = StringUtils::fromString<int>(optarg);
+                interval = StringUtils::FromString<int>(optarg);
                 break;
             case 'h':
                 usage();
                 break;
             case 's':
-                size = StringUtils::fromString<size_t>(optarg);
+                size = StringUtils::FromString<size_t>(optarg);
                 break;
             case 'v':
                 version();

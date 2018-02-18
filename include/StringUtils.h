@@ -50,53 +50,53 @@ class StringUtils {
 
   public:
 
-    static bool          equals           ( const std::string & strA,
-                                            const std::string & strB );
+    static bool          Equals           ( const std::string & stra,
+                                            const std::string & strb );
 
-    static bool          equalsIgnoreCase ( const std::string & strA,
-                                            const std::string & strB );
+    static bool          EqualsIgnoreCase ( const std::string & stra,
+                                            const std::string & strb );
 
-    static bool          startsWith       ( const std::string & str,
+    static bool          StartsWith       ( const std::string & str,
                                             const std::string & prefix );
 
-    static bool          endsWith         ( const std::string & str,
+    static bool          EndsWith         ( const std::string & str,
                                             const std::string & suffix );
 
-    static int           indexOf          ( const std::string & str,
+    static int           IndexOf          ( const std::string & str,
                                             const std::string & match );
 
-    static int           indexOf          ( const std::string & str,
+    static int           IndexOf          ( const std::string & str,
                                             const std::string & match,
                                             size_t from );
 
-    static int           lastIndexOf      ( const std::string & str,
+    static int           LastIndexOf      ( const std::string & str,
                                             const std::string & match );
 
-    static int           lastIndexOf      ( const std::string & str,
+    static int           LastIndexOf      ( const std::string & str,
                                             const std::string & match,
                                             size_t from );
 
-    static std::string   charAt           ( const std::string & str,
+    static std::string   CharAt           ( const std::string & str,
                                             size_t index );
 
-    static std::string   toLowerCase      ( const std::string & str );
-    static void          toLowerCase      ( std::string & str );
+    static std::string   ToLowerCase      ( const std::string & str );
+    static void          ToLowerCase      ( std::string & str );
 
-    static std::string   toUpperCase      ( const std::string & str );
-    static void          toUpperCase      ( std::string & str );
+    static std::string   ToUpperCase      ( const std::string & str );
+    static void          ToUpperCase      ( std::string & str );
 
-    static std::string   toHexString      ( const uint8_t * buf,
+    static std::string   ToHexString      ( const uint8_t * buf,
                                             size_t len, size_t offset );
 
-    static std::string   trim             ( const std::string & str );
-    static void          trim             ( std::string & str );
+    static std::string   Trim             ( const std::string & str );
+    static void          Trim             ( std::string & str );
 
-    static void          strip            ( std::string & str,
+    static void          Strip            ( std::string & str,
                                             const std::string & remove );
-    static void          strip            ( std::string & str, char c );
+    static void          Strip            ( std::string & str, char c );
 
-    static void          stripComments    ( std::string & strline );
-    static void          replaceTabs      ( std::string & strline );
+    static void          StripComments    ( std::string & strline );
+    static void          ReplaceTabs      ( std::string & strline );
 
 
     /*  Note: the to/fromString functions do NOT work with (u)int8_t
@@ -104,7 +104,7 @@ class StringUtils {
      *  and thus get manipulated differently by stringstream.
      */
     template<typename T>
-    static inline std::string toString    ( const T & a )
+    static inline std::string ToString    ( const T & a )
     {
         std::stringstream  stream;
         stream << a;
@@ -112,7 +112,7 @@ class StringUtils {
     }
 
     template<typename T>
-    static inline  T     fromString       ( const std::string & str )
+    static inline  T     FromString       ( const std::string & str )
     {
         T target = T();
         std::stringstream stream(str);
@@ -121,7 +121,7 @@ class StringUtils {
     }
 
     template< typename OutputIterator_ >
-    static inline void   split            ( const std::string  & str,
+    static inline void   Split            ( const std::string  & str,
                                             const char           delimiter,
                                             OutputIterator_      outI )
     {
@@ -136,7 +136,7 @@ class StringUtils {
     }
 
     template< typename OutputIterator_ >
-    static inline void   split            ( const std::string  & str,
+    static inline void   Split            ( const std::string  & str,
                                             const std::string  & delimiter,
                                             OutputIterator_      outI )
     {
@@ -159,51 +159,51 @@ class StringUtils {
 //  The same interface is provided for wide chars and is enabled by a
 //  compile-time definition.
 
-    static bool          equals           ( const std::wstring & wstrA,
-                                            const std::wstring & wstrB );
+    static bool          Equals           ( const std::wstring & wstra,
+                                            const std::wstring & wstrb );
 
-    static bool          equalsIgnoreCase ( const std::wstring & wstrA,
-                                            const std::wstring & wstrB );
+    static bool          EqualsIgnoreCase ( const std::wstring & wstra,
+                                            const std::wstring & wstrb );
 
-    static bool          startsWith       ( const std::wstring & wstr,
+    static bool          StartsWith       ( const std::wstring & wstr,
                                             const std::wstring & prefix );
 
-    static bool          endsWith         ( const std::wstring & wstr,
+    static bool          EndsWith         ( const std::wstring & wstr,
                                             const std::wstring & suffix );
 
-    static int           indexOf          ( const std::wstring & wstr,
+    static int           IndexOf          ( const std::wstring & wstr,
                                             const std::wstring & match );
 
-    static int           indexOf          ( const std::wstring & wstr,
+    static int           IndexOf          ( const std::wstring & wstr,
                                             const std::wstring & match,
                                             size_t from );
 
-    static int           lastIndexOf      ( const std::wstring & wstr,
+    static int           LastIndexOf      ( const std::wstring & wstr,
                                             const std::wstring & match );
 
-    static int           lastIndexOf      ( const std::wstring & wstr,
+    static int           LastIndexOf      ( const std::wstring & wstr,
                                             const std::wstring & match,
                                             size_t from );
 
-    static std::wstring  charAt           ( const std::wstring & wstr, size_t index );
-    static std::wstring  toLowerCase      ( const std::wstring & wstr );
-    static void          toLowerCase      ( std::wstring & wstr );
-    static std::wstring  toUpperCase      ( const std::wstring & wstr );
-    static void          toUpperCase      ( std::wstring & wstr );
-    static std::wstring  trim             ( const std::wstring & wstr );
-    static void          trim             ( std::wstring & wstr );
-    static void          strip            ( std::wstring & wstr, const std::wstring & rem );
-    static void          strip            ( std::wstring & wstr, wchar_t c );
+    static std::wstring  CharAt           ( const std::wstring & wstr, size_t index );
+    static std::wstring  ToLowerCase      ( const std::wstring & wstr );
+    static void          ToLowerCase      ( std::wstring & wstr );
+    static std::wstring  ToUpperCase      ( const std::wstring & wstr );
+    static void          ToUpperCase      ( std::wstring & wstr );
+    static std::wstring  Trim             ( const std::wstring & wstr );
+    static void          Trim             ( std::wstring & wstr );
+    static void          Strip            ( std::wstring & wstr, const std::wstring & rem );
+    static void          Strip            ( std::wstring & wstr, wchar_t c );
 
-    static void          stripComments    ( std::wstring & wstrline );
-    static void          replaceTabs      ( std::wstring & wstrline );
+    static void          StripComments    ( std::wstring & wstrline );
+    static void          ReplaceTabs      ( std::wstring & wstrline );
 
-    static std::wstring  ctowstr          ( const std::string  & wstr );
-    static std::string   wtocstr          ( const std::wstring & wstr );
+    static std::wstring  CtoWstr          ( const std::string  & wstr );
+    static std::string   WtoCstr          ( const std::wstring & wstr );
 
 
     template<typename T>
-    static inline std::wstring toWString   ( const T & a )
+    static inline std::wstring ToWString   ( const T & a )
     {
         std::wstringstream  stream;
         stream << a;
@@ -211,7 +211,7 @@ class StringUtils {
     }
 
     template<typename T>
-    static inline  T     fromWString       ( const std::wstring & wstr )
+    static inline  T     FromWString       ( const std::wstring & wstr )
     {
         T target = T();
         std::wstringstream stream(wstr);
@@ -221,7 +221,7 @@ class StringUtils {
 
 
     template< typename OutputIterator_ >
-    static inline void   split            ( const std::wstring  & wstr,
+    static inline void   Split            ( const std::wstring  & wstr,
                                             char                  delimiter,
                                             OutputIterator_       outI )
     {
@@ -236,7 +236,7 @@ class StringUtils {
     }
 
     template< typename OutputIterator_ >
-    static inline void   split            ( const std::wstring  & str,
+    static inline void   Split            ( const std::wstring  & str,
                                             const std::wstring  & delimiter,
                                             OutputIterator_       outI )
     {

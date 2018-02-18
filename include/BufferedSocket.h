@@ -1,7 +1,7 @@
 /**
   * @file BufferedSocket.h
   *
-  * Copyright (c) 2002-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002-2018 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -91,10 +91,9 @@ class BufferedSocket : public Socket {
     virtual ssize_t  read  ( void * vptr, size_t n );
     virtual ssize_t  write ( const void * vptr, size_t n );
 
-    virtual ssize_t  bufferData();
-
     /*  BufferedSocket methods  */
 
+    virtual ssize_t  readToBuffer();
     virtual ssize_t  flush();
     virtual void     clear();
     virtual void     close();
