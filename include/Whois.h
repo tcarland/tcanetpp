@@ -47,7 +47,7 @@ class Whois {
 
 
     virtual std::string  query ( const std::string & query,
-                                 const std::string & host = ""
+                                 const std::string & host = "",
                                  uint16_t            port = 0 );
 
 
