@@ -1,7 +1,7 @@
 /**
   * @file NetworkInterface.cpp
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -111,7 +111,7 @@ NetworkInterface::ifName() const
 void
 NetworkInterface::description ( const std::string & desc )
 {
-    this->_description = StringUtils::trim(desc);
+    this->_description = StringUtils::Trim(desc);
 }
 
 const std::string&

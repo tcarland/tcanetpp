@@ -651,7 +651,7 @@ IpAddr::ToIpAddr4 ( const std::string & str, IpAddr & ipaddr )
 
     if ( mb == 0 ) {
         addrstr = str.substr(indx+1);
-        mb = StringUtils::fromString<uint16_t>(addrstr);
+        mb = StringUtils::FromString<uint16_t>(addrstr);
     }
 
     if ( mb < 1 || mb > MAXMASKLEN_IPV4 )
@@ -684,7 +684,7 @@ IpAddr::ToIpAddr6 ( const std::string & str, IpAddr & ipaddr )
 
     if ( mb == 0 ) {
         addrstr = str.substr(indx+1);
-        mb = StringUtils::fromString<uint16_t>(addrstr);
+        mb = StringUtils::FromString<uint16_t>(addrstr);
     }
 
     if ( mb < 1 || mb > MAXMASKLEN_IPV6 )

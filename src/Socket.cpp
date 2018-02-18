@@ -4,7 +4,7 @@
   *   The base Socket class providing an object-oriented
   * interface to sockets for both Unix and Win32 platforms.
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -108,7 +108,7 @@ Socket::Socket ( ipv4addr_t ipaddr, uint16_t port, SocketType type, int protocol
     sock->sin_port = htons(port);
     _addrstr       = IpAddr::ntop(ipaddr);
     _hoststr       = _addrstr;
-    _hoststr.append(":").append(StringUtils::toString(port));
+    _hoststr.append(":").append(StringUtils::ToString(port));
 }
 
 Socket::Socket ( ipv6addr_t ipaddr, uint16_t port, SocketType type, int protocol )
@@ -136,7 +136,7 @@ Socket::Socket ( ipv6addr_t ipaddr, uint16_t port, SocketType type, int protocol
     sock->sin6_port = htons(port);
     _addrstr        = IpAddr::ntop(ipaddr);
     _hoststr        = _addrstr;
-    _hoststr.append("/:").append(StringUtils::toString(port));
+    _hoststr.append("/:").append(StringUtils::ToString(port));
 }
 
 
@@ -162,7 +162,7 @@ Socket::Socket ( sockaddr_t * sa, uint16_t port, SocketType type, int protocol )
 
     _addrstr = IpAddr::ntop(_ipaddr.getSockAddr());
     _hoststr = _addrstr;
-    _hoststr.append("/:").append(StringUtils::toString(port));
+    _hoststr.append("/:").append(StringUtils::ToString(port));
 }
 
 
@@ -206,7 +206,7 @@ Socket::Socket ( addrinfo * ai )
 
     _addrstr = _ipaddr.toString();
     _hoststr = _addrstr;
-    _hoststr.append("/:").append(StringUtils::toString(_port));
+    _hoststr.append("/:").append(StringUtils::ToString(_port));
 }
 
 Socket::Socket ( sockfd_t & fd, sockaddr_t & csock, SocketType type, int protocol )
@@ -240,7 +240,7 @@ Socket::Socket ( sockfd_t & fd, sockaddr_t & csock, SocketType type, int protoco
         _port    = ntohs(sock->sin_port);
         _addrstr = IpAddr::ntop(sock->sin_addr.s_addr);
         _hoststr = _addrstr;
-        _hoststr.append("/:").append(StringUtils::toString(_port));
+        _hoststr.append("/:").append(StringUtils::ToString(_port));
     }
     else if ( _ipaddr.getFamily() == AF_INET6 )
     {
@@ -249,7 +249,7 @@ Socket::Socket ( sockfd_t & fd, sockaddr_t & csock, SocketType type, int protoco
         _port    = ntohs(sock->sin6_port);
         _addrstr = IpAddr::ntop(sock->sin6_addr);
         _hoststr = _addrstr;
-        _hoststr.append("/:").append(StringUtils::toString(_port));
+        _hoststr.append("/:").append(StringUtils::ToString(_port));
     }
 }
 

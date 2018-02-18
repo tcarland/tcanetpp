@@ -55,8 +55,8 @@ std::string
 FileStat::getFileName() const
 {
     std::string name;
-    int indx = StringUtils::lastIndexOf(_file, "/");
-    
+    int indx = StringUtils::LastIndexOf(_file, "/");
+
     if ( indx >= 0 )
         name = _file.substr(indx+1);
     else
@@ -75,7 +75,7 @@ std::string
 FileStat::getPathName() const
 {
     std::string path;
-    int indx = StringUtils::lastIndexOf(_file, "/");
+    int indx = StringUtils::LastIndexOf(_file, "/");
 
     if ( indx >= 0 )
         path = _file.substr(0, indx+1);
