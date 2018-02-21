@@ -482,6 +482,7 @@ AddrInfo::GetAddrList ( const std::string & host, IpAddrList & v )
         IpAddr addr((sockaddr_t*)res->ai_addr);
         v.push_back(addr);
     }
+    delete ai;
 
     return 1;
 }
