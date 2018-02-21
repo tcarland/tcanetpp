@@ -5,36 +5,36 @@
 #include <fstream>
 
 
-#include "random.h"
+#include "tcanetpp_random.h"
 
 
 #define  DATABLOCK_SIZE  1444
 
 
 class DataBlock {
-
   public:
-
     DataBlock();
 
     std::string  getDataBlock();
 
   protected:
 
-    static void InitDataBlock();
+    static void  InitDataBlock();
 
   private:
 
     static bool         _DataInit;
     static std::string  _DataBlock;
-
 };
 
 
 bool  
 DataBlock::_DataInit  = false;
+
 std::string 
 DataBlock::_DataBlock = std::string("");
+
+
 
 DataBlock::DataBlock()
 {
@@ -42,11 +42,13 @@ DataBlock::DataBlock()
         DataBlock::InitDataBlock();
 }
 
+
 std::string
 DataBlock::getDataBlock()
 {
     return _DataBlock;
 }
+
 
 void
 DataBlock::InitDataBlock()
@@ -68,6 +70,7 @@ DataBlock::InitDataBlock()
 
     return;
 }
+
 
 
 int main ( int argc, char **argv ) 
