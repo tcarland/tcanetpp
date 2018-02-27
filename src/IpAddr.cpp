@@ -644,15 +644,11 @@ IpAddr::ToIpAddr4 ( const std::string & str, IpAddr & ipaddr )
         mb      = MAXMASKLEN_IPV4;
     } else {
         addrstr = str.substr(0, indx);
+        mb      = StringUtils::FromString<uint16_t>(str.substr(indx+1));
     }
 
     if ( IpAddr::pton(addrstr, addr) <= 0 )
         return 0;
-
-    if ( mb == 0 ) {
-        addrstr = str.substr(indx+1);
-        mb = StringUtils::FromString<uint16_t>(addrstr);
-    }
 
     if ( mb < 1 || mb > MAXMASKLEN_IPV4 )
         mb = MAXMASKLEN_IPV4;
