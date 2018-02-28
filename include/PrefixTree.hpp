@@ -74,7 +74,7 @@ class PrefixTree {
     }
 
 
-    int  insert  ( const IpAddr & p, T obj )
+    int insert  ( const IpAddr & p, T obj )
     {
         int       r = 0;
         prefix_t  c = p.getPrefixType();
@@ -85,7 +85,7 @@ class PrefixTree {
     }
 
 
-    T    remove  ( const IpAddr & p )
+    T   remove  ( const IpAddr & p )
     {
         prefix_t  c = p.getPrefixType();
 
@@ -95,7 +95,7 @@ class PrefixTree {
     }
 
 
-    T    exactMatch ( const IpAddr & p )
+    T   exactMatch ( const IpAddr & p )
     {
         prefix_t  c  = p.getPrefixType();
 
@@ -105,7 +105,7 @@ class PrefixTree {
     }
 
 
-    T    longestMatch ( IpAddr & p )
+    T   longestMatch ( IpAddr & p )
     {
         prefix_t  c  = p.getPrefixType();
 
@@ -154,16 +154,23 @@ class PrefixTree {
     }
 
 
-    void setFreeHandler ( nodeHandler_t handler )
+    void setFreeHandler ( ptNodeHandler_t handler )
     {
         _freeHandler = handler;
     }
 
 
+    void traverse ( ptNodeHandler_t handler )
+    {
+        if ( handler )
+            pt_visit(_pt, handler);
+    }
+
+
   protected:
 
-
-    static void PTClearHandler ( uint64_t addrA, uint64_t addrB, uint16_t mb, void * rock )
+    static void PTClearHandler ( uint64_t addrA, uint64_t addrB, 
+                                 uint16_t mb,    void   * rock )
     {
         T  obj = (T) rock;
         if ( obj )
@@ -174,10 +181,8 @@ class PrefixTree {
 
   private:
 
-    ptNode_t*                    _pt;
-    nodeHandler_t                _freeHandler;
-
-    bool                         _lock;
+    ptNode_t*            _pt;
+    ptNodeHandler_t      _freeHandler;
 };
 
 } // namespace

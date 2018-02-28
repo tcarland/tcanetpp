@@ -60,7 +60,7 @@ typedef struct ptNode {
 
 
 /** Typical node handler used when walking the trie via pt_visit() */
-typedef void (*nodeHandler_t) (uint64_t, uint64_t, uint16_t, void*);
+typedef void (*ptNodeHandler_t) (uint64_t, uint64_t, uint16_t, void*);
 
 /** Specialized node handler used for obtaining a node pointer */
 typedef void (*pvtNodeHandler_t)(ptNode_t*);
@@ -76,13 +76,13 @@ int         pt_exists       ( ptNode_t * head, prefix_t * key );
 void*       pt_match        ( ptNode_t * head, prefix_t * key );
 void*       pt_matchLongest ( ptNode_t * head, prefix_t * key );
 
-void        pt_visit        ( ptNode_t * head, nodeHandler_t handler );
+void        pt_visit        ( ptNode_t * head, ptNodeHandler_t  handler );
 void        pt_visit_node   ( ptNode_t * head, pvtNodeHandler_t handler );
 
 size_t      pt_nodes        ( ptNode_t * head );
 size_t      pt_size         ( ptNode_t * head );
 
-int         pt_free         ( ptNode_t * head, nodeHandler_t handler );
+int         pt_free         ( ptNode_t * head, ptNodeHandler_t handler );
 
 int         pt_is_ipv4      ( ptNode_t * node );
 ipv4addr_t  pt_to_ipv4      ( ptNode_t * node );

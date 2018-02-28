@@ -121,7 +121,7 @@ int main ( int argc, char **argv )
 
     sleep(1);
 
-    printf("patricia size is %d nodecnt is %d\n", ptree.size(), ptree.nodes());
+    printf("patricia size is %lu nodecnt is %lu\n", ptree.size(), ptree.nodes());
    
     for ( vIter = srcp.begin(); vIter != srcp.end(); vIter++ ) {
 	p  = ptree.exactMatch(*vIter);
