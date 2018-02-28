@@ -37,8 +37,8 @@ char PT_version[] = "patricia v1.95 2017/04/20 tcarland@gmail.com";
 
 
 static int    freecnt    = 0;
-static int    nodecnt    = 0;
-static int    ptsize     = 0;
+static size_t nodecnt    = 0;
+static size_t ptsize     = 0;
 
 /* match handler used for longest match */
 typedef void (*matchHandler_t) (ptNode_t*, prefix_t*, prefix_t*);
@@ -457,7 +457,7 @@ pt_visit_node ( ptNode_t * head, pvtNodeHandler_t handler )
 /**  Returns the number of nodes in the trie.
   *  Each node can have multiple entries.
  **/
-int
+size_t
 pt_nodes ( ptNode_t * head )
 {
     nodecnt = 0;
@@ -474,7 +474,7 @@ pt_nodes ( ptNode_t * head )
 /**  Returns the total number of entries in the trie.
   *  Note this differs from the actual number of nodes in the trie.
  **/
-int
+size_t
 pt_size ( ptNode_t * head )
 {
     ptsize = 0;

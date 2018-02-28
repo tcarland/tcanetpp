@@ -27,12 +27,6 @@
 #ifndef _TCANETPP_PREFIXTREE_HPP_
 #define _TCANETPP_PREFIXTREE_HPP_
 
-#ifdef USE_PTHREADS
-extern "C" {
-# include <pthread.h>
-}
-#endif
-
 #include "tcanetpp_types.h"
 #include "patricia.h"
 #include "IpAddr.h"
@@ -66,48 +60,38 @@ class PrefixTree {
 
   public:
 
-    PrefixTree ( bool implicit_lock = false )
+    PrefixTree()
         : _pt(NULL),
-          _freeHandler(NULL),
-          _lock(implicit_lock)
+          _freeHandler(NULL)
     {
         _pt   = pt_init();
-        this->init();
     }
 
     virtual ~PrefixTree()
     {
         this->clear();
         ::free(_pt);
-#       ifdef USE_PTHREADS
-        if ( _lock )
-            pthread_mutex_destroy(&_mutex);
-#       endif
     }
 
 
     int  insert  ( const IpAddr & p, T obj )
     {
-        int result  = 0;
+        int       r = 0;
         prefix_t  c = p.getPrefixType();
 
-        this->lock();
-        result = pt_insert(_pt, &c, (void*) obj);
-        this->unlock();
+        r  = pt_insert(_pt, &c, (void*) obj);
 
-        return result;
+        return r;
     }
 
 
     T    remove  ( const IpAddr & p )
     {
-        prefix_t  c  = p.getPrefixType();
+        prefix_t  c = p.getPrefixType();
 
-        this->lock();
-        T  object = (T) pt_remove(_pt, &c);
-        this->unlock();
+        T  obj = (T) pt_remove(_pt, &c);
 
-        return object;
+        return obj;
     }
 
 
@@ -115,11 +99,9 @@ class PrefixTree {
     {
         prefix_t  c  = p.getPrefixType();
 
-        this->lock();
-        T   object = (T) pt_match(_pt, &c);
-        this->unlock();
+        T  obj = (T) pt_match(_pt, &c);
 
-        return object;
+        return obj;
     }
 
 
@@ -127,53 +109,37 @@ class PrefixTree {
     {
         prefix_t  c  = p.getPrefixType();
 
-        this->lock();
-        T   object = (T) pt_matchLongest(_pt, &c);
-        this->unlock();
+        T  obj = (T) pt_matchLongest(_pt, &c);
 
-        return object;
+        return obj;
     }
 
 
-    int  size()
+    size_t size() const
     {
-        int sz = 0;
-
-        this->lock();
-        sz  = pt_size(_pt);
-        this->unlock();
-
-        return sz;
+        return pt_size(_pt);
     }
 
 
-    int  nodes()
+    size_t nodes() const
     {
-        int cnt = 0;
-
-        this->lock();
-        cnt  = pt_nodes(_pt);
-        this->unlock();
-
-        return cnt;
+        return pt_nodes(_pt);
     }
 
 
-    size_t memUsage()
+    size_t memUsage() const
     {
         size_t sz    = 0;
         int    nodes = 0;
 
-        this->lock();
         nodes = pt_nodes(_pt);
         sz    = (nodes * sizeof(ptNode_t));
-        this->unlock();
 
         return sz;
     }
 
 
-    size_t totalMemUsage()
+    size_t totalMemUsage() const
     {
         return(memUsage() + (size() * sizeof(T)));
     }
@@ -181,14 +147,10 @@ class PrefixTree {
 
     void clear()
     {
-        this->lock();
-
         if ( _freeHandler )
             pt_free(_pt, _freeHandler);
         else
             pt_free(_pt, &PTClearHandler);
-
-        this->unlock();
     }
 
 
@@ -198,32 +160,8 @@ class PrefixTree {
     }
 
 
-    void lock()
-    {
-#       ifdef USE_PTHREADS
-        if ( this->_lock )
-            pthread_mutex_lock(&_mutex);
-#       endif
-    }
-
-    void unlock()
-    {
-#       ifdef USE_PTHREADS
-        if ( this->_lock )
-            pthread_mutex_unlock(&_mutex);
-#       endif
-    }
-
-
   protected:
 
-    void init()
-    {
-#       ifdef USE_PTHREADS
-        if ( this->_lock )
-            pthread_mutex_init(&_mutex, NULL);
-#       endif
-    }
 
     static void PTClearHandler ( uint64_t addrA, uint64_t addrB, uint16_t mb, void * rock )
     {
@@ -240,9 +178,6 @@ class PrefixTree {
     nodeHandler_t                _freeHandler;
 
     bool                         _lock;
-#   ifdef USE_PTHREADS
-    pthread_mutex_t              _mutex;
-#   endif
 };
 
 } // namespace

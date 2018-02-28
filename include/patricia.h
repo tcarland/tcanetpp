@@ -79,8 +79,8 @@ void*       pt_matchLongest ( ptNode_t * head, prefix_t * key );
 void        pt_visit        ( ptNode_t * head, nodeHandler_t handler );
 void        pt_visit_node   ( ptNode_t * head, pvtNodeHandler_t handler );
 
-int         pt_nodes        ( ptNode_t * head );
-int         pt_size         ( ptNode_t * head );
+size_t      pt_nodes        ( ptNode_t * head );
+size_t      pt_size         ( ptNode_t * head );
 
 int         pt_free         ( ptNode_t * head, nodeHandler_t handler );
 
