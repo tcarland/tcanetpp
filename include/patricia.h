@@ -40,12 +40,15 @@ extern "C" {
 # endif
 #include <stdlib.h>
 
+/* ------------------------------------------------------------------------- */
 
 #define PT_GETBIT(v, bit)  ((v) & (0x8000000000000000 >> (bit)))
 #define PT_DELETE_FLAG     0x1
 #define PT_MASKLEN         64
 #define PT_MAXBITS         64
 
+/* ------------------------------------------------------------------------- */
+// patricia node
 
 typedef struct ptNode {
     uint64_t        key;
@@ -66,6 +69,8 @@ typedef void (*ptNodeHandler_t) (uint64_t, uint64_t, uint16_t, void*);
 typedef void (*pvtNodeHandler_t)(ptNode_t*);
 
 
+/* ------------------------------------------------------------------------- */
+// patricia trie
 
 ptNode_t*   pt_init();
 
@@ -89,10 +94,10 @@ ipv4addr_t  pt_to_ipv4      ( ptNode_t * node );
 
 const char* pt_version();
 
+/* ------------------------------------------------------------------------- */
 
 # ifdef __cplusplus
 }  // extern "C"
 # endif
-
 
 #endif  //  _TCANETPP_PATRICIA_H_

@@ -87,30 +87,24 @@ class PrefixTree {
 
     T   remove  ( const IpAddr & p )
     {
-        prefix_t  c = p.getPrefixType();
-
-        T  obj = (T) pt_remove(_pt, &c);
-
+        prefix_t c = p.getPrefixType();
+        T      obj = (T) pt_remove(_pt, &c);
         return obj;
     }
 
 
     T   exactMatch ( const IpAddr & p )
     {
-        prefix_t  c  = p.getPrefixType();
-
-        T  obj = (T) pt_match(_pt, &c);
-
+        prefix_t c  = p.getPrefixType();
+        T      obj  = (T) pt_match(_pt, &c);
         return obj;
     }
 
 
     T   longestMatch ( IpAddr & p )
     {
-        prefix_t  c  = p.getPrefixType();
-
-        T  obj = (T) pt_matchLongest(_pt, &c);
-
+        prefix_t c  = p.getPrefixType();
+        T      obj  = (T) pt_matchLongest(_pt, &c);
         return obj;
     }
 
@@ -141,7 +135,7 @@ class PrefixTree {
 
     size_t totalMemUsage() const
     {
-        return(memUsage() + (size() * sizeof(T)));
+        return( memUsage() + (size() * sizeof(T)) );
     }
 
 
