@@ -40,12 +40,15 @@ extern "C" {
 # endif
 #include <stdlib.h>
 
+/* ------------------------------------------------------------------------- */
 
 #define PT_GETBIT(v, bit)  ((v) & (0x8000000000000000 >> (bit)))
 #define PT_DELETE_FLAG     0x1
 #define PT_MASKLEN         64
 #define PT_MAXBITS         64
 
+/* ------------------------------------------------------------------------- */
+// patricia node
 
 typedef struct ptNode {
     uint64_t        key;
@@ -60,12 +63,14 @@ typedef struct ptNode {
 
 
 /** Typical node handler used when walking the trie via pt_visit() */
-typedef void (*nodeHandler_t) (uint64_t, uint64_t, uint16_t, void*);
+typedef void (*ptNodeHandler_t) (uint64_t, uint64_t, uint16_t, void*);
 
 /** Specialized node handler used for obtaining a node pointer */
 typedef void (*pvtNodeHandler_t)(ptNode_t*);
 
 
+/* ------------------------------------------------------------------------- */
+// patricia trie
 
 ptNode_t*   pt_init();
 
@@ -76,23 +81,23 @@ int         pt_exists       ( ptNode_t * head, prefix_t * key );
 void*       pt_match        ( ptNode_t * head, prefix_t * key );
 void*       pt_matchLongest ( ptNode_t * head, prefix_t * key );
 
-void        pt_visit        ( ptNode_t * head, nodeHandler_t handler );
+void        pt_visit        ( ptNode_t * head, ptNodeHandler_t  handler );
 void        pt_visit_node   ( ptNode_t * head, pvtNodeHandler_t handler );
 
-int         pt_nodes        ( ptNode_t * head );
-int         pt_size         ( ptNode_t * head );
+size_t      pt_nodes        ( ptNode_t * head );
+size_t      pt_size         ( ptNode_t * head );
 
-int         pt_free         ( ptNode_t * head, nodeHandler_t handler );
+int         pt_free         ( ptNode_t * head, ptNodeHandler_t handler );
 
 int         pt_is_ipv4      ( ptNode_t * node );
 ipv4addr_t  pt_to_ipv4      ( ptNode_t * node );
 
 const char* pt_version();
 
+/* ------------------------------------------------------------------------- */
 
 # ifdef __cplusplus
 }  // extern "C"
 # endif
-
 
 #endif  //  _TCANETPP_PATRICIA_H_

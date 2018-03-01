@@ -13,7 +13,7 @@ const char* addr5 = "172.16.8.0";
 
 const  char* addrs[] = { "10.0.0.0/8",
                          "10.10.0.0/16",
-  	                 "12.0.0.0/16",
+                         "12.0.0.0/16",
                          "172.16.0.0/16",
                          "192.168.0.0/16",
                          "172.16.8.0/24"
@@ -43,7 +43,7 @@ void printNodeHandler ( uint64_t addrA, uint64_t addrB, uint16_t mb, void * rock
 
     printf("node address is %s/%d\n", ip.c_str(), mb);
 
-    if ( rock ) 
+    if ( rock )
         printf("  rock is valid\n");
 
     return;
@@ -63,7 +63,7 @@ void debugNodeHandler ( ptNode_t * node )
     printf("node addr: %s, node bit: %d\n", ip.c_str(), node->bit);
 
     if ( node->rlink )
-	printf("right link addr is %s  ", 
+	printf("right link addr is %s  ",
 	    IpAddr::ntop( ((node->rlink)->key) ).c_str());
 
     if ( node->llink )
@@ -86,8 +86,8 @@ void nodeFreeHandler ( uint64_t addrA, uint64_t addrB, uint16_t mb, void * rock 
 {
     IpAddr * p = (IpAddr*) rock;
     if ( p ) {
-	printf("deleting address %s\n", IpAddr::ToPrefixStr(*p).c_str());
-	delete p;
+        printf("Deleting addr: %s\n", IpAddr::ToPrefixStr(*p).c_str());
+        delete p;
     }
 }
 
@@ -104,52 +104,53 @@ int main ( int argc, char **argv )
     std::vector<IpAddr>::iterator vIter;
 
     for ( int i = 0; i < 6; i++ ) {
-	IpAddr::ToIpAddr(addrs[i], pfx);
-	srcp.push_back(pfx);
-	//IpAddr::deAggregate(p, 24, srcp);
+        IpAddr::ToIpAddr(addrs[i], pfx);
+        srcp.push_back(pfx);
+        //IpAddr::deAggregate(p, 24, srcp);
     }
 
     for ( int i = 0; i < 6; i++ ) {
         IpAddr::ToIpAddr(addrs6[i], pfx);
         srcp.push_back(pfx);
     }
-    
+
     printf("v size is %lu\n", srcp.size());
 
     for ( vIter = srcp.begin(); vIter != srcp.end(); vIter++ )
-	ptree.insert(*vIter, (new IpAddr(*vIter)));
+        ptree.insert(*vIter, (new IpAddr(*vIter)));
 
     sleep(1);
 
-    printf("patricia size is %d nodecnt is %d\n", ptree.size(), ptree.nodes());
-   
-    for ( vIter = srcp.begin(); vIter != srcp.end(); vIter++ ) {
-	p  = ptree.exactMatch(*vIter);
-	if ( p == NULL )
-	    printf("Search failed for %s\n",  vIter->toString().c_str());
-	else
-	    printf("Found addr %s\n", vIter->toString().c_str());
+    printf("patricia size is %lu nodecnt is %lu\n", ptree.size(), ptree.nodes());
+
+    for ( vIter = srcp.begin(); vIter != srcp.end(); vIter++ )
+    {
+        p  = ptree.exactMatch(*vIter);
+        if ( p == NULL )
+            printf("Search failed for %s\n",  vIter->toString().c_str());
+        else
+            printf("Found addr %s\n", vIter->toString().c_str());
     }
 
     p  = NULL;
 
     IpAddr::ToIpAddr(addr3, pfx);
     p = ptree.longestMatch(pfx);
-    if ( p == NULL )
-	printf("Search failed for %s\n", pfx.toString().c_str());
-    else
-	printf("longest match for %s returned %s\n",
-	       pfx.toString().c_str(), IpAddr::ToPrefixStr(*p).c_str());
+    if ( p == NULL ) {
+        printf("Search failed for %s\n", pfx.toString().c_str());
+    } else {
+        printf("longest match for %s returned %s\n",
+            pfx.toString().c_str(),
+            IpAddr::ToPrefixStr(*p).c_str());
+    }
 
     IpAddr::ToIpAddr(addrstr6, pfx);
     p  = ptree.longestMatch(pfx);
     if ( p == NULL )
-	printf("Search failed for %s\n", pfx.toString().c_str());
+        printf("Search failed for %s\n", pfx.toString().c_str());
     else
-	printf("longest match for %s returned %s\n",
-	       pfx.toString().c_str(), IpAddr::ToPrefixStr(*p).c_str());
-
+        printf("longest match for %s returned %s\n",
+            pfx.toString().c_str(), IpAddr::ToPrefixStr(*p).c_str());
 
     return 0;
 }
-

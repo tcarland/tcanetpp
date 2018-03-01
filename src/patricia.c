@@ -37,8 +37,8 @@ char PT_version[] = "patricia v1.95 2017/04/20 tcarland@gmail.com";
 
 
 static int    freecnt    = 0;
-static int    nodecnt    = 0;
-static int    ptsize     = 0;
+static size_t nodecnt    = 0;
+static size_t ptsize     = 0;
 
 /* match handler used for longest match */
 typedef void (*matchHandler_t) (ptNode_t*, prefix_t*, prefix_t*);
@@ -84,7 +84,7 @@ PT_new ( prefix_t * pfx, int bit, ptNode_t * llink, ptNode_t * rlink, void * roc
 
 //  Visits all nodes and children of the trie.
 static void
-PT_visitR ( ptNode_t * node, int bit, nodeHandler_t handler )
+PT_visitR ( ptNode_t * node, int bit, ptNodeHandler_t handler )
 {
     int i;
 
@@ -207,7 +207,7 @@ PT_removeR ( ptNode_t * node, prefix_t * pfx, int bit )
 
 //  recursively frees all nodes of the trie, except the root node.
 static void
-PT_freeNodesR ( ptNode_t * head, ptNode_t * node, int bit, nodeHandler_t handler )
+PT_freeNodesR ( ptNode_t * head, ptNode_t * node, int bit, ptNodeHandler_t handler )
 {
     int i;
 
@@ -439,7 +439,7 @@ pt_remove ( ptNode_t * head, prefix_t * pfx )
 
 /**  Visits nodes of the trie in order. */
 void
-pt_visit ( ptNode_t * head, nodeHandler_t handler )
+pt_visit ( ptNode_t * head, ptNodeHandler_t handler )
 {
     if ( head->llink != NULL )
         PT_visitR(head->llink, -1, handler);
@@ -457,7 +457,7 @@ pt_visit_node ( ptNode_t * head, pvtNodeHandler_t handler )
 /**  Returns the number of nodes in the trie.
   *  Each node can have multiple entries.
  **/
-int
+size_t
 pt_nodes ( ptNode_t * head )
 {
     nodecnt = 0;
@@ -474,7 +474,7 @@ pt_nodes ( ptNode_t * head )
 /**  Returns the total number of entries in the trie.
   *  Note this differs from the actual number of nodes in the trie.
  **/
-int
+size_t
 pt_size ( ptNode_t * head )
 {
     ptsize = 0;
@@ -519,7 +519,7 @@ pt_to_ipv4 ( ptNode_t * node )
 
 /**  Free nodes of a patricia trie */
 int
-pt_free ( ptNode_t * head, nodeHandler_t handler )
+pt_free ( ptNode_t * head, ptNodeHandler_t handler )
 {
     freecnt = 0;
 
