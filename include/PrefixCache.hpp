@@ -33,7 +33,7 @@
 
 namespace tcanetpp {
 
-#define DEFAULT_PREFIX_EXPIRE 60
+#define DEFAULT_PREFIX_EXPIRE_S  300
 
 
 /**  Used as the Radix Node in the underlying PrefixTree of a
@@ -42,9 +42,7 @@ namespace tcanetpp {
  **/
 template <typename ValueType>
 class PrefixCacheItem {
-
   public:
-
     typedef PrefixCacheItem<ValueType>      CacheItem;
     typedef std::pair< time_t, CacheItem* > CachePair;
     typedef std::multiset< CachePair >      TimerSet;
@@ -53,7 +51,7 @@ class PrefixCacheItem {
 
   public:
 
-    PrefixCacheItem ( const IpAddr & p, ValueType item, int expire )
+    PrefixCacheItem ( const IpAddr & p, ValueType item, int expire = DEFAULT_PREFIX_EXPIRE_S )
         : _prefix(p),
           _value(item),
           _expire(expire)
@@ -61,15 +59,13 @@ class PrefixCacheItem {
 
     virtual ~PrefixCacheItem() {}
 
-    void           timeout ( long val )   { _expire = DEFAULT_PREFIX_EXPIRE; }
-    long           timeout()              { return _expire; }
+    void           timeout ( long val )   { _expire = val; }
+    long           timeout() const        { return _expire; }
 
-    const IpAddr&  getPrefix()            { return _prefix; }
-    Timer          getTimer()             { return _timer; }
+    const IpAddr&  getPrefix() const      { return _prefix; }
     ValueType      getValue()             { return _value; }
-
+    Timer          getTimer()             { return _timer; }
     void           setTimer ( Timer & t ) { this->_timer = t; }
-
 
   private:
 
@@ -81,33 +77,28 @@ class PrefixCacheItem {
 
 
 /**  The PrefixCache class provides an interface for tracking objects
- *   by a given IPV4 Prefix. It uses an underlying Radix Tree (patricia)
- *   as the data structure, which is written in C and uses pointers to
- *   store the user data, so as a result the PrefixCache will only
- *   work with a 'ValueType' pointer.
+ *   by a given IPV4/6 Prefix. It uses an underlying Radix Trie or patricia
+ *   as the data structure. Written in C and using pointers to store
+ *   user data, the PrefixCache class will only support 'ValueType' pointers.
  **/
 template <typename ValueType>
 class PrefixCache {
-
   public:
-
     typedef PrefixCacheItem<ValueType>        CacheItem;
     typedef typename CacheItem::CachePair     CachePair;
     typedef typename CacheItem::TimerSet      CacheTimerSet;
     typedef typename CacheTimerSet::iterator  TimerSetIter;
     typedef PrefixTree<CacheItem*>            CacheTree;
-
     typedef std::list< ValueType >            ValueList;
-
 
   public:
 
-    PrefixCache ( time_t refreshInterval, bool implicit_lock = false )
-        : _pt(new CacheTree(implicit_lock)),
+    PrefixCache ( time_t refreshInterval )
+        : _pt(new CacheTree()),
           _cacheTimeout(refreshInterval)
     {}
 
-    virtual ~PrefixCache() {}
+    ~PrefixCache() {}
 
 
     /**  Performs a lookup of the given 'Prefix', and return false if
@@ -212,11 +203,12 @@ class PrefixCache {
     }
 
 
-    /**  Expires any entries that are older than the given time.
-     *   @param now  is the expire time to use when determining
-     *   what elements should be considered stale.
-     *   @param itemlist  is a reference to a list of cache items
-     *   that is populated with all removed items considered stale.
+    /**  Expires all entries from the cache that are older than the
+      *  cache expire time.
+      *  @param now  is the expire time to use when determining
+      *  what elements should be considered stale.
+      *  @param itemlist  is a reference to a list of cache items
+      *  that will contain the removed items considered stale.
      **/
     int  expireStale ( const time_t & now, ValueList & itemlist )
     {
