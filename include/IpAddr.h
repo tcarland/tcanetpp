@@ -45,7 +45,7 @@ typedef std::set<IpAddr>     IpAddrSet;
 typedef std::vector<IpAddr>  IpAddrList;
 
 
-/**  Provides seamless interaction with an underlying sockaddr
+/**  Provides seamless interaction with the underlying sockaddr
   *  supporting both IPV4 and IPV6 addresses.
  */
 class IpAddr {
@@ -57,8 +57,7 @@ class IpAddr {
     IpAddr ( const ipv4addr_t & addr, uint8_t mb = 32 );
     IpAddr ( const ipv6addr_t & addr, uint8_t mb = 64 );
     IpAddr ( const IpAddr & ipaddr );
-
-    virtual ~IpAddr();
+    ~IpAddr();
 
     IpAddr&             operator=    ( const IpAddr & ipaddr );
     bool                operator==   ( const IpAddr & ipaddr ) const;
@@ -123,12 +122,15 @@ class IpAddr {
 
     static uint32_t     RandomValue  ( double     range );
     static IpAddr       RandomAddr   ( IpAddr   & agg );
-    static ipv4addr_t   RandomPrefix ( ipv4addr_t addr, uint8_t mb );
+    static ipv4addr_t   RandomPrefix ( ipv4addr_t addr,
+                                       uint8_t    mb );
 
-    static bool         DeAggregate  ( const IpAddr & pfx, uint8_t mb,
+    static bool         DeAggregate  ( const IpAddr & pfx,
+                                       uint8_t        mb,
                                        IpAddrList   & v );
 
-    static int          GetCidrRange ( uint8_t mb, uint8_t * subnet = NULL );
+    static int          GetCidrRange ( uint8_t   mb,
+                                       uint8_t * subnet = NULL );
     static int          GetIpv6Range ( uint8_t mb );
 
 
@@ -139,6 +141,5 @@ class IpAddr {
 };
 
 } // namespace
-
 
 #endif // _TCANETPP_IPADDR_H_

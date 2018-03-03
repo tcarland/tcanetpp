@@ -78,21 +78,26 @@ IpAddr::IpAddr ( const ipv4addr_t & addr, uint8_t mb )
 IpAddr::IpAddr ( const sockaddr_t * sa )
     : _mb(0)
 {
-    sockaddr_t * s = (sockaddr_t*) sa;
-
-    ::memcpy(&_saddr, s, sizeof(sockaddr_t));
-
-    switch ( s->ss_family )
+    if ( sa != NULL )
     {
-        case AF_INET:
-            _mb  = 32;
-            break;
-        case AF_INET6:
-            _mb  = 64;
-            break;
-        default:
-            _mb  = 0;
-            break;
+        sockaddr_t * s = (sockaddr_t*) sa;
+
+        ::memcpy(&_saddr, s, sizeof(sockaddr_t));
+
+        switch ( s->ss_family )
+        {
+            case AF_INET:
+                _mb  = 32;
+                break;
+            case AF_INET6:
+                _mb  = 64;
+                break;
+            default:
+                _mb  = 0;
+                break;
+        }
+    } else {
+        ::memset(&_saddr, 0, sizeof(sockaddr_t));
     }
 }
 
@@ -275,8 +280,10 @@ IpAddr::toString() const
     if ( this->ipv4() )
         ipstr = IpAddr::ntop(this->getAddr4());
     else
-        AddrInfo::GetNameInfo((const sockaddr*)&_saddr, sizeof(sockaddr_t), ipstr, NI_NUMERICHOST);
-
+        AddrInfo::GetNameInfo((const sockaddr*) &_saddr,
+                               sizeof(sockaddr_t),
+                               ipstr,
+                               NI_NUMERICHOST);
     return ipstr;
 }
 
@@ -284,11 +291,11 @@ std::string
 IpAddr::toPrefixString() const
 {
     std::string  ipstr;
-
     ipstr = IpAddr::ToPrefixStr(*this);
-
     return ipstr;
 }
+
+//-------------------------------------------------------------------//
 
 /** Returns a boolean indicating whether the IP Address is
   * a loopback address i
@@ -301,6 +308,8 @@ IpAddr::isLoopback() const
 
     return IpAddr::IsLoopback(this->getAddr6());
 }
+
+//-------------------------------------------------------------------//
 
 /**  Method for returning an IP cidr(prefix_t) structure.
  **/
@@ -325,7 +334,6 @@ IpAddr::getPrefixType() const
 
 //-------------------------------------------------------------------//
 //  Static Functions
-//-------------------------------------------------------------------//
 
 
 bool

@@ -64,6 +64,7 @@ class BufferException : public Exception {
     BufferException ( const std::string & s_err )
         : Exception(s_err)
     {}
+    virtual ~BufferException() {}
 };
 
 
