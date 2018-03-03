@@ -38,7 +38,9 @@ extern "C" {
 namespace tcanetpp {
 
 
-/**  Base Exception class used and thrown by the tcanetpp library. */
+/**  Base Exception class used and thrown by the tcanetpp library
+  *  (as infrequently as possible).
+ **/
 class Exception : public std::runtime_error {
 
 public:
@@ -47,7 +49,7 @@ public:
         : std::runtime_error(errstr)
     {}
 
-    virtual ~Exception() throw() {}
+    virtual ~Exception() {}
 
     virtual void printErr() const
     {

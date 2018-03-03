@@ -50,6 +50,7 @@ class ThreadException : public Exception {
   public:
     ThreadException ( const std::string & s_err )
         : Exception(s_err) {}
+    virtual ~ThreadException() {}
 };
 
 

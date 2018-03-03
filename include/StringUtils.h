@@ -203,7 +203,8 @@ class StringUtils {
 
 
     template<typename T>
-    static inline std::wstring ToWString   ( const T & a )
+    static inline
+    std::wstring         ToWString        ( const T & a )
     {
         std::wstringstream  stream;
         stream << a;
@@ -211,7 +212,7 @@ class StringUtils {
     }
 
     template<typename T>
-    static inline  T     FromWString       ( const std::wstring & wstr )
+    static inline  T     FromWString      ( const std::wstring & wstr )
     {
         T target = T();
         std::wstringstream stream(wstr);
@@ -235,6 +236,7 @@ class StringUtils {
         }
     }
 
+
     template< typename OutputIterator_ >
     static inline void   Split            ( const std::wstring  & str,
                                             const std::wstring  & delimiter,
@@ -249,6 +251,7 @@ class StringUtils {
             begin   = end;
         }
     }
+
 #endif  // TCANET_WIDECHAR
 
 }; // class StringUtils
