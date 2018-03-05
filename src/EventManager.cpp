@@ -112,9 +112,7 @@ EventManager::addTimerEvent ( EventTimerHandler * handler,
 
     _timers[timer.evid] = timer;
 
-#   ifdef EV_DEBUG
-    printf("id %lu:  %u sec - %u msec - %d count\n", timer.evid, sec, usec, count);
-#   endif
+    //printf("id %lu:  %u sec - %u msec - %d count\n", timer.evid, sec, usec, count);
 
     return timer.evid;
 }
@@ -133,10 +131,6 @@ EventManager::addTimerEvent ( EventTimerHandler * handler, time_t abstime )
 
     if ( handler == NULL )
         return 0;
-
-#   ifdef EV_DEBUG
-    printf("EventManager::addTimerEvent()\n");
-#   endif
 
     timer.evid      = this->getNewEventId();
 
@@ -173,14 +167,12 @@ EventManager::addIOEvent ( EventIOHandler * handler, const sockfd_t & sfd,
 {
     EventIO  io;
 
-    if ( handler == NULL )
-    {
+    if ( handler == NULL ) {
         _errstr = "Invalid event handler";
         return 0;
     }
 
-    if ( ! Socket::IsValidDescriptor(sfd) )
-    {
+    if ( ! Socket::IsValidDescriptor(sfd) ) {
         _errstr = "Invalid IO Descriptor";
         return 0;
     }
@@ -199,14 +191,7 @@ EventManager::addIOEvent ( EventIOHandler * handler, const sockfd_t & sfd,
     io.abstime.tv_sec  = 0;
     io.abstime.tv_usec = 0;
 
-#   if EV_DEBUG
-    printf("EventManager::addIOEvent() adding ");
-    if ( io.isServer )
-        printf("server ");
-    printf("socket %d id: %lu\n", sfd, io.evid);
-#   endif
-
-    _clients[io.evid] = io;
+    _clients[io.evid]  = io;
 
     return io.evid;
 }
@@ -218,10 +203,6 @@ EventManager::removeEvent ( const evid_t & id )
 {
     EventTimerMap::iterator   tIter;
     EventIOMap::iterator      cIter;
-
-#   ifdef EV_DEBUG
-    printf("EventManager::removeEvent() %lu\n", id);
-#   endif
 
     if ( (tIter = _timers.find(id)) != _timers.end() )
     {
@@ -243,7 +224,7 @@ EventManager::removeEvent ( const evid_t & id )
         }
         _events.erase(id);
         //_clients.erase(cIter);
-            return true;
+        return true;
     }
 
     return false;
@@ -260,10 +241,6 @@ EventManager::eventLoop()
     int     rdy = 0;
 
     EventIOMap::iterator   cIter;
-
-#   ifdef EV_DEBUG
-    printf("EventManager::eventLoop()\n");
-#   endif
 
     while ( ! _alarm )
     {
@@ -364,9 +341,7 @@ EventManager::eventLoop()
     // cleanup timers
     this->clearTimers();
 
-#   ifdef EV_DEBUG
-    printf("EventManager::eventLoop() finished\n");
-#   endif
+    //printf("EventManager::eventLoop() finished\n");
 
     return;
 }
@@ -809,7 +784,7 @@ EventManager::NanoSleep ( uint64_t & ns )
 {
     EventManager::NanoSleep(CLOCK_MONOTONIC, ns);
 }
-#endif
+#endif  // USE_LIBRT
 
 //---------------------------------------------------------------//
 
