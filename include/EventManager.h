@@ -110,9 +110,10 @@ class EventManager {
     void                 clearTimers();
     void                 clearStaleEvents();
 
-    void                 setDebug       ( bool d );
+    void                 setDebug ( bool d );
+    bool                 getDebug() const { return _debug; }
     void                 setAlarm();
-
+    bool                 getAlarm() const { return _alarm; }
     const std::string&   getErrorStr() const { return this->_errstr; }
 
 

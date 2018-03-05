@@ -39,7 +39,7 @@ int main ( int argc, char **argv )
     myitem * item = NULL;
     time_t   now  = 0;
 
-    PrefixCache<myitem*>  pc = PrefixCache<myitem*>(10, false);
+    PrefixCache<myitem*>  pc = PrefixCache<myitem*>(10);
 
     now = ::time(NULL);
 
@@ -59,6 +59,7 @@ int main ( int argc, char **argv )
         }
     }
 
+    std::cout << "5 second spacing between Prefix insert times" << std::endl;
     std::cout << " PrefixCache size = " << pc.size() << std::endl;
 
     // ---------- //
