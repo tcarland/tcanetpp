@@ -14,11 +14,11 @@
 
 #include <set>
 
-#include "EventManager.h"
+#include "event/EventManager.h"
 #include "LogFacility.h"  
 #include "Thread.h"
 #include "SynchronizedQueue.hpp"
-#include "StringUtils.h"
+#include "util/StringUtils.h"
 using namespace tcanetpp;
 
 

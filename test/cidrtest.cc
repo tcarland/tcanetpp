@@ -5,8 +5,8 @@
 
 #define _cidrtest_cc_
 
-#include "IpAddr.h"
-#include "AddrInfo.h"
+#include "net/IpAddr.h"
+#include "net/AddrInfo.h"
 
 using namespace tcanetpp;
 

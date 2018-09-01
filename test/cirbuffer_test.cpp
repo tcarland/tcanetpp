@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "CircularBuffer.h"
-#include "StringUtils.h"
+#include "util/StringUtils.h"
 
 using namespace tcanetpp;
 

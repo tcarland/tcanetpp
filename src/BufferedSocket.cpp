@@ -26,7 +26,7 @@
  **/
 #define _TCANETPP_BUFFEREDSOCKET_CPP_
 
-#include "BufferedSocket.h"
+#include "net/BufferedSocket.h"
 
 
 namespace tcanetpp {

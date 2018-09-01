@@ -35,8 +35,8 @@ extern "C" {
 #include <fstream>
 
 
-#include "FileUtils.h"
-#include "StringUtils.h"
+#include "util/FileUtils.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {

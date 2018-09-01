@@ -31,10 +31,10 @@
 #include <set>
 #include <string>
 
-#include "Socket.h"
-#include "EventHandlers.hpp"
-#include "EventIO.hpp"
-#include "EventTimer.hpp"
+#include "net/Socket.h"
+#include "event/EventHandlers.hpp"
+#include "event/EventIO.hpp"
+#include "event/EventTimer.hpp"
 
 
 namespace tcanetpp {

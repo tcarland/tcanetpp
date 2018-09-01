@@ -1,6 +1,6 @@
 
-#include "Socket.h"
-#include "PrefixTree.hpp"
+#include "net/Socket.h"
+#include "net/PrefixTree.hpp"
 using namespace tcanetpp;
 
 

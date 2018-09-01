@@ -15,8 +15,8 @@ extern "C" {
 
 #include "foo.h"
 
-#include "IpAddr.h"
-#include "BufferedSocket.h"
+#include "net/IpAddr.h"
+#include "net/BufferedSocket.h"
 
 
 using namespace tcanetpp;

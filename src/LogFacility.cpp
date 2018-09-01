@@ -31,7 +31,7 @@
 #include <algorithm>
 
 #include "LogFacility.h"
-#include "EventManager.h"
+#include "event/EventManager.h"
 
 #ifdef WIN32
 # pragma warning (disable:4996)

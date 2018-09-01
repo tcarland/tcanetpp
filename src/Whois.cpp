@@ -27,10 +27,10 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "Whois.h"
-#include "IpAddr.h"
-#include "AddrInfo.h"
-#include "StringUtils.h"
+#include "net/Whois.h"
+#include "net/IpAddr.h"
+#include "net/AddrInfo.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {

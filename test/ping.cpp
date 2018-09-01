@@ -18,12 +18,12 @@ extern "C" {
 
 #include "tcanetpp_ip.h"
 #include "tcanetpp_random.h"
-#include "Socket.h"
 #include "Exception.hpp"
-#include "IpAddr.h"
-#include "AddrInfo.h"
-#include "StringUtils.h"
-#include "Serializer.h"
+#include "net/Socket.h"
+#include "net/IpAddr.h"
+#include "net/AddrInfo.h"
+#include "util/StringUtils.h"
+#include "util/Serializer.h"
 #include "CircularBuffer.h"
 using namespace tcanetpp;
 

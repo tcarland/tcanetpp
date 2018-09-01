@@ -6,9 +6,8 @@
 
 #include <vector>
 
-#include "patricia.h"
-
-#include "IpAddr.h"
+#include "net/patricia.h"
+#include "net/IpAddr.h"
 
 using namespace tcanetpp;
 

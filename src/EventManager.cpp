@@ -35,7 +35,7 @@ extern "C" {
 }
 #include <algorithm>
 
-#include "EventManager.h"
+#include "event/EventManager.h"
 
 
 namespace tcanetpp {

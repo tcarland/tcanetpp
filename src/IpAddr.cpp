@@ -35,11 +35,11 @@
 # include <arpa/inet.h>
 #endif
 
-#include "IpAddr.h"
-#include "AddrInfo.h"
-#include "StringUtils.h"
 #include "tcanetpp_random.h"
-#include "byte_order.h"
+#include "net/byte_order.h"
+#include "net/IpAddr.h"
+#include "net/AddrInfo.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {

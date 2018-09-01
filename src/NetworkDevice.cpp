@@ -33,11 +33,11 @@ extern "C" {
 }
 #include <vector>
 
-#include "NetworkDevice.h"
+#include "net/NetworkDevice.h"
 
-#include "StringUtils.h"
-#include "IpAddr.h"
-#include "AddrInfo.h"
+#include "net/IpAddr.h"
+#include "net/AddrInfo.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {

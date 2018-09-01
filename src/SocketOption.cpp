@@ -25,8 +25,8 @@
 #define _TCANETPP_SOCKETOPTION_CPP_
 
 
-#include "SocketOption.h"
-#include "Socket.h"
+#include "net/SocketOption.h"
+#include "net/Socket.h"
 
 
 namespace tcanetpp {

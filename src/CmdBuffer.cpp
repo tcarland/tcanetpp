@@ -24,7 +24,7 @@
  **/
 #define _TCANETPP_CMDBUFFER_CPP_
 
-#include "CmdBuffer.h"
+#include "util/CmdBuffer.h"
 #include "Exception.hpp"
 
 

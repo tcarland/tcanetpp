@@ -26,9 +26,9 @@
  **/
 #define _TCANETPP_ADDRINFO_CPP_
 
-#include "AddrInfo.h"
-#include "StringUtils.h"
-#include "Socket.h"
+#include "net/AddrInfo.h"
+#include "net/Socket.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {

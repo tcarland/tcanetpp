@@ -27,7 +27,7 @@
  **/
 #define _TCANETPP_SOCKET_CPP_
 
-#include "Socket.h"
+#include "net/Socket.h"
 
 #ifndef WIN32
 # include <arpa/inet.h>
@@ -38,8 +38,8 @@
 #endif
 
 
-#include "StringUtils.h"
-#include "IpAddr.h"
+#include "net/IpAddr.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {

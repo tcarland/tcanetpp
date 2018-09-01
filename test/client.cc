@@ -7,8 +7,8 @@ extern "C" {
 # include <time.h>
 }
 
-#include "IpAddr.h"
-#include "BufferedSocket.h"
+#include "net/IpAddr.h"
+#include "net/BufferedSocket.h"
 
 #include "foo.h"
 

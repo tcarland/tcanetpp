@@ -24,10 +24,10 @@
  **/
 #define _TCANETPP_DEVICEMAP_CPP_
 
-#include "DeviceMap.h"
+#include "net/DeviceMap.h"
 
-#include "NetworkDevice.h"
-#include "StringUtils.h"
+#include "net/NetworkDevice.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {
