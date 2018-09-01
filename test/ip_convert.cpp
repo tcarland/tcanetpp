@@ -6,8 +6,8 @@
 #include <iostream>
 #include <iomanip>
 
-#include "IpAddr.h"
-#include "StringUtils.h"
+#include "net/IpAddr.h"
+#include "util/StringUtils.h"
 using namespace tcanetpp;
 
 

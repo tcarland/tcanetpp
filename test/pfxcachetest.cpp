@@ -3,8 +3,8 @@
 #include <iostream>
 #include <sys/time.h>
 
-#include "PrefixCache.hpp"
-#include "IpAddr.h"
+#include "net/PrefixCache.hpp"
+#include "net/IpAddr.h"
 using namespace tcanetpp;
 
 

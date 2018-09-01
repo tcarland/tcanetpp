@@ -24,8 +24,8 @@
 **/
 #define _TCANETPP_NETWORKINTERFACE_CPP_
 
-#include "NetworkInterface.h"
-#include "StringUtils.h"
+#include "net/NetworkInterface.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {

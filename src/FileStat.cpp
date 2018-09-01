@@ -27,9 +27,9 @@
 #include <fstream>
 
 #include "Exception.hpp"
-#include "FileStat.h"
-#include "FileUtils.h"
-#include "StringUtils.h"
+#include "util/FileStat.h"
+#include "util/FileUtils.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {

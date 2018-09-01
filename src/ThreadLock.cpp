@@ -32,7 +32,7 @@ extern "C" {
 }
 
 #include "ThreadLock.h"
-#include "EventManager.h"
+#include "event/EventManager.h"
 
 
 namespace tcanetpp {

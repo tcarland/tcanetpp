@@ -15,11 +15,11 @@ extern "C" {
 #include <algorithm>
 
 #include "tcanetpp_ip.h"
-#include "Socket.h"
-#include "EventManager.h"
-#include "IpAddr.h"
-#include "AddrInfo.h"
-#include "StringUtils.h"
+#include "net/Socket.h"
+#include "event/EventManager.h"
+#include "net/IpAddr.h"
+#include "net/AddrInfo.h"
+#include "util/StringUtils.h"
 #include "CircularBuffer.h"
 #include "LogFacility.h"
 using namespace tcanetpp;

@@ -28,8 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "patricia.h"
-#include "byte_order.h"
+#include "net/patricia.h"
+#include "net/byte_order.h"
 
 
 static const

@@ -30,14 +30,13 @@
 
 
 #include "tcanetpp_config.h"
-
 #include "tcanetpp_types.h"
 #include "tcanetpp_ip.h"
 #include "tcanetpp_random.h"
-
-#include "AddrInfo.h"
-#include "IpAddr.h"
-#include "EventManager.h"
+#include "net/AddrInfo.h"
+#include "net/IpAddr.h"
+#include "net/Socket.h"
+#include "event/EventManager.h"
 
 
 #endif _TCANETPP_H_
