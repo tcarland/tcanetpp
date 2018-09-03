@@ -25,8 +25,6 @@
 #ifndef _TCANETPP_HEIRARCHICALSTRINGTREE_HXX_
 #define _TCANETPP_HEIRARCHICALSTRINGTREE_HXX_
 
-#include "StringUtils.h"
-
 #ifndef _TCANETPP_HEIRARCHICALSTRINGTREE_HPP_
 #include "HeirarchicalStringTree.hpp"
 #endif
@@ -202,7 +200,7 @@ HeirarchicalStringTree<ValueType>::find ( const std::string & absoluteName )
     StringList      branchNames;
     BranchNodeList  branches;
 
-    StringUtils::Split(absoluteName, _delim, std::back_inserter(branchNames));
+    HeirarchicalStringTree::Split(absoluteName, _delim, std::back_inserter(branchNames));
 
     this->branchToNodes(branchNames.begin(), branchNames.end(),
                         std::back_inserter(branches));
@@ -223,7 +221,7 @@ HeirarchicalStringTree<ValueType>::insert ( const std::string & absoluteName,
     StringList      branchNames;
     BranchNodeList  branches;
 
-    StringUtils::Split(absoluteName, _delim, std::back_inserter(branchNames));
+    HeirarchicalStringTree::Split(absoluteName, _delim, std::back_inserter(branchNames));
 
     if ( branchNames.empty() )
         return NULL;
