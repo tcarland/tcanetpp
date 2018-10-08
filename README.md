@@ -41,21 +41,23 @@ as (WIN32) Winsock2, providing a cross-platform implementation.
   The general goal of the library is to provide core network
 functionality based completely on berkely sockets, libc, and libstdc++,
 with no other dependencies (with the exception of pthreads for the
-Thread-related classes).  
+Thread-related classes). While written in C++, the overall design is intended
+not to be object heavy with little inter-dependencies such that by use of one
+aspect of the library (eg. events) does not depend on other classes of the
+library.  
 
-The library provides the following additional functionality:
+The library provides the following functionality:
  * Containers: patricia/radix tree, hashmap, circular buffer, synchronized queue
- * An event management class for handling both network I/O and sub-second timers
- * An Object-Oriented interface for pthreads and pthread mutexes
- * IP functions for manipulating IPv4 and IPv6 Addresses
- * A thread-safe logging facility
- * Network Device objects for management purposes   
+ * Event Management for handling both network I/O and sub-second timers
+ * Threads: An interface for pthreads and pthread mutexes
+ * Network: IP functions for manipulating IPv4 and IPv6 Addresses
+ * Logging: A thread-safe logging facility
 
 
-  The library has few external dependencies outside of libc. The project
-can build individual libraries consisting of just the sub-components, or a single,
-encompassing lib of 'libtcanetpp'.  The pthreads library is only needed for the
-Thread related classes.   
+  The library has intentionally few external dependencies outside of libc. The
+project can build individual libraries consisting of just the sub-components,
+or a single, encompassing lib of 'libtcanetpp'.  
+The pthreads library dependency is only needed for the Thread related classes.   
 
 
 #### Building
@@ -73,12 +75,12 @@ make
 ```
 
 **Unix:**
-   The library requires linking only libpthread and libdl.
+   The library requires linking only libpthread, librt and libdl.
 The library librt should be included on linux systems, especially for the
-high resolution timing support provided by the **EventManager**.
+high resolution timing support provided by the *EventManager*.
 
 **Mac OSX:**
-  **tcamake** is needed plus gnu tools provided with xcode.
+  *tcamake* is needed plus gnu tools provided with xcode.
 
 **Win32/64:**
   Only the thread classes (based on libpthread are unsupported with windows.
