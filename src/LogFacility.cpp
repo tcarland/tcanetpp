@@ -30,7 +30,7 @@
 #include <fstream>
 #include <algorithm>
 
-#include "LogFacility.h"
+#include "util/LogFacility.h"
 #include "event/EventManager.h"
 
 #ifdef WIN32

@@ -27,8 +27,6 @@
  **/
 #define _TCANETPP_SOCKET_CPP_
 
-#include "net/Socket.h"
-
 #ifndef WIN32
 # include <arpa/inet.h>
 # include <netinet/in.h>
@@ -37,6 +35,7 @@
 # include <errno.h>
 #endif
 
+#include "net/Socket.h"
 
 #include "net/IpAddr.h"
 #include "util/StringUtils.h"
