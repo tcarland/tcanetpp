@@ -165,6 +165,8 @@ SecureSocket::read ( void * vptr, size_t n )
 {
     ssize_t  rt = 0;
 
+    rt = SSL_read(_ssl, vptr, n);
+    
     return rt;
 }
 
@@ -173,12 +175,7 @@ SecureSocket::write ( const void * vptr, size_t n )
 {
     ssize_t   st  = 0;
 
-    if ( _socktype == SOCKTYPE_RAW || (_proto == SOCKET_UDP && ! _connected) ) {
-        st  = ::sendto(_fd, (const char*) vptr, n, 0,
-              (struct sockaddr*) _ipaddr.getSockAddr(), sizeof(sockaddr_t));
-    } else {
-        st  = this->nwriten(vptr, n);
-    }
+    st = SSL_write(_ssl, vptr, n);
 
     return st;
 }
