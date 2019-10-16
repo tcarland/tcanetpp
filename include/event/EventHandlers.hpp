@@ -4,7 +4,7 @@
   *    Defines the interfaces for registering events with the 
   *  EventManager.
   * 
-  * Copyright (c) 2002,2008,2009 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2019 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -29,7 +29,6 @@
 #define _TCANETPP_EVENTHANDLERS_HPP_
 
 #include "tcanetpp_types.h"
-
 
 
 namespace tcanetpp {
@@ -72,7 +71,7 @@ class EventIOHandler {
 
 
     virtual bool readable       ( const EventIO & io ) = 0;
-    virtual bool writeable      ( const EventIO & io ) = 0;
+    virtual bool writable       ( const EventIO & io ) = 0;
     
 };
 

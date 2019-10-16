@@ -88,16 +88,19 @@ class Socket {
     class SocketFactory {
       public:
         virtual ~SocketFactory() {}
-        virtual Socket* operator() ( sockfd_t & fd, sockaddr_t & csock,
-                                     SocketType type, int protocol );
+
+        virtual Socket* operator() ( sockfd_t   & fd, 
+                                     sockaddr_t & csock,
+                                     SocketType   type, 
+                                     int          protocol );
     };
 
 
     /**   A Socket factory class used to create a derived Socket class
       * for UDP based sockets. Since UDP is connectionless, there is
       * no listen socket descriptor, yet maintaining a separate client
-      * instance of the Socket class can be useful. For this we need a
-      * copy of the same descriptor which this factory makes possible.
+      * instance of the Socket class  is needed. For this we need a
+      * copy of the same descriptor which the factory makes possible.
      **/
     class UdpSocketFactory : public SocketFactory {
         sockaddr_t  _csock;
@@ -198,6 +201,7 @@ class Socket {
     const std::string&  getErrorString() const;
     const std::string&  errorStr() const { return this->getErrorString(); }
 
+
   public:
 
     static void         Block    ( Socket           * s );
@@ -215,8 +219,10 @@ class Socket {
     ssize_t             nreadn   ( void * vptr, size_t n );
 
 
-    static void InitializeSocket ( sockfd_t & fd, IpAddr & addr,
-                                   int socktype,  int proto ) noexcept(false);
+    static void         CreateSocket ( sockfd_t & fd, 
+                                       IpAddr   & addr,
+                                       int        socktype, 
+                                       int        proto ) noexcept(false);
 
 
   protected:
@@ -224,9 +230,6 @@ class Socket {
     std::string            _addrstr;
     std::string            _hoststr;
     std::string            _errstr;
-
-
-  private:
 
     sockfd_t               _fd;
     IpAddr                 _ipaddr;

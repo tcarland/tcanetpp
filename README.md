@@ -55,16 +55,16 @@ The library provides the following functionality:
 
 
   The library has intentionally few external dependencies outside of libc. The
-project can build individual libraries consisting of just the sub-components,
-or a single, encompassing lib of 'libtcanetpp'.  
+project can build an additional individual library for the command buffer class. 
 The pthreads library dependency is only needed for the Thread related classes.   
 
 
 #### Building
 
  The project uses the **tcamake** build environment for managing project
-dependencies and running 'make'.  To build, the **tcamake** project should be
-pulled down to the parent directory of the project by running:
+dependencies. This provides a Makefile template for projects.  To build, 
+the **tcamake** project should be pulled down to the parent directory of 
+the project by running:
 
 ```
 cd ..
@@ -80,7 +80,7 @@ The library librt should be included on linux systems, especially for the
 high resolution timing support provided by the *EventManager*.
 
 **Mac OSX:**
-  *tcamake* is needed plus gnu tools provided with xcode.
+  *tcamake* is needed plus gnu tools (provided with xcode).
 
 **Win32/64:**
   Only the thread classes (based on libpthread are unsupported with windows.
@@ -88,5 +88,7 @@ The win32 pthread library may be compatible, but ymmv.
 
 
 #### Documentation
+
   The library is being documented in an API format via doxygen.
 Run 'make documentation' to generate the docs (doxygen required).  
+

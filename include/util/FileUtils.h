@@ -33,7 +33,7 @@
 namespace tcanetpp {
 
 
-typedef std::list< std::string >   FileNameList;
+typedef std::list< std::string >  FileNameList;
 
 
 class FileUtils {
@@ -50,12 +50,21 @@ class FileUtils {
     static bool    GetFilenames   ( const std::string & path,
                                     FileNameList      & files,
                                     bool  recursive   = true );
+
+    static 
+    std::string    GetFilename    ( const std::string & fqfn );
+    static
+    std::string    GetPathname    ( const std::string & fqfn );
+
     static
     std::string    GetCurrentPath();
 
     static bool    InitFileStat   ( const std::string & file,
                                     filestat_t        * fsb );
 
+  public:
+
+    static std::string  FS;
 };
 
 }  // namespace

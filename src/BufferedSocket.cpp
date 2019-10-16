@@ -52,7 +52,10 @@ BufferedSocket::BufferedSocket()
       _wbx(false)
 {}
 
-BufferedSocket::BufferedSocket ( ipv4addr_t ip, uint16_t port, SocketType type, int proto )
+BufferedSocket::BufferedSocket ( ipv4addr_t ip, 
+                                 uint16_t   port, 
+                                 SocketType type, 
+                                 int        proto )
     : Socket(ip, port, type, proto),
       _rbuffer(new CircularBuffer()),
       _wbuffer(NULL),
@@ -61,7 +64,10 @@ BufferedSocket::BufferedSocket ( ipv4addr_t ip, uint16_t port, SocketType type, 
     this->init(false);
 }
 
-BufferedSocket::BufferedSocket ( ipv6addr_t ip, uint16_t port, SocketType type, int proto )
+BufferedSocket::BufferedSocket ( ipv6addr_t ip, 
+                                 uint16_t   port, 
+                                 SocketType type, 
+                                 int        proto )
     : Socket(ip, port, type, proto),
       _rbuffer(new CircularBuffer()),
       _wbuffer(NULL),
@@ -70,7 +76,10 @@ BufferedSocket::BufferedSocket ( ipv6addr_t ip, uint16_t port, SocketType type, 
     this->init(false);
 }
 
-BufferedSocket::BufferedSocket ( sockaddr_t * sa, uint16_t port, SocketType type, int proto )
+BufferedSocket::BufferedSocket ( sockaddr_t * sa, 
+                                 uint16_t     port, 
+                                 SocketType   type, 
+                                 int          proto )
     : Socket(sa, port, type, proto),
       _rbuffer(new CircularBuffer()),
       _wbuffer(NULL),
@@ -89,7 +98,10 @@ BufferedSocket::BufferedSocket ( addrinfo * ai )
 }
 
 // protected constructor
-BufferedSocket::BufferedSocket ( sockfd_t & fd, sockaddr_t & csock, SocketType type, int proto )
+BufferedSocket::BufferedSocket ( sockfd_t   & fd, 
+                                 sockaddr_t & csock, 
+                                 SocketType   type, 
+                                 int          proto )
     : Socket(fd, csock, type, proto),
       _rbuffer(new CircularBuffer()),
       _wbuffer(NULL),

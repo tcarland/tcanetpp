@@ -40,7 +40,7 @@ FileStat::FileStat ( const std::string & filename )
   : _file(filename)
 {
     if ( ! FileUtils::InitFileStat(_file, &_statb) )
-        throw Exception("Failure performing stat().");
+        throw Exception("Failure performing ::stat on file: " + filename);
 }
 
 
@@ -55,7 +55,7 @@ std::string
 FileStat::getFileName() const
 {
     std::string name;
-    int indx = StringUtils::LastIndexOf(_file, "/");
+    int indx = StringUtils::LastIndexOf(_file, FileUtils::FS);
 
     if ( indx >= 0 )
         name = _file.substr(indx+1);
@@ -75,7 +75,7 @@ std::string
 FileStat::getPathName() const
 {
     std::string path;
-    int indx = StringUtils::LastIndexOf(_file, "/");
+    int indx = StringUtils::LastIndexOf(_file, FileUtils::FS);
 
     if ( indx >= 0 )
         path = _file.substr(0, indx+1);

@@ -3,7 +3,7 @@
   *
   *   Class for handling multiplexing data I/O and timer events.
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
+  * Copyright (c) 2002,2008-2019 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -259,7 +259,7 @@ EventManager::eventLoop()
             if ( io.handler->readable(io) )
                 FD_SET(io.sfd, &_rset);
 
-            if ( io.handler->writeable(io) )
+            if ( io.handler->writable(io) )
                 FD_SET(io.sfd, &_wset);
 }
 

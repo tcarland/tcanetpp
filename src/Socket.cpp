@@ -52,15 +52,19 @@ ipv6addr_t Socket::ipv6addr_any = ipv6addr();
 // ----------------------------------------------------------------------
 
 Socket*
-Socket::SocketFactory::operator() ( sockfd_t & fd, sockaddr_t & csock,
-                                    SocketType type, int protocol )
+Socket::SocketFactory::operator() ( sockfd_t   & fd, 
+                                    sockaddr_t & csock,
+                                    SocketType   type, 
+                                    int          protocol )
 {
     return new Socket(fd, csock, type, protocol);
 }
 
 Socket*
-Socket::UdpSocketFactory::operator() ( sockfd_t & fd, sockaddr_t & csock,
-                                       SocketType type, int protocol )
+Socket::UdpSocketFactory::operator() ( sockfd_t   & fd, 
+                                       sockaddr_t & csock,
+                                       SocketType   type, 
+                                       int          protocol )
 {
     return new Socket(fd, _csock, type, protocol);
 }
@@ -78,6 +82,7 @@ Socket::Socket()
 {
     Socket::ResetDescriptor(this->_fd);
 }
+
 
 /**  IPV4 constructor for creating a client or server socket utilizing an IPV4
   *  address and port.
@@ -109,6 +114,7 @@ Socket::Socket ( ipv4addr_t ipaddr, uint16_t port, SocketType type, int protocol
     _hoststr       = _addrstr;
     _hoststr.append(":").append(StringUtils::ToString(port));
 }
+
 
 Socket::Socket ( ipv6addr_t ipaddr, uint16_t port, SocketType type, int protocol )
     : _ipaddr(ipaddr),
@@ -208,6 +214,7 @@ Socket::Socket ( addrinfo * ai )
     _hoststr.append("/:").append(StringUtils::ToString(_port));
 }
 
+
 Socket::Socket ( sockfd_t & fd, sockaddr_t & csock, SocketType type, int protocol )
     : _fd(fd),
       _ipaddr(&csock),
@@ -267,7 +274,7 @@ Socket::init ( bool block )
     if ( ! Socket::IsValidDescriptor(_fd) )
     {
         try {
-            Socket::InitializeSocket(_fd, _ipaddr, _socktype, _proto);
+            Socket::CreateSocket(_fd, _ipaddr, _socktype, _proto);
         } catch ( SocketException & err ) {
             _errstr = err.toString();
             return -1;
@@ -932,7 +939,7 @@ Socket::nreadn ( void * vptr, size_t n )
 
 /** Static function for initializing a socket descriptor */
 void
-Socket::InitializeSocket ( sockfd_t & fd, IpAddr & addr, int socktype, int proto )
+Socket::CreateSocket ( sockfd_t & fd, IpAddr & addr, int socktype, int proto )
 {
     std::string errstr = "Socket::initSocket() Fatal Error ";
 
