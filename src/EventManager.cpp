@@ -259,7 +259,7 @@ EventManager::eventLoop()
             if ( io.handler->readable(io) )
                 FD_SET(io.sfd, &_rset);
 
-            if ( io.handler->writeable(io) )
+            if ( io.handler->writable(io) )
                 FD_SET(io.sfd, &_wset);
 }
 
