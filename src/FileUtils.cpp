@@ -1,7 +1,7 @@
 /**
   * @file FileUtils.cpp
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002,2008-2019 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
