@@ -41,6 +41,7 @@ extern "C" {
 
 namespace tcanetpp {
 
+std::string FileUtils::FS = "/";
 
 bool
 FileUtils::InitFileStat ( const std::string & file, filestat_t * fsb )
@@ -143,7 +144,7 @@ FileUtils::GetFilenames ( const std::string & path, FileNameList & files, bool r
     int              flag = 1;
     std::string      search ("*.*");
 
-    search = path + "/" + search;
+    search = path + FS + search;
 
     fileHandle = FindFirstFile(search.c_str(), &findData);
 
@@ -158,7 +159,7 @@ FileUtils::GetFilenames ( const std::string & path, FileNameList & files, bool r
             continue;
         }
 
-        dname = path + "/" + dname;
+        dname = path + FS + dname;
 
         if ( FileUtils::IsDirectory(dname.c_str()) ) {
             if ( recursive )
@@ -188,7 +189,7 @@ FileUtils::GetFilenames ( const std::string & path, FileNameList & files, bool r
         if ( dname.compare(".") == 0 || dname.compare("..") == 0 )
             continue;
 
-        dname = path + "/" + dname;
+        dname = path + FS + dname;
 
         if ( FileUtils::IsDirectory(dname) ) {
             if ( recursive )
@@ -203,6 +204,43 @@ FileUtils::GetFilenames ( const std::string & path, FileNameList & files, bool r
 
     return true;
 }
+
+
+/** GetFilename returns only the last string in a typical filesytem
+  * path separated filename string.
+  *
+  * @param fqfn  - Fully qualified filename. eg. '/home/USER/.bashrc'
+ **/
+std::string
+FileUtils::GetFilename ( const std::string & fqfn )
+{
+    std::string filename;
+    int indx = StringUtils::LastIndexOf(fqfn, FS);
+
+    if ( indx >= 0 )
+        filename = fqfn.substr(indx);
+
+    return filename;
+}
+
+
+/** GetPathname returns the path portion of a typical filesystem 
+  * path separated filename.
+  * 
+  * @param fqfn  - a fully qualified filename
+ **/
+std::string
+FileUtils::GetPathname ( const std::string & fqfn )
+{
+    std::string pathname;
+    int indx = StringUtils::LastIndexOf(fqfn, FS);
+
+    if ( indx >= 0 )
+        pathname = fqfn.substr(0, indx + 1);
+
+    return pathname;
+}
+    
 
 std::string
 FileUtils::GetCurrentPath()
