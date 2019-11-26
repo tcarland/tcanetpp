@@ -89,13 +89,13 @@ EventManager::addTimerEvent ( EventTimerHandler * handler,
     if ( (handler == NULL) || (sec == 0 && usec == 0) )
     {
         _errstr = "EventManager::addTimerEvent: invalid parameters";
-        return 0;
+        return NO_EVID;
     }
 
     timer.evid    =  this->getNewEventId();
 
-    if ( timer.evid == 0 )
-        return 0;
+    if ( timer.evid == NO_EVID )
+        return NO_EVID;
 
     timer.evmgr   = this;
     timer.handler = handler;
@@ -130,12 +130,12 @@ EventManager::addTimerEvent ( EventTimerHandler * handler, time_t abstime )
     EventTimer  timer;
 
     if ( handler == NULL )
-        return 0;
+        return NO_EVID;
 
     timer.evid      = this->getNewEventId();
 
-    if ( timer.evid == 0 )
-        return 0;
+    if ( timer.evid == NO_EVID )
+        return NO_EVID;
 
     timer.evmgr     = this;
     timer.handler   = handler;
@@ -169,17 +169,17 @@ EventManager::addIOEvent ( EventIOHandler * handler, const sockfd_t & sfd,
 
     if ( handler == NULL ) {
         _errstr = "Invalid event handler";
-        return 0;
+        return NO_EVID;
     }
 
     if ( ! Socket::IsValidDescriptor(sfd) ) {
         _errstr = "Invalid IO Descriptor";
-        return 0;
+        return NO_EVID;
     }
 
     io.evid     = this->getNewEventId();
-    if ( io.evid == 0 )
-        return 0;
+    if ( io.evid == NO_EVID )
+        return NO_EVID;
 
     io.evmgr    = this;
     io.handler  = handler;
@@ -261,7 +261,7 @@ EventManager::eventLoop()
 
             if ( io.handler->writable(io) )
                 FD_SET(io.sfd, &_wset);
-}
+        }
 
         // validate timer events
         this->verifyTimers();
@@ -340,8 +340,6 @@ EventManager::eventLoop()
 
     // cleanup timers
     this->clearTimers();
-
-    //printf("EventManager::eventLoop() finished\n");
 
     return;
 }
@@ -480,7 +478,7 @@ EventManager::checkTimers ( const timeval & now )
 
         if ( timer.abstime.tv_sec == 0 )
         {
-            timer.abstime = now;
+            timer.abstime  = now;
             timer.abstime.tv_sec  += timer.evsec;
             timer.abstime.tv_usec += timer.evusec;
             continue;

@@ -60,7 +60,7 @@ lib: arlib
 
 arlib: lib/libtcanetpp.a
 
-solib: libtcanetpp.so.1.2.8
+solib: libtcanetpp.so.1.2.9
 
 libtcapt: lib/libtcapt.a
 
@@ -84,7 +84,7 @@ lib/libtcanetpp.a: ${OBJS}
 	$(make-lib-rule)
 	@echo
 
-libtcanetpp.so.1.2.8: ${OBJS}
+libtcanetpp.so.1.2.9: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)
@@ -118,7 +118,7 @@ distclean: clean libclean doc-clean test-clean
 
 dist: distclean
 ifdef TCAMAKE_DISTDIR
-	@echo "sync distribution to $(TCAMAKE_DISTDIR)/tcanetpp"
+	@echo "Sync distribution to $(TCAMAKE_DISTDIR)/tcanetpp"
 	( $(TOPDIR)/tcamake/scripts/tcamake_build.sh dist $(TCAMAKE_DISTDIR) )
 	@echo
 endif
