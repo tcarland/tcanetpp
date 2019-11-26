@@ -28,6 +28,7 @@
 *.out
 *.app
 
+.vscode
 .settings
 lib
 *.sw*

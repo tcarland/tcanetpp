@@ -159,11 +159,18 @@ FileStat::isSocket() const
     return false;
 }
 
-
+/** Return timestamp of last modification */
 time_t
 FileStat::lastTouched() const
 {
     return _statb.st_mtime;
+}
+
+/** Return timestamp of last access */
+time_t
+FileStat::lastAccessed() const
+{
+    return _statb.st_atime;
 }
 
 /**  Returns the owner's uid. */
