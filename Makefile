@@ -35,7 +35,7 @@ OBJS =	            src/SocketOption.o src/Socket.o src/BufferedSocket.o \
                     src/Whois.o src/EventManager.o \
                     src/IpAddr.o src/AddrInfo.o \
                     src/StringUtils.o src/FileStat.o src/FileUtils.o \
-                    src/LogFacility.o src/tcanetpp_random.o \
+                    src/LogFacility.o src/tcanetpp_random.o src/INotify.o \
                     src/patricia.o src/DeviceMap.o \
                     src/NetworkDevice.o src/NetworkInterface.o
 
