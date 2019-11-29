@@ -3,7 +3,7 @@ tcanetpp
 
   Copyright (c) 2002-2018 Timothy Charlton Arland <tca@charltontechnology.net>
 
-#### LICENSE
+### LICENSE
 
   tcanetpp is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
@@ -26,7 +26,7 @@ tcanetpp
 <!--
   @section overview
   -->
-#### Overview
+### Overview
 
   The 'tcanetpp' library is C++ library for providing core networking
 functionality with an object-oriented interface. The library is a
@@ -39,12 +39,12 @@ Socket class that wraps the Standard Library socket functions as well
 as (WIN32) Winsock2, providing a cross-platform implementation.   
 
   The general goal of the library is to provide core network
-functionality based completely on berkely sockets, libc, and libstdc++,
+functionality based solely on Berkeley Sockets, libc, and libstdc++,
 with no other dependencies (with the exception of pthreads for the
-Thread-related classes). While written in C++, the overall design is intended
-not to be object heavy with little inter-dependencies such that by use of one
-aspect of the library (eg. events) does not depend on other classes of the
-library.  
+Thread-related classes). While written in C++, the overall design is
+intended to be not-so object heavy with as little inter-dependency as
+possible, such that by use of any one feature of the library
+(eg. event api) does not depend on other features of the library.  
 
 The library provides the following functionality:
  * Containers: patricia/radix tree, hashmap, circular buffer, synchronized queue
@@ -53,17 +53,16 @@ The library provides the following functionality:
  * Network: IP functions for manipulating IPv4 and IPv6 Addresses
  * Logging: A thread-safe logging facility
 
+  The library has few external dependencies outside of libc. The
+project can build an additional individual library for the command buffer
+class. The pthreads library dependency is needed for the *Thread* classes.   
 
-  The library has intentionally few external dependencies outside of libc. The
-project can build an additional individual library for the command buffer class. 
-The pthreads library dependency is only needed for the Thread related classes.   
 
-
-#### Building
+### Building
 
  The project uses the **tcamake** build environment for managing project
-dependencies. This provides a Makefile template for projects.  To build, 
-the **tcamake** project should be pulled down to the parent directory of 
+dependencies. This provides a Makefile template for projects.  To build,
+the **tcamake** project should be pulled down to the parent directory of
 the project by running:
 
 ```
@@ -75,20 +74,19 @@ make
 ```
 
 **Unix:**
-   The library requires linking only libpthread, librt and libdl.
+   The library requires linking libpthread, librt and libdl.
 The library librt should be included on linux systems, especially for the
 high resolution timing support provided by the *EventManager*.
 
 **Mac OSX:**
-  *tcamake* is needed plus gnu tools (provided with xcode).
+  *tcamake* is needed in addition to the gnu tools (provided with xcode).
 
 **Win32/64:**
   Only the thread classes (based on libpthread are unsupported with windows.
 The win32 pthread library may be compatible, but ymmv.
 
 
-#### Documentation
+### Documentation
 
-  The library is being documented in an API format via doxygen.
+  The library is documented in an API format via doxygen.
 Run 'make documentation' to generate the docs (doxygen required).  
-
