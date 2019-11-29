@@ -46,7 +46,7 @@ uint32_t INotify::ON_OPEN_MASK   = IN_OPEN | IN_CLOSE;
 
 INotify::INotify()
   : _fd(0),
-    _evbuf(new CircularBuffer(INOTIFY_BUFFER_LEN),
+    _evbuf(new CircularBuffer(INOTIFY_BUFFER_LEN)),
     _debug(false)
 { }
 
