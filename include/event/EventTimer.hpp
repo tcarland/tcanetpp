@@ -4,7 +4,7 @@
   *     EventTimer represents a timer based event within the
   *   EventManager.
   *
-  * Copyright (c) 2002,2008-2019 Timothy Charlton Arland
+  * Copyright (c) 2002,2008-2020 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
