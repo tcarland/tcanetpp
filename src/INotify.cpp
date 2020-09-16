@@ -33,6 +33,7 @@
 #include <iostream>
 
 #include "util/INotify.h"
+#include "CircularBuffer.h"
 
 
 namespace tcanetpp {

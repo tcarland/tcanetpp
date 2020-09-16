@@ -36,8 +36,6 @@
 #endif
 
 #include "net/Socket.h"
-
-#include "net/IpAddr.h"
 #include "util/StringUtils.h"
 
 

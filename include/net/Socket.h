@@ -36,11 +36,10 @@
 #include <string>
 #include <cstdlib>
 
-
 #include "tcanetpp_ip.h"
-#include "IpAddr.h"
 #include "Exception.hpp"
-#include "SocketOption.h"
+#include "net/IpAddr.h"
+#include "net/SocketOption.h"
 
 
 namespace tcanetpp {

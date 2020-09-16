@@ -33,8 +33,6 @@
 #include <map>
 #include <queue>
 
-#include "CircularBuffer.h"
-
 
 namespace tcanetpp {
 
@@ -60,6 +58,8 @@ struct INotifyEvent {
 
 typedef std::map<std::string, int>  WatchMap;
 typedef std::queue<INotifyEvent>    IEventQueue;
+
+class CircularBuffer;
 
 /* ---------------------------------------------------------------- */
 
