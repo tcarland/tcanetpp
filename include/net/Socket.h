@@ -4,7 +4,7 @@
   *    The base Socket class providing an object-oriented
   * interface to sockets for both Unix and Win32 platforms.
   *
-  * Copyright (c) 2002,2010-2018 Timothy Charlton Arland
+  * Copyright (c) 2002,2010-2020 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE
@@ -36,11 +36,10 @@
 #include <string>
 #include <cstdlib>
 
-
 #include "tcanetpp_ip.h"
-#include "IpAddr.h"
 #include "Exception.hpp"
-#include "SocketOption.h"
+#include "net/IpAddr.h"
+#include "net/SocketOption.h"
 
 
 namespace tcanetpp {

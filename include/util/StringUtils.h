@@ -4,7 +4,7 @@
   *    Static utility methods for c++ string manipulation of both ascii
   *  and wide char strings.
   *
-  * Copyright (c) 2002-2018 Timothy Charlton Arland
+  * Copyright (c) 2002-2020 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE

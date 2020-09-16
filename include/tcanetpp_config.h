@@ -3,7 +3,7 @@
   *
   *    Library config.h which defines certain requirements.
   *
-  * Copyright (c) 2002,2008-2016 Timothy Charlton Arland
+  * Copyright (c) 2002,2008-2020 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -28,8 +28,8 @@
 #define _TCANETPP_CONFIG_H_
 
 
-#define TCANETPP_VERSION_TS  "11.26.2019"
-#define TCANETPP_VERSION     "1.2.9"
+#define TCANETPP_VERSION_TS  "19.11"
+#define TCANETPP_VERSION     "1.3.0"
 
 // widechar support
 // comment to disable

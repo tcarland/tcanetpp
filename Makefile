@@ -35,7 +35,7 @@ OBJS =	            src/SocketOption.o src/Socket.o src/BufferedSocket.o \
                     src/Whois.o src/EventManager.o \
                     src/IpAddr.o src/AddrInfo.o \
                     src/StringUtils.o src/FileStat.o src/FileUtils.o \
-                    src/LogFacility.o src/tcanetpp_random.o \
+                    src/LogFacility.o src/tcanetpp_random.o src/INotify.o \
                     src/patricia.o src/DeviceMap.o \
                     src/NetworkDevice.o src/NetworkInterface.o
 
@@ -60,7 +60,7 @@ lib: arlib
 
 arlib: lib/libtcanetpp.a
 
-solib: libtcanetpp.so.1.2.9
+solib: libtcanetpp.so.1.3.0
 
 libtcapt: lib/libtcapt.a
 
@@ -84,7 +84,7 @@ lib/libtcanetpp.a: ${OBJS}
 	$(make-lib-rule)
 	@echo
 
-libtcanetpp.so.1.2.9: ${OBJS}
+libtcanetpp.so.1.3.0: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)
