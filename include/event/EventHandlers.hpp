@@ -72,6 +72,10 @@ class EventIOHandler {
 
     virtual bool readable       ( const EventIO & io ) = 0;
     virtual bool writable       ( const EventIO & io ) = 0;
+    virtual bool writeable      ( const EventIO & io ) 
+    {
+        return this->writable(io);
+    }
     
 };
 
