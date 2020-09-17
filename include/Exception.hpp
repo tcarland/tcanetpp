@@ -49,7 +49,7 @@ public:
         : std::runtime_error(errstr)
     {}
 
-    virtual ~Exception() {}
+    virtual ~Exception() noexcept {}
 
     virtual void printErr() const
     {
