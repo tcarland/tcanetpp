@@ -28,7 +28,7 @@
 #define _TCANETPP_CONFIG_H_
 
 
-#define TCANETPP_VERSION_TS  "20.09"
+#define TCANETPP_VERSION_TS  "20.09.1"
 #define TCANETPP_VERSION     "1.3.1"
 
 // widechar support
