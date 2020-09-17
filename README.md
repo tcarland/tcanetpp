@@ -1,7 +1,7 @@
 tcanetpp
 ========
 
-  Copyright (c) 2002-2018 Timothy Charlton Arland <tca@charltontechnology.net>
+  Copyright (c) 2002-2020 Timothy Charlton Arland <tca@charltontechnology.net>
 
 ### LICENSE
 
