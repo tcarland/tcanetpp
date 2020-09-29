@@ -189,8 +189,8 @@ class Socket {
     void                setUdpNoClose ( bool  noclose );
     bool                getUdpNoClose() const;
 
-    int                 setSocketOption ( int level, int optname, int optval );
-    int                 setSocketOption ( SocketOption  sockopt );
+    bool                setSocketOption ( int level, int optname, int optval );
+    bool                setSocketOption ( SocketOption  sockopt );
     SocketOption        getSocketOption ( SocketOption  sockopt );
 
     void                setBlocking();

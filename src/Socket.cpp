@@ -639,35 +639,39 @@ Socket::getSocketOption ( SocketOption opt )
 
 // ----------------------------------------------------------------------
 
-int
+bool
 Socket::setSocketOption ( int level, int optname, int optval )
 {
     socklen_t  len;
 
     len = (socklen_t) sizeof(int);
 
-    if ( ! Socket::IsValidDescriptor(_fd) )
-        return -1;
+    if ( ! Socket::IsValidDescriptor(_fd) ) {
+        _errstr = "Socket::setSocketOption: FD is invalid";
+        return false;
+    }
 
 #   ifdef WIN32
     if ( ::setsockopt(_fd, level, optname, (const char*) &optval, len) < 0 ) {
         _errstr = "Socket: Error in call to setsockopt()";
-        return -1;
+        return false;
     }
 #   else
     char  serr[ERRORSTRLEN];
     if ( ::setsockopt(_fd, level, optname, (const void*) &optval, len) < 0 ) {
         // test for EOPNOTSUPP here
-        if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
+        if ( errno == EOPNOTSUPP ) 
+            _errstr = "Socket::setSocketOption() EOPNOTSUPP";
+        else if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
             _errstr = serr;
-        return -1;
+        return false;
     }
 #   endif
 
-    return 1;
+    return true;
 }
 
-int
+bool
 Socket::setSocketOption ( SocketOption opt )
 {
     return this->setSocketOption(opt.level(),
