@@ -61,7 +61,7 @@ lib: arlib
 
 arlib: lib/libtcanetpp.a
 
-solib: libtcanetpp.so.1.3.3
+solib: libtcanetpp.so.1.3.4
 
 libtcapt: lib/libtcapt.a
 
@@ -69,6 +69,17 @@ cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
+libtcanetpp.so.1.3.4: ${OBJS}
+	( $(MKDIR) lib )
+	( $(RM) $@ lib/libtcanetpp.so )
+	$(make-so-rule)
+	( mv $@ lib/; cd lib; ln -s $@ libtcanetpp.so )
+	@echo
+
+lib/libtcanetpp.a: ${OBJS}
+	( $(MKDIR) lib )
+	$(make-lib-rule)
+	@echo
 
 lib/libtcapt.a: ${PT_OBJS}
 	( $(MKDIR) lib )
@@ -80,17 +91,6 @@ lib/libcmdbuf.a: ${CMDBUF_OBJS}
 	$(make-lib-rule)
 	@echo
 
-lib/libtcanetpp.a: ${OBJS}
-	( $(MKDIR) lib )
-	$(make-lib-rule)
-	@echo
-
-libtcanetpp.so.1.3.3: ${OBJS}
-	( $(MKDIR) lib )
-	( $(RM) $@ lib/libtcanetpp.so )
-	$(make-so-rule)
-	( mv $@ lib/; cd lib; ln -s $@ libtcanetpp.so )
-	@echo
 
 documentation:
 	(cd docs; ${MAKE} ${MFLAGS} ${MVARS} all )

@@ -38,11 +38,11 @@
 
 namespace tcanetpp {
 
-
-#define TCANET_SMLSTRLINE  256
-#define TCANET_MEDSTRLINE  1024
-#define TCANET_BIGSTRLINE  2048
-#define TCANET_MAXSTRLINE  4096
+#define TCANET_TINYSTRLINE  32
+#define TCANET_SMALLSTRLINE 256
+#define TCANET_MEDSTRLINE   4096
+#define TCANET_BIGSTRLINE   8192
+#define TCANET_MAXSTRLINE   16384
 
 
 /**   A class of static methods for convenient string manipulation. */
