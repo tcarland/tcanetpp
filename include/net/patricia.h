@@ -1,13 +1,12 @@
 /**
   * @file patricia.h
   *
-  *    A Radix Trie implementation.
+  *    A Patricia or Radix Trie implementation.
   *
-  *    Note that some functions (notably longestMatch) make
-  * use of static variables, which can cause concurrancy
-  * issues in a threaded environment.
-  *    If thread safety is needed, care should be exercised
-  * to properly synchronize function calls.
+  *    Note that some functions (notably longestMatch) make use of
+  * static variables which are not thread-safe. If thread safety is 
+  * needed, care should be exercised to properly synchronize function 
+  * calls.
   *
   * Copyright (c) 2002,2008-2020 Timothy Charlton Arland
   * @author tcarland@gmail.com

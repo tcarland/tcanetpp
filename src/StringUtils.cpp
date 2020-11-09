@@ -216,12 +216,12 @@ StringUtils::ToHexString ( const uint8_t * buf, size_t len, size_t offset )
 {
     const uint8_t *ptr;
     std::string    hexl;
-    char           hexc[TCANET_SMLSTRLINE];
+    char           hexc[TCANET_SMALLSTRLINE];
     char          *hx;
     size_t         i, gap, lt;
     int            rt = 0;
 
-    lt  = TCANET_SMLSTRLINE;
+    lt  = TCANET_SMALLSTRLINE;
     hx  = &hexc[0];
     rt  = ::snprintf(hx, lt, "%05lu  ", offset);
     hx += rt;

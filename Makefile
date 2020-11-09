@@ -50,18 +50,15 @@ ALL_BINS = 	    $(BIN)
 
 # ---------------------------------------------
 
-all: lib
-
-include ${TOPDIR}/tcamake/project_defs
+include ${TOPDIR}/tcamake/tcamake_include
 
 # ---------------------------------------------
 
+all: lib
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-
 solib: libtcanetpp.so.1.3.4
-
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf

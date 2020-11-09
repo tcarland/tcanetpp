@@ -1,6 +1,6 @@
 # profile_debug_mt 
 export PROFILE="tcanetpp_debug_mt"
-export TCAMAKE_PREFIX="/usr/local"
+export TCAMAKE_PREFIX=
 export TCAMAKE_DEBUG=1
 export USE_PTHREADS=1
 export USE_LIBRT=1

@@ -2,7 +2,7 @@
   * @file tcanetpp_random.c
   *   Random number wrapper
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland 
+  * Copyright (c) 2002-2018 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
