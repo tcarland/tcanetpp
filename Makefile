@@ -1,4 +1,5 @@
 # Makefile for tcanetpp
+#  Requires 'tcamake' build environment to exist in TOPDIR
 #
 TOPDIR = ..
 
@@ -15,14 +16,12 @@ endif
 #-------------------#
 
 ifdef TCAMAKE_DEBUG
-  OPT_FLAGS =       -g
-# -DEV_DEBUG
+  OPT_FLAGS =       -g -DEV_DEBUG
 endif
 
 OPT_FLAGS +=	    -fPIC -O2
 CCSHARED += 	    -Wl,-soname,$@
 CXXFLAGS =          -std=c++11
-#CXXFLAGS = -std=c++0x
 
 INCLUDES =          -Iinclude
 LIBS =
