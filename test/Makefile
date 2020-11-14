@@ -7,21 +7,22 @@ NEED_TCANETPP = 1
 ifdef USE_LIBRT
 NEED_LIBRT = 1
 endif
+
 ifdef USE_PTHREADS
 NEED_PTHREADS = 1
 endif
 
 ifdef TNMS_DEBUG
-OPT_FLAGS =	-g 
+OPT_FLAGS = -g 
 endif
-OPT_FLAGS +=	-DTWHOIS_MAIN 
 
-INCLUDES=	-I. 
+INCLUDES= 	-I. 
 LIBS=
-CXXFLAGS=       -std=c++0x
+CXXFLAGS= 	-std=c++0x
+OPT_FLAGS += 	-DTWHOIS_MAIN 
 
 
-ASOBJ=          ../src/IpAddr.o ../src/AddrInfo.o \
+ASOBJ=  	../src/IpAddr.o ../src/AddrInfo.o \
 		../src/tcanetpp_random.o ../src/Socket.o \
 		../src/SocketOption.o ../src/Whois.o
 
@@ -40,12 +41,11 @@ ALL_OBJS=	$(OBJS) $(ASOBJ) $(STROBJ) $(CBUFF_OBJS) $(CIDR_OBJS)
 ALL_BINS= 	$(BIN)
 
 
+include ${TOPDIR}/tcamake/tcamake_include
+
 
 all: asnclean asnwho ipconvert client server cidrtest strtest bufftest \
-	pttest pingt gktrace packtest filetest thtest
-
-
-include ${TOPDIR}/tcamake/project_defs
+pttest pingt gktrace packtest filetest thtest
 
 
 asnclean:
@@ -129,5 +129,4 @@ clean:
 	*.d *.D *.bd *.o
 
 distclean: clean
-
 

@@ -1,4 +1,5 @@
 # Makefile for tcanetpp
+#  Requires 'tcamake' build environment to exist in TOPDIR
 #
 TOPDIR = ..
 
@@ -15,14 +16,12 @@ endif
 #-------------------#
 
 ifdef TCAMAKE_DEBUG
-  OPT_FLAGS =       -g
-# -DEV_DEBUG
+  OPT_FLAGS =       -g -DEV_DEBUG
 endif
 
 OPT_FLAGS +=	    -fPIC -O2
 CCSHARED += 	    -Wl,-soname,$@
 CXXFLAGS =          -std=c++11
-#CXXFLAGS = -std=c++0x
 
 INCLUDES =          -Iinclude
 LIBS =
@@ -51,24 +50,32 @@ ALL_BINS = 	    $(BIN)
 
 # ---------------------------------------------
 
-all: lib
-
-include ${TOPDIR}/tcamake/project_defs
+include ${TOPDIR}/tcamake/tcamake_include
 
 # ---------------------------------------------
 
+all: lib
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-
-solib: libtcanetpp.so.1.3.3
-
+solib: libtcanetpp.so.1.3.4
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
+libtcanetpp.so.1.3.4: ${OBJS}
+	( $(MKDIR) lib )
+	( $(RM) $@ lib/libtcanetpp.so )
+	$(make-so-rule)
+	( mv $@ lib/; cd lib; ln -s $@ libtcanetpp.so )
+	@echo
+
+lib/libtcanetpp.a: ${OBJS}
+	( $(MKDIR) lib )
+	$(make-lib-rule)
+	@echo
 
 lib/libtcapt.a: ${PT_OBJS}
 	( $(MKDIR) lib )
@@ -80,17 +87,6 @@ lib/libcmdbuf.a: ${CMDBUF_OBJS}
 	$(make-lib-rule)
 	@echo
 
-lib/libtcanetpp.a: ${OBJS}
-	( $(MKDIR) lib )
-	$(make-lib-rule)
-	@echo
-
-libtcanetpp.so.1.3.3: ${OBJS}
-	( $(MKDIR) lib )
-	( $(RM) $@ lib/libtcanetpp.so )
-	$(make-so-rule)
-	( mv $@ lib/; cd lib; ln -s $@ libtcanetpp.so )
-	@echo
 
 documentation:
 	(cd docs; ${MAKE} ${MFLAGS} ${MVARS} all )

@@ -1,7 +1,7 @@
 /**
   * @file SocketOption.cpp
   *
-  * Copyright (c) 2002,2008-2018 Timothy Charlton Arland
+  * Copyright (c) 2002,2008-2020 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
@@ -132,7 +132,6 @@ SocketOption::SetSndTimeout ( int val )
     return ( SocketOption(SOL_SOCKET, SO_SNDTIMEO, val, "SO_SNDTIMEO") );
 }
 
-
 SocketOption
 SocketOption::SetNoFragment ( int val )
 {
@@ -147,7 +146,6 @@ SocketOption::SetNoFragment ( int val )
     return ( SocketOption() );
 # endif
 }
-
 
 SocketOption
 SocketOption::SetTTL ( int val )

@@ -50,12 +50,13 @@ The library provides the following functionality:
  * Containers: patricia/radix tree, hashmap, circular buffer, synchronized queue
  * Event Management for handling both network I/O and sub-second timers
  * Threads: An interface for pthreads and pthread mutexes
- * Network: IP functions for manipulating IPv4 and IPv6 Addresses
+ * Network: Socket and IP functions for manipulating IPv4 and IPv6 Addresses
  * Logging: A thread-safe logging facility
 
   The library has few external dependencies outside of libc. The
 project can build an additional individual library for the command buffer
-class. The pthreads library dependency is needed for the *Thread* classes.   
+class. The pthreads library dependency is needed for the *Thread* classes 
+and librt on linux systems.  
 
 
 ### Building
@@ -63,13 +64,18 @@ class. The pthreads library dependency is needed for the *Thread* classes.
  The project uses the **tcamake** build environment for managing project
 dependencies. This provides a Makefile template for projects.  To build,
 the **tcamake** project should be pulled down to the parent directory of
-the project by running:
+the project.
 
 ```
 cd ..
 git clone https://github.com/tcarland/tcamake
 cd tcanetpp
 export TCAMAKE_PROJECT=1
+```
+
+Select a build profile and run `make`.
+```
+source resources/profile_release_mt
 make
 ```
 
@@ -83,7 +89,7 @@ high resolution timing support provided by the *EventManager*.
 
 **Win32/64:**
   Only the thread classes (based on libpthread are unsupported with windows.
-The win32 pthread library may be compatible, but ymmv.
+The win32 pthread library is mostly be compatible, but ymmv.
 
 
 ### Documentation

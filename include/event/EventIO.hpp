@@ -4,7 +4,7 @@
   *     EventIO represents an I/O event (eg. Socket descriptor)
   *   for the EventManager.
   *
-  * Copyright (c) 2002,2008-2020 Timothy Charlton Arland
+  * Copyright (c) 2002-2020 Timothy Charlton Arland
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
