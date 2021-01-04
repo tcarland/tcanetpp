@@ -58,14 +58,14 @@ all: lib
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-solib: libtcanetpp.so.1.3.4
+solib: libtcanetpp.so.1.3.5
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
-libtcanetpp.so.1.3.4: ${OBJS}
+libtcanetpp.so.1.3.5: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)
@@ -100,11 +100,17 @@ doc-clean:
 	( cd docs; $(MAKE) clean )
 	@echo
 
+.PHONY: test
+test:
+	( cd test; $(MAKE) all )
+	@echo 
+
 clean:
 	$(RM) $(ALL_OBJS) \
 	src/*.d src/*.D src/*.bd src/*.o lib/*.bd *.bd
 	@echo
 
+testclean: test-clean
 test-clean:
 	( cd test; $(MAKE) distclean )
 	@echo

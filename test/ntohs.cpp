@@ -9,12 +9,12 @@
 
 void usage()
 {
-    std::cout << "Usage: ntohl <number>\n\n"
-        << "ntohs or \"Network to Host Short\" converts a provided argument number\n"
-        << "from Network(Big Endian) to Host order (assumed Little-endian)\n"
+    std::cout << "Usage: ntohs <number>\n\n"
+        << "ntohs or \"Network to Host Short\" converts the provided argument (as an integer)  \n"
+        << "from Network Order or Big-Endian to Host Order or Little-Endian. \n"
         << "The number is assumed to be an unsigned short (2 bytes).\n"
         << "This tool is intended for convenience when using tools like network sniffers\n"
-        << "that display bytes in typical network order\n";
+        << "that typically display bytes in network order\n";
     exit(0);
 }
 

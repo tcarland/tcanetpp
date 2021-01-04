@@ -28,8 +28,8 @@
 #define _TCANETPP_CONFIG_H_
 
 
-#define TCANETPP_VERSION_TS  "20.11.1"
-#define TCANETPP_VERSION     "1.3.4"
+#define TCANETPP_VERSION_TS  "20.12"
+#define TCANETPP_VERSION     "1.3.5"
 #define TCANETPP_WIDECHAR    1
 
 

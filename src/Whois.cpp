@@ -179,19 +179,14 @@ int main ( int argc, char ** argv )
     std::string  host, query;
     char *       hoststr = NULL;
     char         optChar;
-    bool         verbose = false;
 
-    while ( (optChar = getopt(argc, argv, "h:v")) != EOF )
+    while ( (optChar = getopt(argc, argv, "h:")) != EOF )
     {
         switch ( optChar ) {
             case 'h':
                 hoststr = strdup(optarg);
                 break;
-            case 'v':
-                verbose = true;
-                break;
             default:
-                usage();
                 break;
         }
     }
