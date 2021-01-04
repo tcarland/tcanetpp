@@ -7,7 +7,7 @@
   *  occur in a std read/write function calls. The get/set ptr functions
   *  should be used with caution.
   *
-  * Copyright (c) 2001-2020 Timothy Charlton Arland
+  * Copyright (c) 2001-2021 Timothy Charlton Arland
   * @author tcarland@gmail.com
   *
   * @section LICENSE

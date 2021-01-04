@@ -4,7 +4,7 @@
   *    Defines the interfaces for registering events with the 
   *  EventManager.
   * 
-  * Copyright (c) 2002-2020 Timothy Charlton Arland 
+  * Copyright (c) 2002-2021 Timothy Charlton Arland 
   * @author  tcarland@gmail.com
   *
   * @section LICENSE
