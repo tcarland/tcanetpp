@@ -34,15 +34,7 @@ lib
 
 docs/html
 docs/latex
-test/ipconvert
-test/client
-test/server
-test/gktrace
-test/pingt
-test/strtest
-test/bufftest
-test/cidrtest
-test/filetest
-test/pttest
-test/packtest
-test/thtest
+test
+!test/*.h
+!test/*.cc
+!test/*.cpp
