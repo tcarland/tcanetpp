@@ -1,13 +1,11 @@
 /**
   * @file EventTimer.hpp
   *
-  *     EventTimer represents a timer based event within the
-  *   EventManager.
-  *
-  * Copyright (c) 2002-2021 Timothy Charlton Arland
-  * @author  tcarland@gmail.com
+  *  EventTimer represents a timer based event within the EventManager.
   *
   * @section LICENSE
+  *
+  * Copyright (c) 2002-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

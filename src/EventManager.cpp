@@ -1,12 +1,11 @@
 /**
   * @file EventManager.cpp
   *
-  *   Class for handling multiplexing data I/O and timer events.
-  *
-  * Copyright (c) 2002-2021 Timothy Charlton Arland
-  * @author  tcarland@gmail.com
+  * Class for handling multiplexing data I/O and timer events.
   *
   * @section LICENSE
+  *
+  * Copyright (c) 2001-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

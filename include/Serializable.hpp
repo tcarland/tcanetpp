@@ -1,10 +1,9 @@
 /**
   * @file Serializable.hpp
   *
-  * Copyright (c) 2008-2018 Timothy Charlton Arland
-  * @author tcarland@gmail.com
-  *
   * @section LICENSE
+  *
+  * Copyright (c) 2008-2018 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

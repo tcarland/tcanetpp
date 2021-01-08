@@ -8,10 +8,9 @@
   * means we avoid the issue of some fields varying slightly in
   * convention across platforms.
   *
-  * Copyright (c) 2010-2020 Timothy Charlton Arland
-  * @author  tcarland@gmail.com
-  *
   * @section LICENSE
+  *
+  * Copyright (c) 2010-2020 Timothy Charlton Arland  <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

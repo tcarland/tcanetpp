@@ -1,10 +1,9 @@
 /**
   * @file SocketOption.h
   *
-  * Copyright (c) 2008-2020 Timothy Charlton Arland 
-  * @author tcarland@gmail.com
-  *
   * @section LICENSE
+  *
+  * Copyright (c) 2008-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -31,11 +30,10 @@
 namespace tcanetpp {
 
 
-/**  An instance of this class represents a single low-level
-  * socket option consisting of the socket 'level' (SO_SOCKET),
-  * the option name and corresponding value.
-  * This is used mostly as a convenient factory class for
-  * creating a socket option for use by the tcanetpp::Socket class
+/** An instance of this class represents a single low-level socket option 
+  * consisting of the socket 'level' (SO_SOCKET), the option name and 
+  * corresponding value. This is intended as a convenient factory class for
+  * creating a socket options for use by the tcanetpp::Socket class
   * through use of the static factory methods.
  **/
 class SocketOption {

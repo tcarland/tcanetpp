@@ -4,10 +4,9 @@
   * Class for holding a struct sockaddr for representing either
   * an IPv4 or IPv6 address.
   *
-  * Copyright (c) 2010-2021 Timothy Charlton Arland
-  * @author tcarland@gmail.com
-  *
   * @section LICENSE
+  *
+  * Copyright (c) 2001-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

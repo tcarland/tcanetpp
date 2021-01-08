@@ -1,10 +1,9 @@
 /**
   * @file BufferedSocket.h
   *
-  * Copyright (c) 2002-2018 Timothy Charlton Arland
-  * @author tcarland@gmail.com
-  *
   * @section LICENSE
+  *
+  * Copyright (c) 2002-2018 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

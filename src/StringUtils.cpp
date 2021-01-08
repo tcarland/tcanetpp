@@ -1,12 +1,11 @@
 /**
   * @file StringUtils.cpp
   *
-  *   A collection of static methods for c++ string manipulation.
-  *
-  * Copyright (c) 2002-2020 Timothy Charlton Arland
-  * @author  tcarland@gmail.com
+  * A collection of static methods for c++ string manipulation.
   *
   * @section LICENSE
+  *
+  * Copyright (c) 2001-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

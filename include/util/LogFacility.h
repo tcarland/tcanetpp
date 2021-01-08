@@ -1,14 +1,13 @@
 /**
   *  @file LogFacility.h
   *
-  *    Logging facility supporting multiple, concurrent
-  *  logging i/o streams in a thread-safe manner. Supports syslog(unix),
-  *  file logging, or stdc++ iostream*
-  *
-  * Copyright (c) 2004-2020 Timothy Charlton Arland
-  * @author tcarland@gmail.com
+  *  Logging facility supporting multiple, concurrent i/o log streams 
+  *  in a thread-safe manner. Supports syslog(unix), file logging, and
+  *  stdc++ iostream*
   *
   * @section LICENSE
+  *
+  * Copyright (c) 2001-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

@@ -1,12 +1,11 @@
 /**
   * @file PrefixTree.h
   *
-  *   A STL wrapper to the patricia tree (patricia.h)
-  *
-  * Copyright (c) 2002-2020 Timothy Charlton Arland
-  * @author tcarland@gmail.com
+  * STL wrapper to the patricia tree (patricia.h)
   *
   * @section LICENSE
+  *
+  * Copyright (c) 2002-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -35,15 +34,14 @@
 namespace tcanetpp {
 
 
-/**    A C++ template that wraps the use of the radix tree implementation
+/**  A C++ template that wraps the use of the radix tree implementation
   *  from 'patricia.h'.
   *
-  *    The underlying trie handles user data as void pointers so as a result,
+  *  The underlying trie handles user data as void pointers so as a result,
   *  this template, although not type specific, must be instantiated as a
   *  container of object pointers.
   *
-  *  The following example demonstrates usage:
-  *
+  *  A short example demonstrates usage:
   *  {
   *    PrefixTree<Object*>  pt;
   *
