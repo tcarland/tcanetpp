@@ -1,10 +1,9 @@
 /**
   * @file Whois.cpp
   *
-  * Copyright (c) 2008-2018 Timothy Charlton Arland
-  * @author tcarland@gmail.com
-  *
   * @section LICENSE
+  *
+  * Copyright (c) 2001-2018 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -179,19 +178,14 @@ int main ( int argc, char ** argv )
     std::string  host, query;
     char *       hoststr = NULL;
     char         optChar;
-    bool         verbose = false;
 
-    while ( (optChar = getopt(argc, argv, "h:v")) != EOF )
+    while ( (optChar = getopt(argc, argv, "h:")) != EOF )
     {
         switch ( optChar ) {
             case 'h':
                 hoststr = strdup(optarg);
                 break;
-            case 'v':
-                verbose = true;
-                break;
             default:
-                usage();
                 break;
         }
     }

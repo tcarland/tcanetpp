@@ -128,7 +128,7 @@ int main ( int argc, char **argv )
     }
 
     
-    printf("Finished insert, nodecnt is %d\n", pt_nodes(ptree));
+    printf("Finished insert, nodecnt is %lu\n", pt_nodes(ptree));
     pt_visit_node(ptree, &debugNodeHandler);
     sleep(1);
 
@@ -157,7 +157,7 @@ int main ( int argc, char **argv )
             printf("Found addr %s\n", vIter->toString().c_str());
     }
 
-    printf("pt size is %d\n", pt_size(ptree));
+    printf("pt size is %lu\n", pt_size(ptree));
 
     srcp.clear();
 
@@ -185,12 +185,12 @@ int main ( int argc, char **argv )
     else
         printf("ERROR: Match not found\n");
 
-    printf("Finished insert, nodecnt is %d\n", pt_nodes(ptree));
+    printf("Finished insert, nodecnt is %lu\n", pt_nodes(ptree));
 
     pt_visit_node(ptree, &debugNodeHandler);
     pt_free(ptree, &nodeFreeHandler);
 
-    printf("pt size is %d\n", pt_size(ptree));
+    printf("pt size is %lu\n", pt_size(ptree));
 
     return 0;
 }

@@ -1,12 +1,11 @@
 /**
   * @file ThreadLock.h
   *
-  *   Threadlock wraps a pthread conditional mutex.
-  *
-  * Copyright (c) 2008-2020 Timothy Charlton Arland
-  * @author  tcarland@gmail.com
+  * Threadlock wraps a pthread conditional mutex.
   *
   * @section LICENSE
+  *
+  * Copyright (c) 2008-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

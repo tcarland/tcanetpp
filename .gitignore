@@ -29,5 +29,12 @@
 *.app
 
 .settings
-lib
 *.sw*
+
+lib
+docs/html
+docs/latex
+test
+!test/*.h
+!test/*.cc
+!test/*.cpp

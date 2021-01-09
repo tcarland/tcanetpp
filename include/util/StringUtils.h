@@ -1,13 +1,12 @@
 /**
   * @file StringUtils.h
   *
-  *    Static utility methods for c++ string manipulation of both ascii
-  *  and wide char strings.
-  *
-  * Copyright (c) 2002-2020 Timothy Charlton Arland
-  * @author tcarland@gmail.com
+  * Static utility methods for c++ string manipulation of both ascii
+  * and wide char strings.
   *
   * @section LICENSE
+  *
+  * Copyright (c) 2001-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

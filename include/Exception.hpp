@@ -1,12 +1,11 @@
 /**
   * @file Exception.hpp
   *
-  *  Base Exception class used and thrown by the tcanetpp library.
-  *
-  * Copyright (c) 2002-2020 Timothy Charlton Arland 
-  * @author tcarland@gmail.com
+  * Base Exception class used and thrown by the tcanetpp library.
   *
   * @section LICENSE
+  *
+  * Copyright (c) 2002-2020 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

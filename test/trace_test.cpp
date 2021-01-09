@@ -15,20 +15,20 @@ extern "C" {
 #include <algorithm>
 
 #include "tcanetpp_ip.h"
-#include "net/Socket.h"
+#include "CircularBuffer.h"
 #include "event/EventManager.h"
+#include "net/Socket.h"
 #include "net/IpAddr.h"
 #include "net/AddrInfo.h"
+#include "util/LogFacility.h"
 #include "util/StringUtils.h"
-#include "CircularBuffer.h"
-#include "LogFacility.h"
 using namespace tcanetpp;
 
 
 #define SEQTIMEOUT      1
 #define MAXCONLOSS      3
 
-const char* Version = "v0.14";
+const char* Version = "v20.12";
 bool Alarm = false;
 int  Pid   = 0;
 
@@ -394,7 +394,7 @@ int main ( int argc, char ** argv )
                 req.seq    = 0;
                 req.chksum = Socket::IpChkSum(((uint16_t*)&req), sizeof(neticmp_h));
 
-                if ( icmps->setSocketOption(IPPROTO_IP, IP_TTL, ttl) < 0 )
+                if ( ! icmps->setSocketOption(IPPROTO_IP, IP_TTL, ttl) )
                     errorOut("error in setsockopt" + udps->getErrorString());
 
                 wt = icmps->write(&req, sizeof(neticmp_h));
@@ -404,7 +404,7 @@ int main ( int argc, char ** argv )
                 udph->srcport = htons(port+ttl);
                 udph->chksum  = 0;
 
-                if ( udps->setSocketOption(IPPROTO_IP, IP_TTL, ttl) < 0 )
+                if ( ! udps->setSocketOption(IPPROTO_IP, IP_TTL, ttl) )
                     errorOut("error in setsockopt" + udps->getErrorString());
 
                 wt = udps->write(wbuff, idsz);

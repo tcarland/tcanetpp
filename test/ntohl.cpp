@@ -10,11 +10,11 @@
 void usage()
 {
     std::cout << "Usage: ntohl <number>\n\n"
-        << "ntohs or \"Network to Host Long\" converts a provided argument number\n"
-        << "from Network(Big Endian) to Host order (assumed Little-endian)\n"
-        << "The number is assumed to be an unsigned long (4 bytes).\n"
+        << "ntohs or \"Network to Host Long\" converts a provided argument number. \n"
+        << "from Network Order or Big-Endian to Host Order or Little-Endian. \n"
+        << "The number provided is assumed to be an unsigned long (4 bytes).\n"
         << "This tool is intended for convenience when using tools like network sniffers\n"
-        << "that display bytes in typical network order\n";
+        << "that typically display bytes in network order\n";
     exit(0);
 }
 

@@ -1,13 +1,12 @@
 /**
   * @file Socket.h
   *
-  *    The base Socket class providing an object-oriented
-  * interface to sockets for both Unix and Win32 platforms.
-  *
-  * Copyright (c) 2002-2020 Timothy Charlton Arland
-  * @author tcarland@gmail.com
+  * The Socket class provides an object-oriented interface to sockets 
+  * for both Unix and Win32 platforms.
   *
   * @section LICENSE
+  *
+  * Copyright (c) 2002-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

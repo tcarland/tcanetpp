@@ -1,12 +1,9 @@
 /**
   * @file tcanetpp_config.h
   *
-  *    Library config.h which defines certain requirements.
-  *
-  * Copyright (c) 2002-2020 Timothy Charlton Arland
-  * @author  tcarland@gmail.com
-  *
   * @section LICENSE
+  *
+  * Copyright (c) 2002-2021 Timothy Charlton Arland  <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -28,8 +25,8 @@
 #define _TCANETPP_CONFIG_H_
 
 
-#define TCANETPP_VERSION_TS  "20.11.1"
-#define TCANETPP_VERSION     "1.3.4"
+#define TCANETPP_VERSION_TS  "21.01"
+#define TCANETPP_VERSION     "1.4.0"
 #define TCANETPP_WIDECHAR    1
 
 

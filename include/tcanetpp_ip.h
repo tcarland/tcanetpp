@@ -1,17 +1,16 @@
 /**
   * @file tcanetpp_ip.h
   *
-  *   Defines various IP headers.
+  * Defines various IP headers.
   *
   * These are defined within this library to avoid having to
   * use platform specific defines for various headers. This also
   * means we avoid the issue of some fields varying slightly in
   * convention across platforms.
   *
-  * Copyright (c) 2010-2020 Timothy Charlton Arland
-  * @author  tcarland@gmail.com
-  *
   * @section LICENSE
+  *
+  * Copyright (c) 2010-2021 Timothy Charlton Arland  <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

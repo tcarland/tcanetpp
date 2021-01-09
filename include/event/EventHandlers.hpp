@@ -1,13 +1,11 @@
 /**  
   * @file EventHandlers.h
   * 
-  *    Defines the interfaces for registering events with the 
-  *  EventManager.
+  * Defines the interfaces for registering events with the EventManager.
   * 
-  * Copyright (c) 2002-2020 Timothy Charlton Arland 
-  * @author  tcarland@gmail.com
-  *
   * @section LICENSE
+  *
+  * Copyright (c) 2002-2021 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

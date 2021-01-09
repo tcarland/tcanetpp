@@ -16,10 +16,10 @@ ifdef TNMS_DEBUG
 OPT_FLAGS = -g 
 endif
 
-INCLUDES= 	-I. 
+INCLUDES= -I. 
 LIBS=
-CXXFLAGS= 	-std=c++0x
-OPT_FLAGS += 	-DTWHOIS_MAIN 
+CXXFLAGS= -std=c++0x
+OPT_FLAGS+= -DTWHOIS_MAIN 
 
 
 ASOBJ=  	../src/IpAddr.o ../src/AddrInfo.o \
@@ -28,17 +28,17 @@ ASOBJ=  	../src/IpAddr.o ../src/AddrInfo.o \
 
 OBJS=		client.o server.o pack_test.o ping.o
 
-CBUFF_OBJS=     cirbuffer_test.o
-CIDR_OBJS=	cidrtest.o
+CBUFF_OBJS= cirbuffer_test.o
+CIDR_OBJS=  cidrtest.o
 PT_OBJS=        
-PTT_OBJS=	pt_test.o
+PTT_OBJS=   pt_test.o
 
-BIN=		asnwho ipconvert client server cachetest pttest pfxtest \
-		strtest bufftest cidrtest packtest pingt gktrace filetest \
-		thtest hashtest pfxbase
+BIN= asnwho ipconvert client server cachetest pttest pfxtest \
+strtest bufftest cidrtest packtest pingt gktrace filetest \
+thtest hashtest pfxbase
 
-ALL_OBJS=	$(OBJS) $(ASOBJ) $(STROBJ) $(CBUFF_OBJS) $(CIDR_OBJS)
-ALL_BINS= 	$(BIN)
+ALL_OBJS=$(OBJS) $(ASOBJ) $(STROBJ) $(CBUFF_OBJS) $(CIDR_OBJS)
+ALL_BINS=$(BIN)
 
 
 include ${TOPDIR}/tcamake/tcamake_include
