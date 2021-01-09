@@ -1,7 +1,7 @@
 /**
   * @file Exception.hpp
   *
-  *  Base Exception class used and thrown by the tcanetpp library.
+  * Base Exception class used and thrown by the tcanetpp library.
   *
   * @section LICENSE
   *

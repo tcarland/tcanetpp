@@ -1,8 +1,8 @@
 /**
   * @file StringUtils.h
   *
-  *  Static utility methods for c++ string manipulation of both ascii
-  *  and wide char strings.
+  * Static utility methods for c++ string manipulation of both ascii
+  * and wide char strings.
   *
   * @section LICENSE
   *

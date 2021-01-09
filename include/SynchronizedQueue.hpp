@@ -1,7 +1,7 @@
 /**
   * @file SynchronizedQueue.hpp
   *
-  *   A thread-safe wrapper to the STL queue.
+  * A thread-safe wrapper to the STL queue.
   *
   * @section LICENSE
   *

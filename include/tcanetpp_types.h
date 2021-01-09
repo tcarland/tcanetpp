@@ -1,7 +1,7 @@
 /**
   * @file tcanetpp_types.h
   *
-  *   This header provides various defintions and typedefs that help to ensure
+  * This header provides various defintions and typedefs that help to ensure
   * cross-platform compilation, primarily between Unix and Win32.
   *
   * @section LICENSE

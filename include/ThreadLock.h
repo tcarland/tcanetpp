@@ -1,7 +1,7 @@
 /**
   * @file ThreadLock.h
   *
-  *   Threadlock wraps a pthread conditional mutex.
+  * Threadlock wraps a pthread conditional mutex.
   *
   * @section LICENSE
   *

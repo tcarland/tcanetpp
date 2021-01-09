@@ -1,7 +1,7 @@
 /**
   * @file Serializer.h
   *
-  *   Serialization functions which can be used by objects that are
+  *  Serialization functions which can be used by objects that are
   * 'Serializable'.
   *
   * @section LICENSE

@@ -58,14 +58,14 @@ all: lib
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-solib: libtcanetpp.so.1.3.5
+solib: libtcanetpp.so.1.4.0
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
-libtcanetpp.so.1.3.5: ${OBJS}
+libtcanetpp.so.1.4.0: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)

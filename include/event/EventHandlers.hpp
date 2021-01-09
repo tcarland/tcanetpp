@@ -1,7 +1,7 @@
 /**  
   * @file EventHandlers.h
   * 
-  *  Defines the interfaces for registering events with the EventManager.
+  * Defines the interfaces for registering events with the EventManager.
   * 
   * @section LICENSE
   *

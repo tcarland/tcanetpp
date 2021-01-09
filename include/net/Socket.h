@@ -1,7 +1,7 @@
 /**
   * @file Socket.h
   *
-  * The base Socket class providing an object-oriented interface to sockets 
+  * The Socket class provides an object-oriented interface to sockets 
   * for both Unix and Win32 platforms.
   *
   * @section LICENSE

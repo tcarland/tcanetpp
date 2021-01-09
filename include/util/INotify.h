@@ -1,4 +1,4 @@
- /*
+/**
   * @file INotify.h
   *
   * The INotify class wraps linux 'sys/inotify.h' inotify api.

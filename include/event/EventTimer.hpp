@@ -1,7 +1,7 @@
 /**
   * @file EventTimer.hpp
   *
-  *  EventTimer represents a timer based event within the EventManager.
+  * EventTimer represents a timer based event within the EventManager.
   *
   * @section LICENSE
   *

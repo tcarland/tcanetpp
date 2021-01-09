@@ -1,7 +1,7 @@
 /**
   * @file Thread.h
   *
-  *    An abstract Thread class wrapping libpthread.
+  *  An abstract Thread class wrapping libpthread.
   *
   * @section LICENSE
   *

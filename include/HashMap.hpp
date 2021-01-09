@@ -31,11 +31,11 @@
 namespace tcanetpp {
 
 
-/**  A wrapper to the unordered_map<> class that provides a
+/** A wrapper to unordered_map<> that provides a
   * default hasher implementation for using string keys.
   * The unordered_map template is a part of the newer C++-11
-  * standard and requires the '-std=c++0x' compile flag depending
-  * on the compiler and its version (ie. required in gcc <4.8).
+  * standard and requires the '-std=c++11' compile flag depending
+  * on the compiler and its version.
  **/
 template< typename ValueType >
 class HashMap {
