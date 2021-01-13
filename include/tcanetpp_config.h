@@ -26,7 +26,7 @@
 
 
 #define TCANETPP_VERSION_TS  "21.01"
-#define TCANETPP_VERSION     "1.4.0"
+#define TCANETPP_VERSION     "1.4.1"
 #define TCANETPP_WIDECHAR    1
 
 
