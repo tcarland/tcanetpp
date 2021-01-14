@@ -50,7 +50,7 @@ of the library.
 libtcanetpp provides the following core functionality:
  * Containers: patricia/radix tree, hashmap, circular buffer, synchronized queue
  * Event Management for handling both network I/O and sub-second timers
- * Threads: An interface for pthreads and pthread mutexes
+ * Threads: An interface for managing pthreads and pthread mutexes
  * Network: Socket and IP functions for manipulating IPv4 and IPv6 Addresses
  * Logging: A thread-safe logging facility  
  

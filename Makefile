@@ -54,7 +54,7 @@ include ${TOPDIR}/tcamake/tcamake_include
 
 # ---------------------------------------------
 
-all: lib
+all: lib cmdbuf
 lib: arlib
 
 arlib: lib/libtcanetpp.a
@@ -86,7 +86,6 @@ lib/libcmdbuf.a: ${CMDBUF_OBJS}
 	( $(MKDIR) lib )
 	$(make-lib-rule)
 	@echo
-
 
 documentation:
 	(cd docs; ${MAKE} ${MFLAGS} ${MVARS} all )
