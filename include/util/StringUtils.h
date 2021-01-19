@@ -153,10 +153,8 @@ class StringUtils {
     static const size_t  MAXLINE;
 
 
-#ifdef TCANETPP_WIDECHAR
 // ----------------------------------------------------------------------
-//  The same interface is provided for wide chars and is enabled by a
-//  compile-time definition.
+//  The same interface is provided for wide chars 
 
     static bool          Equals           ( const std::wstring & wstra,
                                             const std::wstring & wstrb );
@@ -250,8 +248,6 @@ class StringUtils {
             begin   = end;
         }
     }
-
-#endif  // TCANET_WIDECHAR
 
 }; // class StringUtils
 

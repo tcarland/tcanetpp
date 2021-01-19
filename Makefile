@@ -43,8 +43,7 @@ ifdef USE_PTHREADS
 OBJS +=		    $(TH_OBJS)
 endif
 
-
-BIN =		    ptest pfxtest
+BIN =
 ALL_OBJS =	    $(OBJS) $(TH_OBJS) $(PT_OBJS) $(CMDBUF_OBJS)
 ALL_BINS = 	    $(BIN)
 
@@ -54,7 +53,7 @@ include ${TOPDIR}/tcamake/tcamake_include
 
 # ---------------------------------------------
 
-all: lib
+all: lib cmdbuf
 lib: arlib
 
 arlib: lib/libtcanetpp.a
@@ -86,7 +85,6 @@ lib/libcmdbuf.a: ${CMDBUF_OBJS}
 	( $(MKDIR) lib )
 	$(make-lib-rule)
 	@echo
-
 
 documentation:
 	(cd docs; ${MAKE} ${MFLAGS} ${MVARS} all )
