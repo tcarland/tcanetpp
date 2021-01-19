@@ -24,10 +24,8 @@
 #ifndef _TCANETPP_CONFIG_H_
 #define _TCANETPP_CONFIG_H_
 
-
 #define TCANETPP_VERSION_TS  "21.01"
 #define TCANETPP_VERSION     "1.4.1"
-#define TCANETPP_WIDECHAR    1
 
 
 #endif // _TCANETPP_CONFIG_H_

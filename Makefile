@@ -43,8 +43,7 @@ ifdef USE_PTHREADS
 OBJS +=		    $(TH_OBJS)
 endif
 
-
-BIN =		    ptest pfxtest
+BIN =
 ALL_OBJS =	    $(OBJS) $(TH_OBJS) $(PT_OBJS) $(CMDBUF_OBJS)
 ALL_BINS = 	    $(BIN)
 
