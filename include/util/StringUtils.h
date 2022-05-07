@@ -6,7 +6,7 @@
   *
   * @section LICENSE
   *
-  * Copyright (c) 2001-2021 Timothy Charlton Arland <tcarland@gmail.com>
+  * Copyright (c) 2001-2022 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -37,6 +37,7 @@
 
 namespace tcanetpp {
 
+// line length limits
 #define TCANET_TINYSTRLINE  32
 #define TCANET_SMALLSTRLINE 256
 #define TCANET_MEDSTRLINE   4096

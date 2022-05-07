@@ -3,7 +3,7 @@ tcanetpp
 
 ### LICENSE
 
-  Copyright (c) 2001-2021 Timothy Charlton Arland 
+  Copyright (c) 2001-2022 Timothy Charlton Arland 
         <tcarland@gmail.com>, <tca@charltontechnology.net>
 
   tcanetpp is free software: you can redistribute it and/or modify
@@ -62,12 +62,11 @@ and *librt* is also used on linux systems for the event api.
 
 ### Building
 
- The project uses the **tcamake** build environment for managing project
+The project uses the **tcamake** build environment for managing project
 dependencies. This provides a Makefile template for projects.  To build,
 the **tcamake** project should be pulled down to the parent directory of
 the project.
-
-```
+``` bash
 cd ..
 git clone https://github.com/tcarland/tcamake
 cd tcanetpp
@@ -75,25 +74,25 @@ export TCAMAKE_PROJECT=1
 ```
 
 Select a build profile and run `make`.
-```
+```bash
 source resources/profile_release_mt
 make
 ```
 
-**Unix:**
-   The library requires linking *libpthread*, *librt* and *libdl*.
-The *librt* library should be included on linux systems, especially for the
-high-resolution timer support provided by the *EventManager*.
+- **Unix:**  
+  The library requires linking *libpthread*, *librt* and *libdl*.
+  The *librt* library should be included on linux systems, especially for the
+  high-resolution timer support provided by the *EventManager*.
 
-**Mac OSX:**
+- **Mac OSX:**  
   *tcamake* is needed in addition to the gnu tools (provided with xcode).
 
-**Win32/64:**
+- **Win32/64:**
   Only the thread classes (based on libpthread are unsupported with windows.
-The win32 pthread library is mostly be compatible, but ymmv.
+  The win32 pthread library is mostly be compatible, but ymmv.
 
 
 ### Documentation
 
-  The library is documented using doxygen. Run `make documentation` to 
-  generate the docs (doxygen required).  
+The library is documented using doxygen. Run `make documentation` to 
+generate the docs (doxygen required).  
