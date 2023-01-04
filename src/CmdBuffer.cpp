@@ -87,7 +87,6 @@ CmdBuffer::open ( const std::string & cmd )
     if ( ! _cmdbuf->is_open() ) {
         _errstr = "CmdBuffer::Open() failed.";
         delete _cmdbuf;
-        delete f;
     } else {
         _init = true;
         _file = f;
