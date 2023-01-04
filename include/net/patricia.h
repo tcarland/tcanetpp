@@ -10,7 +10,7 @@
   *
   * @section LICENSE
   *
-  * Copyright (c) 2002-2021 Timothy Charlton Arland <tcarland@gmail.com?
+  * Copyright (c) 2002-2023 Timothy Charlton Arland <tcarland@gmail.com?
   *
   * This file is part of tcanetpp.
   *
@@ -33,9 +33,9 @@
 
 #include "tcanetpp_types.h"
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-# endif
+#endif
 #include <stdlib.h>
 
 /* ------------------------------------------------------------------------- */
@@ -94,8 +94,8 @@ const char* pt_version();
 
 /* ------------------------------------------------------------------------- */
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 }  // extern "C"
-# endif
+#endif
 
 #endif  //  _TCANETPP_PATRICIA_H_

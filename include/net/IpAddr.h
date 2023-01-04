@@ -6,7 +6,7 @@
   *
   * @section LICENSE
   *
-  * Copyright (c) 2012-2020 Timothy Charlton Arland <tcarland@gmail.com>
+  * Copyright (c) 2012-2023 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

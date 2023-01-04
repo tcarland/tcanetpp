@@ -26,10 +26,9 @@
 
 #include "tcanetpp_types.h"
 
-
-# ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-# endif
+#endif
 
 
 void      tcanet_seed();
@@ -37,8 +36,8 @@ int       tcanet_seeded();
 uint32_t  tcanet_randomValue ( double range );
 
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 }
-# endif
+#endif
 
 #endif  // _TCANETPP_RANDOM_H_
