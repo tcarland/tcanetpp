@@ -27,8 +27,6 @@
 #ifndef _TCANETPP_TYPES_H_
 #define _TCANETPP_TYPES_H_
 
-#include "tcanetpp_config.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -50,7 +48,7 @@ extern "C" {
 
 
 // not relying on win32 inttypes, so we define our own.
-#  ifdef WIN32
+#ifdef WIN32
 typedef long                     ssize_t;
 typedef signed char              int8_t;
 typedef unsigned char            uint8_t;
@@ -61,18 +59,18 @@ typedef unsigned long            uint32_t;
 typedef long long                int64_t;
 typedef unsigned long long       uint64_t;
 typedef int                      socklen_t;
-#  endif
+#endif
 
 
 // win32 socket descriptor and storage
 //
-#  ifdef WIN32
+#ifdef WIN32
 typedef SOCKET                   sockfd_t;
 typedef SOCKADDR_STORAGE         sockaddr_t;
-#  else
+#else
 typedef int                      sockfd_t;
 typedef struct sockaddr_storage  sockaddr_t;
-#  endif
+#endif
 
 
 // some commonly used defines and types
@@ -106,9 +104,9 @@ typedef struct ip_prefix {
 } prefix_t;
 
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 }  // extern C
-# endif
+#endif
 
 
 #endif // _TCANETPP_TYPES_H_

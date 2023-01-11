@@ -3,7 +3,7 @@ tcanetpp
 
 ### LICENSE
 
-  Copyright (c) 2001-2022 Timothy Charlton Arland 
+  Copyright (c) 2001-2023 Timothy Charlton Arland 
         <tcarland@gmail.com>, <tca@charltontechnology.net>
 
   tcanetpp is free software: you can redistribute it and/or modify
@@ -46,6 +46,12 @@ written in C++, the overall design is intended to be not-so object heavy
 with as little inter-dependency as possible, such that by use of any one 
 feature of the library (eg. event api) does not depend on other features 
 of the library.  
+
+  Celebrating 20 years as a project, it has evolved much over the years 
+to stay relatively current to the C++ standards, but remaining lean and 
+usable. While there may be better options for some components, especially 
+when adopting libboost, some components are still very useful even in 
+newer applications.
 
 libtcanetpp provides the following core functionality:
  * Containers: patricia/radix tree, hashmap, circular buffer, synchronized queue

@@ -3,7 +3,7 @@
   *
   * @section LICENSE
   *
-  * Copyright (c) 2008-2021 Timothy Charlton Arland <tcarland@gmail.com>
+  * Copyright (c) 2008-2023 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *

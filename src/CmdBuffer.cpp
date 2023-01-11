@@ -3,7 +3,7 @@
   *
   * @section LICENSE
   *
-  * Copyright (c) 2001-2021 Timothy Charlton Arland <tcarland@gmail.com>
+  * Copyright (c) 2001-2023 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -87,7 +87,6 @@ CmdBuffer::open ( const std::string & cmd )
     if ( ! _cmdbuf->is_open() ) {
         _errstr = "CmdBuffer::Open() failed.";
         delete _cmdbuf;
-        delete f;
     } else {
         _init = true;
         _file = f;
