@@ -24,7 +24,6 @@
 #define _TCANETPP_CIRCULARBUFFER_CPP_
 
 extern "C" {
-# include <errno.h>
 # include <string.h>
 }
 

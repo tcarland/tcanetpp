@@ -27,6 +27,7 @@ extern "C" {
 # include <strings.h>
 # include <errno.h>
 # include <unistd.h>
+# include <string.h>
 }
 
 #include <cstdlib>
@@ -88,9 +89,7 @@ Thread::start()
     }
 
     if ( ::pthread_create(&_tid, &_attr, Thread::ThreadEntry, (void*)this) != 0 ) {
-        std::ostringstream  serr;
-        serr << "Thread::start() pthread_create error: " << errno;
-        _serr = serr.str();
+        _serr = "Thread::start() pthread_create error: " + std::string(::strerror(errno));
         throw ThreadException(_serr);
     }
 
@@ -124,7 +123,7 @@ Thread::stop()
     if ( ! _detach && ::pthread_join(_tid, NULL) != 0 ) {
         std::ostringstream  serr;
         serr << "Thread::stop() pthread_join error: "
-             << _threadName << " : " << errno;
+             << _threadName << " : " << std::string(::strerror(errno));
         _serr = serr.str();
         throw ThreadException(_serr);
     }
