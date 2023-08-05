@@ -1,0 +1,28 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master, tca-145 ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Docker
+      uses: action/setup-docker@v2
+
+    - name: Build Container
+      run: docker build -t tdh/snoot -f build/Containerfile .
+
+    - name: Run Docker Build
+      run: docker run --rm -v $PWD:/app tcanet/snoot /bin/sh -c "cd /app && make"
+
+    #- name: make
+    #  run: make
