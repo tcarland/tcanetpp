@@ -15,7 +15,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 
 RUN curl https://github.com/tcarland/tcamake/archive/refs/tags/v23.08.tar.gz -L -o /tmp/tcamake.tar.gz && \
     tar -xzf /tmp/tcamake.tar.gz -C / && \
-    mv /app/tcamake-* /app/tcamake && \
-    rm /app/tcamake.tar.gz
+    mv /tcamake-* /tcamake && \
+    rm /tmp/tcamake.tar.gz
     
 ENTRYPOINT ["/usr/bin/tini", "--"]
