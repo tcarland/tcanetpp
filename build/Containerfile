@@ -2,7 +2,6 @@ FROM ubuntu:22.04
 LABEL Description="CPP Build Environment"
 
 ENV HOME /root
-ENV TCAMAKE_HOME /app/tcamake
 
 shell ["/bin/bash", "-c"]
 
