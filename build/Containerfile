@@ -13,10 +13,8 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     net-tools \
     tini 
 
-RUN mkdir -p /app
-
-RUN curl https://github.com/tcarland/tcamake/archive/refs/tags/v23.08.tar.gz -L -o /app/tcamake.tar.gz && \
-    tar -xzf /app/tcamake.tar.gz -C /app && \
+RUN curl https://github.com/tcarland/tcamake/archive/refs/tags/v23.08.tar.gz -L -o /tmp/tcamake.tar.gz && \
+    tar -xzf /tmp/tcamake.tar.gz -C / && \
     mv /app/tcamake-* /app/tcamake && \
     rm /app/tcamake.tar.gz
     
