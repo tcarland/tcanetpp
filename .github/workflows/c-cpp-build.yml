@@ -1,8 +1,8 @@
-name: C/C++ CI
+name: C/C++ Build CI
 
 on:
   push:
-    branches: [ master, tca-145 ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ master ]
 
