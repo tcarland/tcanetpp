@@ -1,6 +1,7 @@
 # profile debug_mt 
 export PROFILE="tcanetpp_debug_mt"
 
+export TCAMAKE_HOME=${TCAMAKE_HOME:-../tcamake}
 export TCAMAKE_PREFIX=
 export TCAMAKE_DEBUG=1
 

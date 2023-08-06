@@ -2,13 +2,22 @@ FROM ubuntu:22.04
 LABEL Description="CPP Build Environment"
 
 ENV HOME /root
+ENV TCAMAKE_HOME /app/tcamake
 
 shell ["/bin/bash", "-c"]
 
 RUN apt-get update && apt-get -y --no-install-recommends install \
     build-essential \
+    ca-certificates \
     curl \
     net-tools \
     tini 
+
+RUN mkdir -p /app
+
+RUN curl https://github.com/tcarland/tcamake/archive/refs/tags/v23.08.tar.gz -L -o /app/tcamake.tar.gz && \
+    tar -xzf /app/tcamake.tar.gz -C /app && \
+    mv /app/tcamake-* /app/tcamake && \
+    rm /app/tcamake.tar.gz
     
 ENTRYPOINT ["/usr/bin/tini", "--"]

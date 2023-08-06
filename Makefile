@@ -1,8 +1,6 @@
 # Makefile for tcanetpp
 #  Requires 'tcamake' build environment to exist in TOPDIR
 #
-TOPDIR = ..
-
 NEED_SOCKET = 1
 NEED_LIBDL = 1
 
@@ -49,7 +47,11 @@ ALL_BINS = 	    $(BIN)
 
 # ---------------------------------------------
 
-include ${TOPDIR}/tcamake/tcamake_include
+ifeq ($(wildcard $(TCAMAKE_HOME)/tcamake_include),)
+  $(error "TCAMAKE_HOME is not set")
+endif
+
+include ${TCAMAKE_HOME}/tcamake_include
 
 # ---------------------------------------------
 

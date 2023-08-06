@@ -33,10 +33,10 @@ jobs:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
     - name: Build Container
-      run: docker build -t tcarland/tcanetpp -f build/Containerfile .
+      run: docker build -t ${{ IMAGE_NAME }} -f build/Containerfile .
 
     - name: Run Docker Build
-      run: docker run --rm -v $PWD:/app tcarland/tcanetpp /bin/sh -c "cd /app && make"
+      run: docker run --rm -v $PWD:/app ${{ IMAGE_NAME }} /bin/sh -c "cd /app && make"
 
     #- name: make
     #  run: make
