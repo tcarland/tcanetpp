@@ -36,9 +36,4 @@ jobs:
       run: docker build -t ${{ env.IMAGE_NAME }} -f build/Containerfile .
 
     - name: Run Docker Build
-      run: docker run --rm -v $PWD:/app \
-        --build-arg TCAMAKE_HOME=/app/tcamake \
-        ${{ env.IMAGE_NAME }} /bin/sh -c "cd /app && make"
-
-    #- name: make
-    #  run: make
+      run: docker run --rm -v $PWD:/app --build-arg TCAMAKE_HOME=/app/tcamake ${{ env.IMAGE_NAME }} /bin/sh -c "cd /app && make"
