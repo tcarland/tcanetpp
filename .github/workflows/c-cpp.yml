@@ -38,7 +38,7 @@ jobs:
     - name: Run Docker Build
       run: docker run --rm -v $PWD:/app \
         --build-arg TCAMAKE_HOME=/app/tcamake \
-        /bin/sh -c "cd /app && make"
+        ${{ env.IMAGE_NAME }} /bin/sh -c "cd /app && make"
 
     #- name: make
     #  run: make
