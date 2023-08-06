@@ -1,5 +1,3 @@
-TOPDIR = ../..
-
 NEED_LIBDL = 1
 NEED_SOCKET = 1
 NEED_TCANETPP = 1
@@ -22,7 +20,7 @@ CXXFLAGS= -std=c++0x
 OPT_FLAGS+= -DTWHOIS_MAIN 
 
 
-ASOBJ=  	../src/IpAddr.o ../src/AddrInfo.o \
+ASOBJ=  ../src/IpAddr.o ../src/AddrInfo.o \
 		../src/tcanetpp_random.o ../src/Socket.o \
 		../src/SocketOption.o ../src/Whois.o
 
@@ -41,7 +39,7 @@ ALL_OBJS=$(OBJS) $(ASOBJ) $(STROBJ) $(CBUFF_OBJS) $(CIDR_OBJS)
 ALL_BINS=$(BIN)
 
 
-include ${TOPDIR}/tcamake/tcamake_include
+include ${TCAMAKE_HOME}/tcamake_include
 
 
 all: asnclean asnwho ipconvert client server cidrtest strtest bufftest \
