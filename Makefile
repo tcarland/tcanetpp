@@ -14,28 +14,28 @@ endif
 #-------------------#
 
 ifdef TCAMAKE_DEBUG
-  OPT_FLAGS =       -g -DEV_DEBUG
+  OPT_FLAGS = -g -DEV_DEBUG
 endif
 
-OPT_FLAGS +=	    -fPIC -O2
-CCSHARED += 	    -Wl,-soname,$@
-CXXFLAGS =          -std=c++11
+OPT_FLAGS += -fPIC -O2
+CCSHARED +=  -Wl,-soname,$@
+CXXFLAGS =   -std=c++11
 
-INCLUDES =          -Iinclude
+INCLUDES =   -Iinclude
 LIBS =
 
-PT_OBJS =           src/patricia.o
-TH_OBJS =           src/Thread.o src/ThreadLock.o src/ThreadMutexPool.o
-CMDBUF_OBJS =       src/CmdBuffer.o
+PT_OBJS =     src/patricia.o
+TH_OBJS =     src/Thread.o src/ThreadLock.o src/ThreadMutexPool.o
+CMDBUF_OBJS = src/CmdBuffer.o
 
-OBJS =	            src/SocketOption.o src/Socket.o src/BufferedSocket.o \
-                    src/CircularBuffer.o src/Serializer.o \
-                    src/Whois.o src/EventManager.o \
-                    src/IpAddr.o src/AddrInfo.o \
-                    src/StringUtils.o src/FileStat.o src/FileUtils.o \
-                    src/LogFacility.o src/tcanetpp_random.o src/INotify.o \
-                    src/patricia.o src/DeviceMap.o \
-                    src/NetworkDevice.o src/NetworkInterface.o
+OBJS =	      src/SocketOption.o src/Socket.o src/BufferedSocket.o \
+              src/CircularBuffer.o src/Serializer.o \
+              src/Whois.o src/EventManager.o \
+              src/IpAddr.o src/AddrInfo.o \
+              src/StringUtils.o src/FileStat.o src/FileUtils.o \
+              src/LogFacility.o src/tcanetpp_random.o src/INotify.o \
+              src/patricia.o src/DeviceMap.o \
+              src/NetworkDevice.o src/NetworkInterface.o
 
 ifdef USE_PTHREADS
 OBJS +=		    $(TH_OBJS)
