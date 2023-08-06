@@ -47,10 +47,6 @@ ALL_BINS = 	    $(BIN)
 
 # ---------------------------------------------
 
-ifeq ($(wildcard $(TCAMAKE_HOME)/tcamake_include),)
-  $(error "TCAMAKE_HOME is not set")
-endif
-
 include ${TCAMAKE_HOME}/tcamake_include
 
 # ---------------------------------------------
