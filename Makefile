@@ -55,14 +55,14 @@ all: lib cmdbuf
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-solib: libtcanetpp.so.1.4.5
+solib: libtcanetpp.so.1.4.6
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
-libtcanetpp.so.1.4.5: ${OBJS}
+libtcanetpp.so.1.4.6: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)
@@ -132,5 +132,5 @@ ifdef TCAMAKE_PREFIX
 	@echo
 else
 	@echo "TCAMAKE_PREFIX is not set. Install not performed"
-	@echo "  eg. export TCAMAKE_PREFIX=/usr/local"
+	@echo "  eg. export TCAMAKE_PREFIX=/usr"
 endif

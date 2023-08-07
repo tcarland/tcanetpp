@@ -8,11 +8,10 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}-build
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     permissions:
@@ -28,12 +27,17 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - uses: docker/metadata-action@v3
+    - name: Extract metadata for Docker
+      id: meta
+      uses: docker/metadata-action@v3
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-    - name: Build Container
-      run: docker build -t ${{ env.IMAGE_NAME }} -f build/Containerfile .
-
-    - name: Run Docker Build
-      run: docker run --rm -v $PWD:/app -e TCAMAKE_HOME=/tcamake ${{ env.IMAGE_NAME }} /bin/bash -c "cd /app && source resources/tcanetpp_release_mt && make arlib"
+    - name: Build and push the Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Containerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
