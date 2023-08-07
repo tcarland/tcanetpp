@@ -32,8 +32,17 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-    - name: Build Container
-      run: docker build -t ${{ env.IMAGE_NAME }} -f build/Containerfile .
+    - name: Build and push the Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Containerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
 
-    - name: Run Docker Build
-      run: docker run --rm -v $PWD:/app -e TCAMAKE_HOME=/tcamake ${{ env.IMAGE_NAME }} /bin/bash -c "cd /app && source resources/tcanetpp_release_mt && make arlib"
+    #- name: Build Container
+      #run: docker build -t ${{ env.IMAGE_NAME }} -f build/Containerfile .
+
+    #- name: Run Docker Build
+      #run: docker run --rm -v $PWD:/app -e TCAMAKE_HOME=/tcamake ${{ env.IMAGE_NAME }} /bin/bash -c "cd /app && source resources/tcanetpp_release_mt && make arlib"
