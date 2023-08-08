@@ -20,10 +20,10 @@ OPT_FLAGS+= -DTWHOIS_MAIN
 
 
 ASOBJ=  ../src/IpAddr.o ../src/AddrInfo.o \
-		../src/tcanetpp_random.o ../src/Socket.o \
-		../src/SocketOption.o ../src/Whois.o
+	../src/tcanetpp_random.o ../src/Socket.o \
+	../src/SocketOption.o ../src/Whois.o
 
-OBJS=		client.o server.o pack_test.o ping.o
+OBJS=	client.o server.o pack_test.o ping.o
 
 CBUFF_OBJS= cirbuffer_test.o
 CIDR_OBJS=  cidrtest.o
@@ -40,7 +40,7 @@ ALL_BINS=$(BIN)
 # ----------------------- 
 
 ifeq ($(TCAMAKE_HOME),)
-	export TCAMAKE_HOME := $(shell realpath ../tcamake)
+	export TCAMAKE_HOME := $(shell realpath ../../tcamake)
 endif
 
 include ${TCAMAKE_HOME}/tcamake_include
