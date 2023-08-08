@@ -47,6 +47,13 @@ ALL_BINS = 	    $(BIN)
 
 # ---------------------------------------------
 
+ifeq ($(TCAMAKE_HOME),)
+	export TCAMAKE_HOME := $(shell realpath ../tcamake)
+endif
+ifeq ($(TCAMAKE_PROJECT),)
+	export TCAMAKE_PROJECT := $(shell realpath ..)
+endif
+
 include ${TCAMAKE_HOME}/tcamake_include
 
 # ---------------------------------------------
@@ -55,14 +62,14 @@ all: lib cmdbuf
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-solib: libtcanetpp.so.1.4.6
+solib: libtcanetpp.so.1.4.7
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
-libtcanetpp.so.1.4.6: ${OBJS}
+libtcanetpp.so.1.4.7: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)

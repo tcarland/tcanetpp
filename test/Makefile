@@ -1,6 +1,5 @@
 NEED_LIBDL = 1
 NEED_SOCKET = 1
-NEED_TCANETPP = 1
 
 ifdef USE_LIBRT
 NEED_LIBRT = 1
@@ -14,17 +13,17 @@ ifdef TNMS_DEBUG
 OPT_FLAGS = -g 
 endif
 
-INCLUDES= -I. 
-LIBS=
-CXXFLAGS= -std=c++0x
+INCLUDES=   -I. -I../include
+LIBS=       -L../lib -ltcanetpp 
+CXXFLAGS=   -std=c++0x
 OPT_FLAGS+= -DTWHOIS_MAIN 
 
 
 ASOBJ=  ../src/IpAddr.o ../src/AddrInfo.o \
-		../src/tcanetpp_random.o ../src/Socket.o \
-		../src/SocketOption.o ../src/Whois.o
+	../src/tcanetpp_random.o ../src/Socket.o \
+	../src/SocketOption.o ../src/Whois.o
 
-OBJS=		client.o server.o pack_test.o ping.o
+OBJS=	client.o server.o pack_test.o ping.o
 
 CBUFF_OBJS= cirbuffer_test.o
 CIDR_OBJS=  cidrtest.o
@@ -38,9 +37,15 @@ thtest hashtest pfxbase
 ALL_OBJS=$(OBJS) $(ASOBJ) $(STROBJ) $(CBUFF_OBJS) $(CIDR_OBJS)
 ALL_BINS=$(BIN)
 
+# ----------------------- 
+
+ifeq ($(TCAMAKE_HOME),)
+	export TCAMAKE_HOME := $(shell realpath ../../tcamake)
+endif
 
 include ${TCAMAKE_HOME}/tcamake_include
 
+# ----------------------- 
 
 all: asnclean asnwho ipconvert client server cidrtest strtest bufftest \
 pttest pingt gktrace packtest filetest thtest
