@@ -17,6 +17,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     libtool \
     liblz4-dev \
     libssl-dev \
+    libxml2-dev \
     libzstd-dev \
     net-tools \
     pkg-config \
