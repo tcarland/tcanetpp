@@ -4,7 +4,8 @@ LABEL Description="CPP Build Environment"
 ARG TCAMAKE_VERSION=v23.08
 
 ENV HOME /root
-ENV TCAMAKE_PROJECT /usr/lib
+ENV TCAMAKE_PROJECT /opt
+ENV TCAMAKE_HOME /opt/tcamake
 ENV TCAMAKE_PREFIX /usr
 
 shell ["/bin/bash", "-c"]
@@ -16,6 +17,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     libtool \
     liblz4-dev \
     libssl-dev \
+    libxml2-dev \
     libzstd-dev \
     net-tools \
     pkg-config \
