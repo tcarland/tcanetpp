@@ -37,5 +37,6 @@ docs/html
 docs/latex
 test
 !test/*.h
+!test/*.c
 !test/*.cc
 !test/*.cpp
