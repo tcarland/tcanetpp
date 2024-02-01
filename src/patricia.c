@@ -3,7 +3,7 @@
   *
   * @section LICENSE
   *
-  * Copyright (c) 2001-2023 Timothy Charlton Arland <tcarland@gmail.com>
+  * Copyright (c) 2001-2024 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -32,7 +32,7 @@
 
 
 static const
-char PT_version[] = "patricia v1.95 2017/04/20 tcarland@gmail.com";
+char PT_version[] = "patricia v1.95 2017/04/20 <tcarland@gmail.com>";
 
 
 static int    freecnt    = 0;

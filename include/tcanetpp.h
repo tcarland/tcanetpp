@@ -6,7 +6,7 @@
   *
   * @section LICENSE
   *
-  * Copyright (c) 2002-2023 Timothy Charlton Arland <tcarland@gmail.com>
+  * Copyright (c) 2002-2024 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -35,7 +35,7 @@
 #include "net/Socket.h"
 #include "event/EventManager.h"
 
-#define TCANETPP_VERSION_TS  "23.08"
-#define TCANETPP_VERSION     "1.4.9"
+#define TCANETPP_VERSION_TS  "24.02"
+#define TCANETPP_VERSION     "1.5.0"
 
 #endif _TCANETPP_H_
