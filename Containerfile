@@ -26,15 +26,19 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 
 WORKDIR /opt
 
-RUN curl https://github.com/tcarland/tcamake/archive/refs/tags/${TCAMAKE_VERSION}.tar.gz -L -o /tmp/tcamake.tar.gz && \
+RUN mkdir -p /opt/tcanetpp && \
+    useradd -m --uid 1000 tdh && \
+    chown -R tdh:tdh /opt/tcanetpp && \
+    curl https://github.com/tcarland/tcamake/archive/refs/tags/${TCAMAKE_VERSION}.tar.gz -L -o /tmp/tcamake.tar.gz && \
     tar -xzf /tmp/tcamake.tar.gz && \
-    mv tcamake-* tcamake && \
+    mv tcamake-* tcamake && 
     rm /tmp/tcamake.tar.gz
 
-RUN mkdir -p /opt/tcanetpp
 COPY . /opt/tcanetpp
 
 RUN cd tcanetpp && source resources/tcanetpp_release_mt && \
     make arlib solib cmdbuf && make install && make distclean
+
+USER tdh
 
 ENTRYPOINT ["/usr/bin/tini", "--"]

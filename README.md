@@ -3,7 +3,7 @@ tcanetpp
 
 ### LICENSE
 
-  Copyright (c) 2001-2024 Timothy Charlton Arland 
+  Copyright (c) 2024 Timothy Charlton Arland 
         <tcarland@gmail.com>, <tca@charltontechnology.net>
 
   tcanetpp is free software: you can redistribute it and/or modify
