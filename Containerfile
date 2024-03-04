@@ -31,7 +31,7 @@ RUN mkdir -p /opt/tcanetpp && \
     chown -R tdh:tdh /opt/tcanetpp && \
     curl https://github.com/tcarland/tcamake/archive/refs/tags/${TCAMAKE_VERSION}.tar.gz -L -o /tmp/tcamake.tar.gz && \
     tar -xzf /tmp/tcamake.tar.gz && \
-    mv tcamake-* tcamake && 
+    mv tcamake-* tcamake && \
     rm /tmp/tcamake.tar.gz
 
 COPY . /opt/tcanetpp
