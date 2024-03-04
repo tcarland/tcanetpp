@@ -1,5 +1,5 @@
 FROM ubuntu:22.04
-LABEL Description="CPP Build Environment"
+LABEL Description="CPP Build"
 
 ARG TCAMAKE_VERSION=v24.03.03
 
