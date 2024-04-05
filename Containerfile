@@ -37,7 +37,7 @@ RUN mkdir -p /opt/tcanetpp && \
 COPY . /opt/tcanetpp
 
 RUN cd tcanetpp && source .resources/release_mt.env && \
-    make arlib solib cmdbuf && make install && make distclean
+    make arlib cmdbuf && make install && make distclean
 
 USER tdh
 
