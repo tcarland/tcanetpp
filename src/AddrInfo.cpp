@@ -278,8 +278,8 @@ AddrInfo::getError() const
 // ----------------------------------------------------------------------
 // static factory methods
 
-/**  Static functions that performs getaddrinfo and returns a pointer to
-  *  a newly allocated AddrInfo object.
+/**  Static functions that perform getaddrinfo() queries and returns a 
+  *  pointer to a newly allocated AddrInfo object.
   * @{
  **/
 AddrInfo*
@@ -405,12 +405,12 @@ AddrInfo::GetNameInfo ( const sockaddr    * sock,
 // ----------------------------------------------------------------------
 
 std::string
-AddrInfo::GetHostName()
+AddrInfo::GetHostName ( bool shortname )
 {
     std::string  host;
     ipv6addr_t   lo  = in6addr_loopback;
     ipv4addr_t   lo4 = IPV4ADDR_LOOPBACK;
-    int  r;
+    int  r, indx;
 
     r = AddrInfo::GetNameInfo(lo, host, 0);
 
@@ -418,6 +418,10 @@ AddrInfo::GetHostName()
         return host;
 
     r = AddrInfo::GetNameInfo(lo4, host, 0);
+
+    if ( shortname )
+        if ( (indx = StringUtils::IndexOf(host, ".")) > 0 )
+            host = host.substr(0, indx);
 
     return host;
 }
@@ -429,7 +433,6 @@ AddrInfo::GetHostName ( const ipv4addr_t & addr )
     AddrInfo::GetNameInfo(addr, host, 0);
     return host;
 }
-
 
 /**  First attempts to convert the provided string
   *  to an ipv4 address, or upon failure, will
