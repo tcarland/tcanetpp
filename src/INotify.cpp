@@ -195,9 +195,9 @@ INotify::readEvents ( IEventQueue & queue )
             ivent.type  = this->ReadEventMask(event->mask);
             if ( event->mask & IN_ISDIR ) {
                 ivent.isdir = true;
-                if ( recursive && ivent.type.compare(INOTIFY_CREATE) == 0 )
+                if ( _recursive && ivent.type.compare(INOTIFY_CREATE) == 0 )
                     this->addWatch(this->getWatchName(ivent.wd) + "/" + ivent.name);    
-                else if ( recursive && ivent.type.compare(INOTIFY_DELETE) == 0 )
+                else if ( _recursive && ivent.type.compare(INOTIFY_DELETE) == 0 )
                     this->removeWatch(ivent.wd);
             }
             queue.push(ivent);
