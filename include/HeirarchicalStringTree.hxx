@@ -121,9 +121,9 @@ HeirarchicalStringTreeNode<ValueType>::getChildren() const
     return _children;
 }
 
+
 //-------------------------------------------------------------//
 //  HeirarchicalStringTree
-
 
 template<typename ValueType>
 HeirarchicalStringTree<ValueType>::HeirarchicalStringTree ( char delimiter )
