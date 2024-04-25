@@ -36,6 +36,6 @@
 #include "event/EventManager.h"
 
 #define TCANETPP_VERSION_TS  "24.04"
-#define TCANETPP_VERSION     "1.5.4"
+#define TCANETPP_VERSION     "1.5.5"
 
 #endif //_TCANETPP_H_

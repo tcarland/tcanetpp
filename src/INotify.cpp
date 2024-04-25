@@ -41,22 +41,19 @@ namespace tcanetpp {
 uint32_t INotify::ON_CHANGE_MASK = IN_MODIFY | IN_CREATE | IN_DELETE;
 uint32_t INotify::ON_OPEN_MASK   = IN_OPEN | IN_CLOSE;
 
-
 /* ---------------------------------------------------------------- */
 
-INotify::INotify()
+INotify::INotify ( bool recursive )
   : _fd(0),
-    _evbuf(new CircularBuffer(INOTIFY_BUFFER_LEN)),
-    _debug(false)
+    _recursive(recursive),
+    _evbuf(new CircularBuffer(INOTIFY_BUFFER_LEN))
 { }
-
 
 INotify::~INotify()
 {
     this->close();
     delete _evbuf;
 }
-
 
 bool
 INotify::init()
@@ -76,8 +73,6 @@ INotify::init()
     return true;
 }
 
-/* ---------------------------------------------------------------- */
-
 void
 INotify::close()
 {
@@ -85,38 +80,29 @@ INotify::close()
 }
 
 
-int
-INotify::getFileDescriptor() const
-{
-    return this->_fd;
-}
-
-
-int
-INotify::getWatchDescriptor ( const std::string & target ) const
-{
-    WatchMap::const_iterator  wIter;
-
-    if ( (wIter = _watches.find(target)) == _watches.end() )
-        return -1;
-
-    return wIter->second;
-}
+/* ---------------------------------------------------------------- */
 
 
 bool
 INotify::addWatch ( const std::string & target )
 {
+    return this->addWatch(target, INotify::ON_CHANGE_MASK);
+}
+
+bool
+INotify::addWatch ( const std::string & target, uint32_t mask )
+{
     int wd;
 
-    wd = inotify_add_watch(this->_fd, target.c_str(), INotify::ON_CHANGE_MASK);
+    wd = ::inotify_add_watch(this->_fd, target.c_str(), mask);
 
     if ( wd < 0 ) {
-        _errstr = "Error in inotify_add_watch()";
+        _errstr = "INotify::addWatch error for target " + target;
         return false;
     }
 
     _watches[target] = wd;
+    _watched[wd]     = target;
 
     return true;
 }
@@ -125,11 +111,42 @@ INotify::addWatch ( const std::string & target )
 bool
 INotify::removeWatch ( const std::string & target )
 {
-    int wd;
+    if ( ! this->haveWatch(target) )
+        return false;
+    int wd = _watches[target];
+    return this->removeWatch(wd);
+}
 
-    wd = _watches[target];
-    inotify_rm_watch(this->_fd, wd);
+bool
+INotify::removeWatch ( int wd )
+{
+    if ( ! this-> haveWatch(wd) )
+        return false;
+    if ( inotify_rm_watch(this->_fd, wd) < 0 )
+        return false;
+    
+    _watches.erase(_watched[wd]);
+    _watched.erase(wd);
 
+    return true;
+}
+
+
+bool
+INotify::haveWatch ( const std::string & target ) const
+{
+    WatchMap::const_iterator tIter;
+    if ( (tIter = _watches.find(target)) == _watches.end() )
+        return false;
+    return true;
+}
+
+bool
+INotify::haveWatch ( int wd ) const 
+{
+    WatchDescriptorMap::const_iterator wIter;
+    if ( (wIter = _watched.find(wd)) == _watched.end() )
+        return false;
     return true;
 }
 
@@ -170,16 +187,19 @@ INotify::readEvents ( IEventQueue & queue )
         }
 
         event = (struct inotify_event*) rptr;
-
         //printf ("wd=%d mask=%u cookie=%u len=%u\n", event->wd, event->mask, event->cookie, event->len);
 
-        if ( event->mask & IN_ISDIR )
-            printf(" => IN_ISDIR\n");
-
         if ( event->len ) {
-            //printf ("name=%s\n", event->name);
-            ivent.name = event->name;
-            ivent.type = this->ReadEventMask(event->mask);
+            ivent.wd    = event->wd;
+            ivent.name  = event->name;
+            ivent.type  = this->ReadEventMask(event->mask);
+            if ( event->mask & IN_ISDIR ) {
+                ivent.isdir = true;
+                if ( _recursive && ivent.type.compare(INOTIFY_CREATE) == 0 )
+                    this->addWatch(this->getWatchName(ivent.wd) + "/" + ivent.name);    
+                else if ( _recursive && ivent.type.compare(INOTIFY_DELETE) == 0 )
+                    this->removeWatch(ivent.wd);
+            }
             queue.push(ivent);
         }
 
@@ -192,57 +212,53 @@ INotify::readEvents ( IEventQueue & queue )
     return ((ssize_t) rt);
 }
 
-/* ---------------------------------------------------------------- */
-
 std::string
-INotify::ReadEventMask ( uint32_t mask, bool debug )
+INotify::getWatchName ( int wd ) const
 {
-    std::string  type;
+    WatchDescriptorMap::const_iterator wIter;
+    if ( (wIter = _watched.find(wd)) == _watched.end() )
+        return std::string("");
 
-    switch ( mask & (IN_ALL_EVENTS | IN_UNMOUNT | IN_Q_OVERFLOW | IN_IGNORED) )
-    {
-        case IN_ACCESS:
-            if ( debug )
-                printf("Item was accessed\n");
-            type = INOTIFY_ACCESS;
-            break;
-        case IN_MODIFY:
-            if ( debug )
-                printf("Item was modified\n");
-            type = INOTIFY_MODIFY;
-            break;
-        case IN_CREATE:
-            if ( debug )
-                printf("Item was created\n");
-            type = INOTIFY_CREATE;
-            break;
-        case IN_OPEN:
-            if ( debug )
-                printf("Item was opened\n");
-            type = INOTIFY_OPEN;
-            break;
-        case IN_CLOSE:
-            if ( debug )
-                printf("Item was closed\n");
-            type = INOTIFY_CLOSE;
-            break;
-        case IN_DELETE:
-            type = INOTIFY_DELETE;
-            break;
-        case IN_IGNORED:
-            if ( debug )
-                printf("Filesystem ignored and dropped from inotify\n");
-            break;
-        default:
-            if ( debug )
-                printf("Unknown event\n");
-            type = "UNK";
-    }
-
-    return type;
+    return wIter->second;
 }
 
-/* ---------------------------------------------------------------- */
+int
+INotify::getWatchDescriptor ( const std::string & target ) const
+{
+    WatchMap::const_iterator  tIter;
+
+    if ( (tIter = _watches.find(target)) == _watches.end() )
+        return -1;
+
+    return tIter->second;
+}
+
+
+int
+INotify::getFileDescriptor() const
+{
+    return this->_fd;
+}
+
+
+bool
+INotify::recursive() const
+{
+    return _recursive;
+}
+
+size_t
+INotify::size() const
+{
+    return _watches.size();
+}
+
+const std::string&
+INotify::errorStr() const
+{
+    return _errstr;
+}
+
 
 ssize_t
 INotify::nreadn ( int fd,  void * vptr, size_t n )
@@ -274,14 +290,47 @@ INotify::nreadn ( int fd,  void * vptr, size_t n )
 
 /* ---------------------------------------------------------------- */
 
+std::string
+INotify::ReadEventMask ( uint32_t mask )
+{
+    std::string  type;
+
+    switch ( mask & (IN_ALL_EVENTS | IN_UNMOUNT | IN_Q_OVERFLOW | IN_IGNORED) )
+    {
+        case IN_ACCESS:
+            type = INOTIFY_ACCESS;
+            break;
+        case IN_MODIFY:
+            type = INOTIFY_MODIFY;
+            break;
+        case IN_CREATE:
+            type = INOTIFY_CREATE;
+            break;
+        case IN_OPEN:
+            type = INOTIFY_OPEN;
+            break;
+        case IN_CLOSE:
+            type = INOTIFY_CLOSE;
+            break;
+        case IN_DELETE:
+            type = INOTIFY_DELETE;
+            break;
+        case IN_IGNORED:
+            break;
+        default:
+            type = "UNK";
+    }
+
+    return type;
+}
+
+
 void
 INotify::SetNonBlocking ( int fd )
 {
     int flags = ::fcntl(fd, F_GETFL, 0);
     ::fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 }
-
-/* ---------------------------------------------------------------- */
 
 }  // namespace
 

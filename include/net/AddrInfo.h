@@ -140,11 +140,12 @@ class AddrInfo {
 
     /* static utility methods for legacy support */
 
-    static std::string GetHostName();
+    static std::string GetHostName ( bool  shortname   = false );
     static std::string GetHostName ( const ipv4addr_t  & addr );
     static ipv4addr_t  GetHostAddr ( const std::string & host );
     static int         GetAddrList ( const std::string & host,
                                      IpAddrList        & v );
+    static std::string GetHostNameShort();
 
     /* factory methods for generating hints */
 

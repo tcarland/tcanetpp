@@ -35,7 +35,6 @@
 
 namespace tcanetpp {
 
-/* ---------------------------------------------------------------- */
 
 #define INOTIFY_EVENT_SIZE (sizeof (struct inotify_event))
 #define INOTIFY_BUFFER_LEN (1024 * (INOTIFY_EVENT_SIZE + 32))
@@ -51,11 +50,16 @@ namespace tcanetpp {
 /* ---------------------------------------------------------------- */
 
 struct INotifyEvent {
+    int          wd;
     std::string  name;
     std::string  type;
+    bool         isdir;
+
+    INotifyEvent() : wd(-1), isdir(false) {}
 };
 
 typedef std::map<std::string, int>  WatchMap;
+typedef std::map<int, std::string>  WatchDescriptorMap;
 typedef std::queue<INotifyEvent>    IEventQueue;
 
 class CircularBuffer;
@@ -67,28 +71,33 @@ class INotify {
 
   public:
 
-    INotify();
-    ~INotify();
+    INotify ( bool recursive = false );
+    virtual ~INotify();
 
-    bool          init();
-    void          close();
+    virtual bool  init();
+    virtual void  close();
 
-    bool          addWatch ( const std::string & target );
-    bool          addWatch ( const std::string & target, uint32_t mask );
+    bool          addWatch    ( const std::string & target );
+    bool          addWatch    ( const std::string & target, uint32_t mask );
 
     bool          removeWatch ( const std::string & target );
     bool          removeWatch ( int wd );
 
-    ssize_t       readEvents ( IEventQueue & queue );
+    bool          haveWatch   ( const std::string & target ) const;
+    bool          haveWatch   ( int wd ) const;
 
-    int           getFileDescriptor() const;
+    ssize_t       readEvents  ( IEventQueue & queue );
+
+    std::string   getWatchName       ( int wd ) const;
     int           getWatchDescriptor ( const std::string & target ) const;
+    int           getFileDescriptor() const;
+    bool          recursive() const;
+    size_t        size() const;
 
     const
     std::string&  errorStr() const;
 
     static void   SetNonBlocking ( int fd );
-
 
   public:
 
@@ -101,21 +110,19 @@ class INotify {
     ssize_t       nreadn ( int fd, void * vptr, size_t len );
 
     static
-    std::string   ReadEventMask ( uint32_t mask, bool debug = false );
+    std::string   ReadEventMask ( uint32_t mask );
 
 
   private:
 
     int                 _fd;
+    bool                _recursive;
     WatchMap            _watches;
+    WatchDescriptorMap  _watched;
     CircularBuffer    * _evbuf;
 
     std::string         _errstr;
-    bool                _debug;
-
 };
-
-/* ---------------------------------------------------------------- */
 
 }  // namespace
 
