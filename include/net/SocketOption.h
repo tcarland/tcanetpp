@@ -41,12 +41,10 @@ class SocketOption {
 public:
 
     SocketOption();
-
     SocketOption ( int level, int optname, int optval,
                    const std::string & name = "" );
 
     virtual ~SocketOption() {}
-
 
     int         level() const;
     int         id() const;
@@ -56,13 +54,11 @@ public:
     inline int  getOptionId() const    { return this->id(); }
     inline int  getOptionValue() const { return this->value(); }
 
-
     const std::string&   name() const;
     inline
     const std::string&   getOptionName() const { return this->name(); }
     inline
     const std::string&   toString() const { return this->name(); }
-
 
     /*  Static Factory Methods  */
 
@@ -77,7 +73,6 @@ public:
     static SocketOption  SetSndTimeout ( int val );
     static SocketOption  SetNoFragment ( int val );
     static SocketOption  SetTTL        ( int val );
-
 
 protected:
 

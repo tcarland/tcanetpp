@@ -27,6 +27,7 @@
 #define _TCANETPP_EVENTIO_H_
 
 #include "tcanetpp_types.h"
+#include "net/Socket.h"
 
 
 namespace tcanetpp {

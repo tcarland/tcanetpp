@@ -162,7 +162,6 @@ class EventManager {
     void                 destroyEvent       ( EventIO          & io );
     evid_t               getNewEventId();
 
-
   protected:
 
     typedef std::set<evid_t>   EventSet;
@@ -170,7 +169,6 @@ class EventManager {
     EventSet                  _events;
     EventTimerMap             _timers;
     EventIOMap                _clients;
-
 
     evid_t                    _evid, _lastid;
     fd_set                    _rset, _wset, _xset;
@@ -186,6 +184,5 @@ class EventManager {
 };
 
 }  // namespace
-
 
 #endif  // _TCANETPP_EVENTMANAGER_H_
