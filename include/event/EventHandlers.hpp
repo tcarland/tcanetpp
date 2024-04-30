@@ -50,7 +50,6 @@ class EventTimerHandler {
 };
 
 
-
 /**  This interface provides the callback mechanism for an 'EventIO' 
   *  (io event) within the EventManager. 
  **/
@@ -67,7 +66,6 @@ class EventIOHandler {
     virtual void handle_close   ( const EventIO & io ) = 0;
     virtual void handle_destroy ( const EventIO & io ) = 0;
 
-
     virtual bool readable       ( const EventIO & io ) = 0;
     virtual bool writable       ( const EventIO & io ) = 0;
     virtual bool writeable      ( const EventIO & io ) 
@@ -77,9 +75,6 @@ class EventIOHandler {
     
 };
 
-
 }  // namespace
 
-
 #endif  // _TCANETPP_EVENTHANDLERS_HPP_
-

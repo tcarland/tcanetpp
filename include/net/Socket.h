@@ -71,7 +71,6 @@ class SocketException : public Exception {
 };
 
 
-
 /**  The Socket class represents a BSD style socket using either
   *  the GNU C Library or Winsock2 in the case of WIN32 hosts and
   *  provides an object-oriented interface for performing socket
@@ -94,7 +93,7 @@ class Socket {
     };
 
 
-    /**   A Socket factory class used to create a derived Socket class
+    /** A Socket factory class used to create a derived Socket class
       * for UDP based sockets. Since UDP is connectionless, there is
       * no listen socket descriptor, yet maintaining a separate client
       * instance of the Socket class  is needed. For this we need a
@@ -221,7 +220,6 @@ class Socket {
                                        IpAddr   & addr,
                                        int        socktype, 
                                        int        proto ) noexcept(false);
-
 
   protected:
 
