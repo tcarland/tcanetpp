@@ -52,6 +52,7 @@ namespace tcanetpp {
 struct INotifyEvent {
     int          wd;
     std::string  name;
+    std::string  path;
     std::string  type;
     bool         isdir;
 

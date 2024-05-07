@@ -192,6 +192,7 @@ INotify::readEvents ( IEventQueue & queue )
         if ( event->len ) {
             ivent.wd    = event->wd;
             ivent.name  = event->name;
+            ivent.path  = this->getWatchName(event->wd);
             ivent.type  = this->ReadEventMask(event->mask);
             if ( event->mask & IN_ISDIR ) {
                 ivent.isdir = true;

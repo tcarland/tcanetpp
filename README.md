@@ -50,11 +50,10 @@ of the library.
   Celebrating 20 years as a project, it has evolved much over the years 
 to stay relatively current to the C++ standards, but remaining lean and 
 usable. While there may be better options for some components, especially 
-when adopting libboost, some components are still very useful even in 
-newer applications.
+when adopting libboost, some components are still very useful today. 
 
 libtcanetpp provides the following core functionality:
- * Containers: patricia/radix tree, hashmap, circular buffer, synchronized queue
+ * Containers: Patricia/Radix trie, Hashmap, Circular Buffer, Synchronized Queue
  * Event Management for handling both network I/O and sub-second timers
  * Threads: An interface for managing pthreads and pthread mutexes
  * Network: Socket and IP functions for manipulating IPv4 and IPv6 Addresses
