@@ -49,6 +49,8 @@ class FileStat {
 
   public:
 
+    FileStat();
+
     FileStat ( const std::string & filename ) noexcept(false);
 
     bool          operator< ( const FileStat & fs ) const;

@@ -39,7 +39,7 @@ namespace tcanetpp {
 // ----------------------------------------------------------------------
 
 /**
-  *   Class Constructor for a circular buffer instance.
+  *  Class Constructor for a circular buffer instance.
   *  Throws an exception if the underlying malloc fails or the
   *  buffer size is out of range. If no size is given,
   *  a default size is used.
