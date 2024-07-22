@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 LABEL Description="CPP Build"
 
-ARG TCAMAKE_VERSION=v24.03.03
+ARG TCAMAKE_VERSION=v24.07.22
 
 ENV HOME /root
 ENV TCAMAKE_HOME /opt/tcamake
