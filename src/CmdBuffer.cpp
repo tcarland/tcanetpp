@@ -39,10 +39,7 @@ CmdBuffer::CmdBuffer ( size_t bufsize )
       _bufsize(bufsize),
       _eol(*CmdBuffer::EOL),
       _init(false)
-{
-    if ( (bufsize < MINIMUM_CMDBUFFER_SIZE) || (bufsize > MAXIMUM_CMDBUFFER_SIZE) )
-        throw ( Exception("CmdBuffer error, buffersize out of bounds") );
-}
+{}
 
 
 CmdBuffer::CmdBuffer ( const std::string & cmd, size_t bufsize )
@@ -53,8 +50,6 @@ CmdBuffer::CmdBuffer ( const std::string & cmd, size_t bufsize )
       _eol(*CmdBuffer::EOL),
       _init(false)
 {
-    if ( (bufsize < MINIMUM_CMDBUFFER_SIZE) || (bufsize > MAXIMUM_CMDBUFFER_SIZE) )
-        throw ( Exception("CmdBuffer error, buffersize out of bounds") );
     if ( ! this->open(cmd) )
         throw ( Exception(this->_errstr) );
 }
@@ -76,6 +71,11 @@ CmdBuffer::open ( const std::string & cmd )
 
     if ( _init )
         this->close();
+    
+    if ( _bufsize < MINIMUM_CMDBUFFER_SIZE || _bufsize > MAXIMUM_CMDBUFFER_SIZE ) {
+        _errstr = "CmdBuffer error, buffersize out of bounds";
+        return false;
+    }
 
     if ( (f = ::popen(cmd.c_str(), "r")) == NULL ) {
         _errstr = "CmdBuffer::Open() error in popen, failed to open pipe stream";
@@ -163,7 +163,6 @@ CmdBuffer::getAllLines ( StringBuffer & lines )
 {
     std::string line = "";
 
-    //lines = std::vector<std::string>();
     lines.clear();
 
     if ( ! _init )

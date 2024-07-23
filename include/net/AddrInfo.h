@@ -51,10 +51,13 @@ class AddrInfo {
 
     static AddrInfoFactory  factory;
 
+
   private:
 
-    AddrInfo  ( const AddrInfo    & ai );
+    AddrInfo  ( const AddrInfo  & ai );
+
     AddrInfo&  operator= ( const AddrInfo & ai );
+
 
   public:
 

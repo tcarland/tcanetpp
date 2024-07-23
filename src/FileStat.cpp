@@ -34,6 +34,7 @@
 namespace tcanetpp {
 
 
+FileStat::FileStat() {}
 
 FileStat::FileStat ( const std::string & filename )
   : _file(filename)

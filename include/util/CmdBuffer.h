@@ -52,7 +52,7 @@ class CmdBuffer {
 
   public:
 
-    CmdBuffer ( size_t bufsize = DEFAULT_CMDBUFFER_SIZE ) noexcept(false);
+    CmdBuffer ( size_t bufsize = DEFAULT_CMDBUFFER_SIZE );
     CmdBuffer ( const std::string & cmd, size_t bufsize = DEFAULT_CMDBUFFER_SIZE )
         noexcept(false);
 
