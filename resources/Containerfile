@@ -34,7 +34,7 @@ RUN useradd -m --uid 1000 tdh && \
     mv tcamake-* tcamake && \
     rm /tmp/tcamake.tar.gz
 
-RUN cd tcanetpp && source .resources/release_mt.env && \
+RUN cd tcanetpp && source resources/release_mt.env && \
     make arlib cmdbuf && make install && make distclean
 
 USER tdh
