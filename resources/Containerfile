@@ -1,15 +1,16 @@
-FROM ubuntu:22.04
-LABEL Description="CPP Build"
+FROM ubuntu:24.04
+
+LABEL description="cpp container build"
+LABEL author="Timothy C. Arland <tcarland at gmail dot com>"
 
 ARG TCAMAKE_VERSION=v25.01.28
 
-ENV HOME /root
-ENV TCAMAKE_HOME /opt/tcamake
-ENV TCAMAKE_PREFIX /usr
-
-shell ["/bin/bash", "-c"]
+ENV HOME=/root
+ENV TCAMAKE_HOME=/opt/tcamake
+ENV TCAMAKE_PREFIX=/usr
 
 RUN apt-get update && apt-get -y --no-install-recommends install \
+    bash \
     build-essential \
     ca-certificates \
     curl \
@@ -23,11 +24,13 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     rsync \
     tini 
 
+SHELL ["/bin/bash", "-c"]
+
 WORKDIR /opt
 
 COPY . /opt/tcanetpp
 
-RUN useradd -m --uid 1000 tdh && \
+RUN useradd -m --uid 1001 tdh && \
     chown -R tdh:tdh /opt/tcanetpp && \
     curl https://github.com/tcarland/tcamake/archive/refs/tags/${TCAMAKE_VERSION}.tar.gz -L -o /tmp/tcamake.tar.gz && \
     tar -xzf /tmp/tcamake.tar.gz && \
