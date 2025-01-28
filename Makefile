@@ -19,7 +19,7 @@ endif
 
 OPT_FLAGS += -fPIC -O2
 CCSHARED +=  -Wl,-soname,$@
-CXXFLAGS =   -std=c++17
+CXXFLAGS =   -std=c++23
 
 INCLUDES =   -Iinclude
 LIBS =
@@ -62,14 +62,14 @@ all: lib cmdbuf libtcapt
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-solib: libtcanetpp.so.1.5.9
+solib: libtcanetpp.so.1.6.0
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
-libtcanetpp.so.1.5.9: ${OBJS}
+libtcanetpp.so.1.6.0: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)
