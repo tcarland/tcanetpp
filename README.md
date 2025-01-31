@@ -3,7 +3,7 @@ tcanetpp
 
 ### LICENSE
 
-  Copyright (c) 2002-2024 Timothy Charlton Arland 
+  Copyright (c) 2002-2025 Timothy Charlton Arland 
         <tcarland@gmail.com>, <tca@charltontechnology.net>
 
   tcanetpp is free software: you can redistribute it and/or modify
@@ -83,6 +83,8 @@ Select a build profile and run `make`.
 source resources/profile_release_mt
 make
 ```
+
+The project has been tested against stdc++2023 and gnu11.4.0
 
 - **Unix:**  
   The library requires linking *libpthread*, *librt* and *libdl*.
