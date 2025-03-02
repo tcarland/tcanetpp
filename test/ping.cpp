@@ -2,7 +2,7 @@
   *   @file ping.cpp
   *   @author tcarland@gmail.com
   *
-  *   Test implementation of ICMP based ping using the tcanetpp library.
+  *   Implementation of ICMP-based ping using the tcanetpp library.
   *
  **/
 extern "C" {
@@ -30,6 +30,7 @@ using namespace tcanetpp;
 
 #define MAX_ICMPDATA_SIZE  2048
 #define ICMP_TIMEOUT_SECS  3
+
 
 bool Alarm = false;
 int  Pid   = 0;
@@ -167,6 +168,7 @@ ssize_t  readIcmpHeader ( CircularBuffer * buff, IcmpResponse & response )
 
     return len;
 }
+
 
 neticmp_h* readHeader ( CircularBuffer * buff )
 {
@@ -471,6 +473,5 @@ int main ( int argc, char ** argv )
     return 0;
 
 }
-
 
 

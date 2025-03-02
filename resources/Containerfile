@@ -21,7 +21,6 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     libzstd-dev \
     net-tools \
     pkg-config \
-    rsync \
     tini 
 
 SHELL ["/bin/bash", "-c"]

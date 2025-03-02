@@ -62,14 +62,14 @@ all: lib cmdbuf libtcapt
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-solib: libtcanetpp.so.1.6.0
+solib: libtcanetpp.so.1.6.1
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
-libtcanetpp.so.1.6.0: ${OBJS}
+libtcanetpp.so.1.6.1: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)
@@ -134,8 +134,8 @@ ifdef TCAMAKE_PREFIX
 	@echo "Installing libtcanetpp to $(TCAMAKE_PREFIX)/{include,lib}"
 	$(MKDIR) $(TCAMAKE_PREFIX)/include/tcanetpp
 	$(MKDIR) $(TCAMAKE_PREFIX)/lib
-	$(RSYNC) --delete include/ $(TCAMAKE_PREFIX)/include/tcanetpp/
-	$(RSYNC) lib/ $(TCAMAKE_PREFIX)/lib/
+	$(CP) -r include/ $(TCAMAKE_PREFIX)/include/tcanetpp/
+	$(CP) -r lib/ $(TCAMAKE_PREFIX)/lib/
 	@echo
 else
 	@echo "TCAMAKE_PREFIX is not set. Install not performed"
