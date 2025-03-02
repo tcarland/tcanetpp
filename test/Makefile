@@ -31,7 +31,7 @@ PT_OBJS=
 PTT_OBJS=   pt_test.o
 
 BIN= asnwho ipconvert client server cachetest pttest pfxtest \
-strtest bufftest cidrtest packtest pingt gktrace filetest \
+strtest bufftest cidrtest packtest pingt ttrace filetest \
 thtest hashtest pfxbase
 
 ALL_OBJS=$(OBJS) $(ASOBJ) $(STROBJ) $(CBUFF_OBJS) $(CIDR_OBJS)
@@ -48,7 +48,7 @@ include ${TCAMAKE_HOME}/tcamake_include
 # ----------------------- 
 
 all: asnclean asnwho ipconvert client server cidrtest strtest bufftest \
-pttest pingt gktrace packtest filetest thtest
+pttest pingt packtest filetest ttrace
 
 
 asnclean:
@@ -117,7 +117,7 @@ packtest: pack_test.o
 	$(make-cxxbin-rule)
 	@echo
 
-gktrace: trace_test.o
+ttrace: trace_test.o
 	$(make-cxxbin-rule)
 	@echo
 

@@ -5,7 +5,7 @@
   *
   * @section LICENSE
   *
-  * Copyright (c) 2020-2024 Timothy Charlton Arland <tcarland@gmail.com>
+  * Copyright (c) 2020-2025 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -116,11 +116,11 @@ class INotify {
 
   private:
 
-    int                 _fd;
-    bool                _recursive;
     WatchMap            _watches;
     WatchDescriptorMap  _watched;
     CircularBuffer    * _evbuf;
+    int                 _fd;
+    bool                _recursive;
 
     std::string         _errstr;
 };

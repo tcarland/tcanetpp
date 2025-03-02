@@ -5,7 +5,7 @@
   * 
   * @section LICENSE
   *
-  * Copyright (c) 2024-2025 Timothy Charlton Arland <tcarland@gmail.com>
+  * Copyright (c) 2020-2025 Timothy Charlton Arland <tcarland@gmail.com>
   *
   * This file is part of tcanetpp.
   *
@@ -41,19 +41,23 @@ namespace tcanetpp {
 uint32_t INotify::ON_CHANGE_MASK = IN_MODIFY | IN_CREATE | IN_DELETE;
 uint32_t INotify::ON_OPEN_MASK   = IN_OPEN | IN_CLOSE;
 
+
 /* ---------------------------------------------------------------- */
 
+
 INotify::INotify ( bool recursive )
-  : _fd(0),
-    _recursive(recursive),
-    _evbuf(new CircularBuffer(INOTIFY_BUFFER_LEN))
-{ }
+  : _evbuf(new CircularBuffer(INOTIFY_BUFFER_LEN)),
+    _fd(0),
+    _recursive(recursive)
+{}
+
 
 INotify::~INotify()
 {
     this->close();
     delete _evbuf;
 }
+
 
 bool
 INotify::init()
@@ -73,15 +77,14 @@ INotify::init()
     return true;
 }
 
+
 void
 INotify::close()
 {
     ::close(this->_fd);
 }
 
-
 /* ---------------------------------------------------------------- */
-
 
 bool
 INotify::addWatch ( const std::string & target )
@@ -212,6 +215,7 @@ INotify::readEvents ( IEventQueue & queue )
 
     return ((ssize_t) rt);
 }
+
 
 std::string
 INotify::getWatchName ( int wd ) const
