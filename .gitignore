@@ -13,10 +13,6 @@
 *.dylib
 *.dll
 
-# Fortran module files
-*.mod
-*.smod
-
 # Compiled Static libraries
 *.lai
 *.la
@@ -28,6 +24,7 @@
 *.out
 *.app
 
+compile_flags.txt
 .project
 .settings
 *.sw*

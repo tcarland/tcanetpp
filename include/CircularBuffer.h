@@ -30,7 +30,6 @@
 #ifndef _TCANETPP_CIRCULARBUFFER_H_
 #define _TCANETPP_CIRCULARBUFFER_H_
 
-
 #ifdef WIN32
 #include <Winsock2.h>
 #pragma warning (disable:4290)
@@ -45,12 +44,10 @@ extern "C" {
 
 namespace tcanetpp {
 
-
 /*  Default size limitations. */
 #define MIN_CIRBUFFER_SIZE       1
 #define MAX_CIRBUFFER_SIZE       (4294967295U)
 #define DEFAULT_CIRBUFFER_SIZE   (1024000U)
-
 
 // ----------------------------------------------------------------------
 /**  Buffer Exception class

@@ -1,0 +1,8 @@
+CompileFlags:
+  Add:
+    - "--include-directory=./include"
+    - "-xc++"
+    - "-DUSE_LIBRT"
+    - "-DUSE_PTHREADS"
+Diagnostics:
+  UnusedIncludes: None

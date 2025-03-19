@@ -28,22 +28,22 @@ PT_OBJS =     src/patricia.o
 TH_OBJS =     src/Thread.o src/ThreadLock.o src/ThreadMutexPool.o
 CMDBUF_OBJS = src/CmdBuffer.o
 
-OBJS =	      src/SocketOption.o src/Socket.o src/BufferedSocket.o \
-              src/CircularBuffer.o src/Serializer.o \
-              src/Whois.o src/EventManager.o \
-              src/IpAddr.o src/AddrInfo.o \
-              src/StringUtils.o src/FileStat.o src/FileUtils.o \
-              src/LogFacility.o src/tcanetpp_random.o src/INotify.o \
-              src/patricia.o src/DeviceMap.o \
-              src/NetworkDevice.o src/NetworkInterface.o
+OBJS =  src/SocketOption.o src/Socket.o src/BufferedSocket.o \
+        src/CircularBuffer.o src/Serializer.o \
+        src/Whois.o src/EventManager.o \
+        src/IpAddr.o src/AddrInfo.o \
+        src/StringUtils.o src/FileStat.o src/FileUtils.o \
+        src/LogFacility.o src/tcanetpp_random.o src/INotify.o \
+        src/patricia.o src/DeviceMap.o \
+        src/NetworkDevice.o src/NetworkInterface.o
 
 ifdef USE_PTHREADS
-OBJS +=		    $(TH_OBJS)
+OBJS +=	$(TH_OBJS)
 endif
 
 BIN =
-ALL_OBJS =	    $(OBJS) $(TH_OBJS) $(PT_OBJS) $(CMDBUF_OBJS)
-ALL_BINS = 	    $(BIN)
+ALL_OBJS =$(OBJS) $(TH_OBJS) $(PT_OBJS) $(CMDBUF_OBJS)
+ALL_BINS = $(BIN)
 
 # ---------------------------------------------
 
@@ -106,7 +106,7 @@ doc-clean:
 .PHONY: test
 test:
 	( cd test; $(MAKE) all )
-	@echo 
+	@echo
 
 clean:
 	$(RM) $(ALL_OBJS) \
