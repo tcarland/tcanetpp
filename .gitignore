@@ -32,8 +32,9 @@ compile_flags.txt
 lib
 docs/html
 docs/latex
-test
-!test/*.h
-!test/*.c
-!test/*.cc
+
+test/**
 !test/*.cpp
+!test/*.cc
+!test/*.h
+!test/Makefile
