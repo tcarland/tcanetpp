@@ -2,6 +2,7 @@ CompileFlags:
   Add:
     - "--include-directory=./include"
     - "-xc++"
+    - "-std=c++23"
     - "-DUSE_LIBRT"
     - "-DUSE_PTHREADS"
 Diagnostics:

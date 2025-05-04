@@ -7,7 +7,6 @@ ARG TCAMAKE_VERSION=v25.01.28
 
 ENV HOME=/root
 ENV TCAMAKE_HOME=/opt/tcamake
-ENV TCAMAKE_PREFIX=/usr
 
 RUN apt-get update && apt-get -y --no-install-recommends install \
     bash \
@@ -37,8 +36,11 @@ RUN useradd -m --uid 1001 tdh && \
     mv tcamake-* tcamake && \
     rm /tmp/tcamake.tar.gz
 
-RUN cd tcanetpp && source resources/release_mt.env && \
-    make arlib cmdbuf && make install && make distclean
+RUN cd tcanetpp && \
+    source resources/release_mt.env && \
+    make arlib cmdbuf && \
+    make install && \
+    make distclean
 
 USER tdh
 
