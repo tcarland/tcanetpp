@@ -96,19 +96,20 @@ CmdBuffer::open ( const std::string & cmd )
 }
 
 
-void
+int
 CmdBuffer::close()
 {
+    int rt = -1;
+
     if ( _init && _cmdbuf ) {
         _cmdbuf->close();
-        ::pclose(_file);
+        rt = ::pclose(_file) / 256;
         delete _cmdbuf;
         _cmdbuf = NULL;
     }
-
     _init = false;
 
-    return;
+    return rt;
 }
 
 

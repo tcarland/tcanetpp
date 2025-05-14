@@ -60,7 +60,7 @@ class CmdBuffer {
 
 
     bool         open              ( const std::string & cmd );
-    void         close();
+    int          close();
 
     bool         putLine           ( const std::string & line );
     std::string  getLine();

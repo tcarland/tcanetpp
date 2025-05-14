@@ -39,16 +39,16 @@ refined over many years. At the heart, it provides an Object-Oriented
 Socket class that wraps the Standard Library socket functions as well
 as (WIN32) Winsock2, providing a cross-platform implementation.   
 
-The general goal is to provide core network functionality based solely 
+The original goal is to provide core network functionality based solely 
 on Berkeley Sockets, libc, and libstdc++, with no other dependencies 
 (with the exception of pthreads for the Thread-related classes). While 
-written in C++, the overall design is intended to have as little inter-
-dependency as possible, such that by use of any one feature of the 
-library (eg. event api) does not depend on other features of the library.  
+written in C++, the overall design is intended to have little inter-
+dependency, such that by use of any one feature of the library 
+(eg. event api) does not depend on other features of the library.  
 
 Celebrating 20 years as a project, it has evolved much over the years 
-to stay relatively current to the C++ standards, but remaining lean and 
-usable. While there may be better options for some components, especially 
+to stay current to the C++ standards, but remaining lean and usable. 
+While there may be better options for some components, especially 
 when adopting libboost, some components are still very useful today. 
 
 libtcanetpp provides the following core functionality:
@@ -74,7 +74,6 @@ the project.
 cd ..
 git clone https://github.com/tcarland/tcamake
 cd tcanetpp
-export TCAMAKE_PROJECT=1
 ```
 
 Select a build profile and run `make`.
@@ -83,7 +82,7 @@ source resources/profile_release_mt
 make
 ```
 
-The project has been tested against stdc++2023 and gnu11.4.0
+The project has been tested against stdc++2023 and gnu 11.4.0
 
 - **Unix:**  
   The library requires linking *libpthread*, *librt* and *libdl*.
