@@ -35,7 +35,7 @@
 #include "net/Socket.h"
 #include "event/EventManager.h"
 
-#define TCANETPP_VERSION_TS  "25.05"
-#define TCANETPP_VERSION     "1.6.4"
+#define TCANETPP_VERSION_TS  "25.08"
+#define TCANETPP_VERSION     "1.6.5"
 
 #endif //_TCANETPP_H_

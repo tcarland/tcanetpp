@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 LABEL description="cpp container build"
 LABEL author="Timothy C. Arland <tcarland at gmail dot com>"
 
-ARG TCAMAKE_VERSION=v25.01.28
+ARG TCAMAKE_VERSION=v25.08.20
 
 ENV HOME=/root
 ENV TCAMAKE_HOME=/opt/tcamake
@@ -21,13 +21,18 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     net-tools \
     pkg-config \
     rsync \
-    tini 
+    tini
 
 SHELL ["/bin/bash", "-c"]
 
 WORKDIR /opt
 
 COPY . /opt/tcanetpp
+COPY ca.cr[t] /opt/
+RUN if [ -f ca.crt ]; then \
+        cp ca.crt /usr/local/share/ca-certificates/tcanet-ca.crt && \
+        update-ca-certificates; \
+    fi
 
 RUN useradd -m --uid 1001 tdh && \
     chown -R tdh:tdh /opt/tcanetpp && \
