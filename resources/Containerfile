@@ -1,9 +1,14 @@
 FROM ubuntu:24.04
 
-LABEL description="cpp container build"
-LABEL author="Timothy C. Arland <tcarland at gmail dot com>"
-
+ARG RELEASE_VERSION=""
 ARG TCAMAKE_VERSION=v25.08.20
+
+LABEL org.opencontainers.image.authors="Timothy C. Arland <tcarland at gmail dot com>" \
+      org.opencontainers.image.base.name="ubuntu:24.04" \
+      org.opencontainers.image.description="tcanetpp build container" \
+      org.opencontainers.image.source="https://github.com/tcarland/tcanetpp" \
+      org.opencontainers.image.title="tcanetpp" \
+      org.opencontainers.image.version="${RELEASE_VERSION}"
 
 ENV HOME=/root
 ENV TCAMAKE_HOME=/opt/tcamake
@@ -29,6 +34,7 @@ WORKDIR /opt
 
 COPY . /opt/tcanetpp
 COPY ca.cr[t] /opt/
+
 RUN if [ -f ca.crt ]; then \
         cp ca.crt /usr/local/share/ca-certificates/tcanet-ca.crt && \
         update-ca-certificates; \

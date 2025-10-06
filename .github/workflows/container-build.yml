@@ -41,3 +41,5 @@ jobs:
         push: true #${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        build_args: |
+          RELEASE_VERSION=${{ steps.meta.outputs.tags }}
