@@ -2,6 +2,8 @@ FROM ubuntu:24.04
 
 ARG RELEASE_VERSION=""
 ARG TCAMAKE_VERSION=v25.08.20
+ARG TDH_UID=1001
+ARG TDH_GID=${TDH_UID}
 
 LABEL org.opencontainers.image.authors="Timothy C. Arland <tcarland at gmail dot com>" \
       org.opencontainers.image.base.name="ubuntu:24.04" \
@@ -26,7 +28,8 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     net-tools \
     pkg-config \
     rsync \
-    tini
+    tini && \
+    apt-get clean
 
 SHELL ["/bin/bash", "-c"]
 
@@ -40,7 +43,8 @@ RUN if [ -f ca.crt ]; then \
         update-ca-certificates; \
     fi
 
-RUN useradd -m --uid 1001 tdh && \
+RUN groupadd --gid ${TDH_GID} tdh && \
+    useradd -m -u ${TDH_UID} -g ${TDH_GID} tdh && \
     chown -R tdh:tdh /opt/tcanetpp && \
     curl https://github.com/tcarland/tcamake/archive/refs/tags/${TCAMAKE_VERSION}.tar.gz -L -o /tmp/tcamake.tar.gz && \
     tar -xzf /tmp/tcamake.tar.gz && \
@@ -55,4 +59,5 @@ RUN cd tcanetpp && \
 
 USER tdh
 
-ENTRYPOINT ["/usr/bin/tini", "--"]
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+CMD [ "/bin/bash" ]
