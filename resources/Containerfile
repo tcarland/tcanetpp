@@ -1,19 +1,28 @@
-FROM ubuntu:24.04
-
+# tcanetpp Containerfile
+# 
+# This creates a base image for collecting/building a suite of 
+# tools from the tcalib collection that are collectively 
+# called 'tcalibcore'.
+# 
+FROM debian:12.12-slim
 ARG RELEASE_VERSION=""
-ARG TCAMAKE_VERSION=v25.08.20
+
 ARG TDH_UID=1001
 ARG TDH_GID=${TDH_UID}
 
+ARG tcamake_uri="https://github.com/tcarland/tcamake/archive/refs/tags"
+ARG tcamake_version="25.08.20"  # note the dropped 'v' for pathing issues
+
 LABEL org.opencontainers.image.authors="Timothy C. Arland <tcarland at gmail dot com>" \
-      org.opencontainers.image.base.name="ubuntu:24.04" \
+      org.opencontainers.image.base.name="debian:12.12-slim" \
       org.opencontainers.image.description="tcanetpp build container" \
       org.opencontainers.image.source="https://github.com/tcarland/tcanetpp" \
       org.opencontainers.image.title="tcanetpp" \
       org.opencontainers.image.version="${RELEASE_VERSION}"
 
-ENV HOME=/root
-ENV TCAMAKE_HOME=/opt/tcamake
+SHELL ["/bin/bash", "-c"]
+
+COPY . /opt/tcanetpp
 
 RUN apt-get update && apt-get -y --no-install-recommends install \
     bash \
@@ -29,35 +38,33 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     pkg-config \
     rsync \
     tini && \
-    apt-get clean
-
-SHELL ["/bin/bash", "-c"]
+    apt-get clean && \
+    groupadd --gid ${TDH_GID} tdh && \
+    useradd -m -u ${TDH_UID} -g ${TDH_GID} tdh && \
+    chown -R tdh:tdh /opt/tcanetpp
 
 WORKDIR /opt
 
-COPY . /opt/tcanetpp
 COPY ca.cr[t] /opt/
-
 RUN if [ -f ca.crt ]; then \
         cp ca.crt /usr/local/share/ca-certificates/tcanet-ca.crt && \
         update-ca-certificates; \
     fi
 
-RUN groupadd --gid ${TDH_GID} tdh && \
-    useradd -m -u ${TDH_UID} -g ${TDH_GID} tdh && \
-    chown -R tdh:tdh /opt/tcanetpp && \
-    curl https://github.com/tcarland/tcamake/archive/refs/tags/${TCAMAKE_VERSION}.tar.gz -L -o /tmp/tcamake.tar.gz && \
-    tar -xzf /tmp/tcamake.tar.gz && \
-    mv tcamake-* tcamake && \
+RUN curl -L ${tcamake_uri}/v${tcamake_version}.tar.gz -o /tmp/tcamake.tar.gz && \
+    tar -xzf /tmp/tcamake.tar.gz -C /opt && \
+    ln -s tcamake-${tcamake_version} tcamake && \
     rm /tmp/tcamake.tar.gz
 
 RUN cd tcanetpp && \
     source resources/release_mt.env && \
     make arlib cmdbuf && \
     make install && \
-    make distclean
+    make clean
 
 USER tdh
+
+ENV TCAMAKE_HOME=/opt/tcamake
 
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 CMD [ "/bin/bash" ]
