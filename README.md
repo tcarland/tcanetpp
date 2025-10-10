@@ -82,7 +82,7 @@ source resources/profile_release_mt
 make
 ```
 
-The project has been tested against stdc++2023 and gnu 11.4.0
+The project has been tested against stdc++23 and gnu 11.4.0
 
 - **Unix:**  
   The library requires linking *libpthread*, *librt* and *libdl*.
@@ -100,5 +100,4 @@ The project has been tested against stdc++2023 and gnu 11.4.0
 ### Documentation
 
 The library is documented using doxygen. Run `make documentation` to 
-generate the docs (doxygen required). 
-
+generate the docs (doxygen required).
