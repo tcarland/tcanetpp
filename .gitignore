@@ -28,6 +28,8 @@ compile_flags.txt
 .project
 .settings
 *.sw*
+*.crt
+*.cert
 
 lib
 docs/html
