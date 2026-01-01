@@ -3,7 +3,7 @@ tcanetpp
 
 ### LICENSE
 
-  Copyright (c) 2002-2025 Timothy Charlton Arland 
+  Copyright (c) 2002-2026 Timothy Charlton Arland 
         <tcarland@gmail.com>, <tca@charltontechnology.net>
 
   tcanetpp is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ when adopting libboost, some components are still very useful today.
 
 libtcanetpp provides the following core functionality:
  * Containers: Patricia/Radix trie, Hashmap, Circular Buffer, Synchronized Queue
- * Event Management for handling both network I/O and sub-second timers
+ * Event Management: For handling both network I/O and high-resolution timers
  * Threads: An interface for managing pthreads, thread pools and mutexes
  * Network: Socket and IP classes for manipulating IPv4 and IPv6 Addresses
  * Logging: A thread-safe logging facility  
