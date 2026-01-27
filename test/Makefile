@@ -121,6 +121,10 @@ ttrace: trace_test.o
 	$(make-cxxbin-rule)
 	@echo
 
+udp_test: udp_test.o
+	$(make-cxxbin-rule)
+	@echo
+
 ifdef USE_PTHREADS
 thtest: threadtest.o
 	$(make-cxxbin-rule)
