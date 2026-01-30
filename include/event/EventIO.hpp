@@ -53,8 +53,12 @@ struct EventIO {
     bool               isServer;  // IO socket event is a server socket.
 
     EventIO()
-        : evid(0),    evmgr(NULL),    handler(NULL),
-          rock(NULL), enabled(false), isServer(false)
+        : evid(0),
+          evmgr(nullptr),
+          handler(nullptr),
+          rock(nullptr),
+          enabled(false),
+          isServer(false)
     {
         Socket::ResetDescriptor(this->sfd);
     }

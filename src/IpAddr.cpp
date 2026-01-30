@@ -77,7 +77,7 @@ IpAddr::IpAddr ( const ipv4addr_t & addr, uint8_t mb )
 IpAddr::IpAddr ( const sockaddr_t * sa )
     : _mb(0)
 {
-    if ( sa != NULL )
+    if ( sa != nullptr )
     {
         sockaddr_t * s = (sockaddr_t*) sa;
 
@@ -364,7 +364,7 @@ IpAddr::ntop ( const ipv4addr_t & addr )
     dst = ::inet_ntop(AF_INET, &addr, ip, sizeof(ip));
 #   endif
 
-    if ( dst != NULL )
+    if ( dst != nullptr )
         ipstr.assign(ip);
 
     return ipstr;
@@ -373,7 +373,7 @@ IpAddr::ntop ( const ipv4addr_t & addr )
 std::string
 IpAddr::ntop ( const ipv6addr_t & addr )
 {
-    const char * dst = NULL;
+    const char * dst = nullptr;
     char         ip[INET6_ADDRSTRLEN];
     std::string  ipstr;
 
@@ -389,7 +389,7 @@ std::string
 IpAddr::ntop ( const sockaddr_t * sock )
 {
     std::string  ipstr;
-    const char * dst = NULL;
+    const char * dst = nullptr;
     char         ip[INET6_ADDRSTRLEN];
 
 #   ifdef WIN32
@@ -446,7 +446,7 @@ IpAddr::ether_ntop ( const ethaddr_t * ethaddr )
     std::string  ethstr;
     char hwaddr[18];
 
-    if ( ethaddr == NULL )
+    if ( ethaddr == nullptr )
         return ethstr;
 
     ::snprintf(hwaddr, 18, "%02x:%02x:%02x:%02x:%02x:%02x",
@@ -462,7 +462,7 @@ IpAddr::ether_ntop ( const ethaddr_t * ethaddr )
 //-------------------------------------------------------------------//
 
 /**  Legacy function to return the range of IP Addresses for a given
-  *  mask length. If @param subnet_pos is not NULL, it is populated
+  *  mask length. If @param subnet_pos is not nullptr, it is populated
   *  with the octet position of the range based on the mask length.
   *  eg. a /21 would give the address range for the 3rd octet.
  **/

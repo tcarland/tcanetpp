@@ -74,7 +74,6 @@ SecureSocket::SecureSocketFactory::operator() ( sockfd_t         & fd,
         return nullptr;
     }
 
-    // Create new SecureSocket for the accepted connection
     // Note: ctx is NOT owned by the client socket (shared with server)
     return static_cast<Socket*>(new SecureSocket(ssl, ctx, fd, csock, type, proto));
 }
@@ -232,12 +231,10 @@ SecureSocket::GetSSLErrorString()
 int
 SecureSocket::init ( bool block )
 {
-    // First initialize the underlying socket
     int result = Socket::init(block);
     if ( result < 0 )
         return result;
 
-    // Initialize SSL context
     if ( initSSLContext() < 0 )
         return -1;
 
@@ -251,7 +248,6 @@ SecureSocket::initSSLContext()
 {
     const SSL_METHOD * method = nullptr;
 
-    // Select appropriate SSL method based on socket type
     if ( _socktype == SOCKTYPE_SERVER || _socktype == SOCKTYPE_SERVER_CLIENT )
     {
         // Server mode
@@ -295,7 +291,6 @@ SecureSocket::initSSLContext()
     // Server-specific configuration
     if ( _socktype == SOCKTYPE_SERVER )
     {
-        // Load server certificate
         if ( ! _certfile.empty() )
         {
             if ( SSL_CTX_use_certificate_file(_ctx, _certfile.c_str(), 
@@ -307,7 +302,6 @@ SecureSocket::initSSLContext()
             }
         }
 
-        // Load private key
         if ( ! _keyfile.empty() )
         {
             if ( SSL_CTX_use_PrivateKey_file(_ctx, _keyfile.c_str(), 
@@ -326,7 +320,6 @@ SecureSocket::initSSLContext()
             }
         }
 
-        // Load CA certificates for client verification (optional)
         if ( ! _cafile.empty() )
         {
             if ( SSL_CTX_load_verify_locations(_ctx, _cafile.c_str(), nullptr) <= 0 )
@@ -341,16 +334,13 @@ SecureSocket::initSSLContext()
     }
     else // Client mode
     {
-        // Set up peer verification
         if ( _verifyPeer )
         {
             SSL_CTX_set_verify(_ctx, SSL_VERIFY_PEER, nullptr);
 
-            // Load CA trust store
             if ( ! _cafile.empty() )
             {
-                if ( SSL_CTX_load_verify_locations(_ctx, _cafile.c_str(), nullptr) <= 0 )
-                {
+                if ( SSL_CTX_load_verify_locations(_ctx, _cafile.c_str(), nullptr) <= 0 ) {
                     _errstr = "SecureSocket::initSSLContext() Error loading CA file: ";
                     _errstr.append(GetSSLErrorString());
                     return -1;
@@ -359,15 +349,12 @@ SecureSocket::initSSLContext()
             else
             {
                 // Use default system CA store
-                if ( SSL_CTX_set_default_verify_paths(_ctx) <= 0 )
-                {
+                if ( SSL_CTX_set_default_verify_paths(_ctx) <= 0 ) {
                     _errstr = "SecureSocket::initSSLContext() Error setting default verify paths";
                     return -1;
                 }
             }
-        }
-        else
-        {
+        } else {
             SSL_CTX_set_verify(_ctx, SSL_VERIFY_NONE, nullptr);
         }
 
@@ -412,9 +399,7 @@ SecureSocket::connect()
     if ( _sslConnected )
         return 1;
 
-    // First establish TCP connection using base class
-    if ( ! _connected )
-    {
+    if ( ! _connected ) {
         int result = Socket::connect();
         if ( result < 0 )
             return result;
@@ -435,16 +420,14 @@ SecureSocket::sslHandshake()
     {
         // Create SSL object
         _ssl = SSL_new(_ctx);
-        if ( _ssl == nullptr )
-        {
+        if ( _ssl == nullptr ) {
             _errstr = "SecureSocket::sslHandshake() Failed to create SSL object: ";
             _errstr.append(GetSSLErrorString());
             return -1;
         }
 
         // Attach SSL to socket descriptor
-        if ( SSL_set_fd(_ssl, _fd) == 0 )
-        {
+        if ( SSL_set_fd(_ssl, _fd) == 0 ) {
             _errstr = "SecureSocket::sslHandshake() Failed to set SSL fd";
             SSL_free(_ssl);
             _ssl = nullptr;
@@ -458,8 +441,7 @@ SecureSocket::sslHandshake()
             
 #if OPENSSL_VERSION_NUMBER >= 0x10002000L
             // Set hostname for certificate verification
-            if ( _verifyPeer )
-            {
+            if ( _verifyPeer ) {
                 X509_VERIFY_PARAM * param = SSL_get0_param(_ssl);
                 X509_VERIFY_PARAM_set_hostflags(param, X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS);
                 X509_VERIFY_PARAM_set1_host(param, _hostname.c_str(), _hostname.length());
@@ -573,8 +555,7 @@ SecureSocket::shutdown ( int shut )
     if ( _ssl != nullptr && _sslConnected )
     {
         // SSL_shutdown handles bidirectional shutdown
-        if ( shut >= 2 )
-        {
+        if ( shut >= 2 ) {
             int result = SSL_shutdown(_ssl);
             if ( result == 0 )
                 SSL_shutdown(_ssl);

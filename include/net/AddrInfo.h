@@ -111,11 +111,11 @@ class AddrInfo {
 
     static AddrInfo*   GetAddrInfo ( const std::string & host,
                                      uint16_t            port,
-                                     const addrinfo    * hints = NULL );
+                                     const addrinfo    * hints = nullptr );
 
     static AddrInfo*   GetAddrInfo ( const std::string & host,
                                      const std::string & svc,
-                                     const addrinfo    * hints = NULL );
+                                     const addrinfo    * hints = nullptr );
 
     /* static utility methods for getaddrinfo/getnameinfo */
 

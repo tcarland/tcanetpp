@@ -71,7 +71,7 @@ ThreadLock*
 ThreadMutexPool::AcquireMutex()
 {
     ThreadAutoMutex mutex(&_lock);
-    ThreadLock    * lock = NULL;
+    ThreadLock    * lock = nullptr;
 
     if ( _mutexIn.empty() )
         this->createMutexes();
@@ -155,7 +155,7 @@ void
 ThreadMutexPool::createMutexes()
 {
     ThreadAutoMutex mutex(&_lock);
-    ThreadLock    * lock = NULL;
+    ThreadLock    * lock = nullptr;
 
     if ( _lockcnt > _lockmax )
         return;
@@ -185,24 +185,21 @@ ThreadMutexPool::clear()
 
     _lock.lock();
 
-    for ( tIter = _mutexIn.begin(); tIter != _mutexIn.end(); ++tIter )
-    {
+    for ( tIter = _mutexIn.begin(); tIter != _mutexIn.end(); ++tIter ) {
         ThreadLock * lock = (ThreadLock*) *tIter;
-
         if ( lock )
             delete lock;
     }
+
     _mutexIn.clear();
 
-    for ( tIter = _mutexOut.begin(); tIter != _mutexOut.end(); ++tIter )
-    {
+    for ( tIter = _mutexOut.begin(); tIter != _mutexOut.end(); ++tIter ) {
         ThreadLock * lock = (ThreadLock*) *tIter;
-
         if ( lock )
             delete lock;
     }
-    _mutexOut.clear();
 
+    _mutexOut.clear();
     _lock.unlock();
 }
 

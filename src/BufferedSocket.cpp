@@ -46,8 +46,8 @@ BufferedSocket::BufferedSocketFactory::operator() ( sockfd_t         & fd,
 
 BufferedSocket::BufferedSocket()
     : Socket(),
-      _rbuffer(NULL),
-      _wbuffer(NULL),
+      _rbuffer(nullptr),
+      _wbuffer(nullptr),
       _wbx(false)
 {}
 
@@ -57,7 +57,7 @@ BufferedSocket::BufferedSocket ( ipv4addr_t ip,
                                  int        proto )
     : Socket(ip, port, type, proto),
       _rbuffer(new CircularBuffer()),
-      _wbuffer(NULL),
+      _wbuffer(nullptr),
       _wbx(false)
 {
     this->init(false);
@@ -69,7 +69,7 @@ BufferedSocket::BufferedSocket ( ipv6addr_t ip,
                                  int        proto )
     : Socket(ip, port, type, proto),
       _rbuffer(new CircularBuffer()),
-      _wbuffer(NULL),
+      _wbuffer(nullptr),
       _wbx(false)
 {
     this->init(false);
@@ -81,7 +81,7 @@ BufferedSocket::BufferedSocket ( sockaddr_t * sa,
                                  int          proto )
     : Socket(sa, port, type, proto),
       _rbuffer(new CircularBuffer()),
-      _wbuffer(NULL),
+      _wbuffer(nullptr),
       _wbx(false)
 {
     this->init(false);
@@ -90,7 +90,7 @@ BufferedSocket::BufferedSocket ( sockaddr_t * sa,
 BufferedSocket::BufferedSocket ( addrinfo * ai )
     : Socket(ai),
       _rbuffer(new CircularBuffer()),
-      _wbuffer(NULL),
+      _wbuffer(nullptr),
       _wbx(false)
 {
     this->init(false);
@@ -103,7 +103,7 @@ BufferedSocket::BufferedSocket ( sockfd_t   & fd,
                                  int          proto )
     : Socket(fd, csock, type, proto),
       _rbuffer(new CircularBuffer()),
-      _wbuffer(NULL),
+      _wbuffer(nullptr),
       _wbx(false)
 {
     this->init(false);
@@ -291,7 +291,7 @@ BufferedSocket::txBufferSize()
 void
 BufferedSocket::enableTxBuffer()
 {
-    if ( _wbuffer == NULL )
+    if ( _wbuffer == nullptr )
         _wbuffer = new CircularBuffer();
     _wbx  = true;
 }
@@ -314,7 +314,7 @@ BufferedSocket::bufferedWrite ( const void *vptr, size_t n )
     size_t       nleft;
     int          r;
 
-    if ( _wbx && _wbuffer == NULL )
+    if ( _wbx && _wbuffer == nullptr )
         return -1;
 
     wt = 0;
@@ -372,7 +372,7 @@ BufferedSocket::readToBuffer()
         size = _rbuffer->writePtrAvailable();
         wptr = _rbuffer->getWritePtr(&size);
 
-        if ( wptr == NULL ) {
+        if ( wptr == nullptr ) {
             rd = 0;
             break;
         }

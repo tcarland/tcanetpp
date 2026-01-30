@@ -101,7 +101,7 @@ LogFacility::OpenLogFile ( const std::string & logname,
                            const std::string & filename,
                            bool append )
 {
-    std::ofstream       * fstrm = NULL;
+    std::ofstream       * fstrm = nullptr;
     std::ios::openmode    mode  = std::ios::out;
     StreamMap::iterator   sIter;
 
@@ -167,7 +167,7 @@ LogFacility::AddLogStream ( const std::string & logname, const std::string & pre
 {
     bool result = false;
 
-    if ( stream == NULL || ! LogFacility::Lock() ) // set logerr
+    if ( stream == nullptr || ! LogFacility::Lock() ) // set logerr
         return result;
 
     StreamMap::iterator  sIter = LogFacility::_StreamMap.find(logname);
@@ -191,13 +191,13 @@ LogFacility::AddLogStream ( const std::string & logname, const std::string & pre
 
 
 /**  Removes and returns a pointer to the logstream identified by the
-  *  given logstream. If @param del is true, NULL is returned and the
+  *  given logstream. If @param del is true, nullptr is returned and the
   *  associated logstream is free'd.
  **/
 std::ostream*
 LogFacility::RemoveLogStream ( const std::string & logname, bool del )
 {
-    std::ostream        *ptr = NULL;
+    std::ostream        *ptr = nullptr;
     StreamMap::iterator  sIter;
 
     if ( ! LogFacility::Lock() )
@@ -241,7 +241,7 @@ LogFacility::RemoveLogStreams ( bool del )
         return;
 
     for ( sIter = _StreamMap.begin(); sIter != _StreamMap.end(); ++sIter ) {
-        if ( sIter->second.logStream == NULL || sIter->second.logStream == &std::cout )
+        if ( sIter->second.logStream == nullptr || sIter->second.logStream == &std::cout )
             continue;
 
         if ( del )
@@ -470,7 +470,7 @@ LogFacility::LogToAllStreams ( const std::string & entry, bool newline )
     for ( sIter = _StreamMap.begin(); sIter != _StreamMap.end(); ++sIter ) {
         std::ostream * strm = sIter->second.logStream;
 
-        if ( strm == NULL ) {
+        if ( strm == nullptr ) {
             dead.push_back(sIter->first);
             continue;
         }
@@ -567,7 +567,7 @@ LogFacility::CloseSyslog()
 }
 
 /** Closes the log stream associated with the given logname. If
-  * @param del is true, the logstream is deleted and NULL is returned;
+  * @param del is true, the logstream is deleted and nullptr is returned;
   * otherwise the associated logstream pointer is returned. Note that
   * the delete flag is not necessary for logfiles opened via
   * OpenLogFile() only those added manually via AddLogStream().
@@ -575,17 +575,17 @@ LogFacility::CloseSyslog()
 std::ostream*
 LogFacility::CloseLogFile ( const std::string & logname, bool del )
 {
-    std::ofstream  * fstrm = NULL;
+    std::ofstream  * fstrm = nullptr;
 
     if ( LogFacility::IsOpen(logname) )
         LogFacility::LogMessage(logname, "==== LogFacility Closing ====");
 
     fstrm = (std::ofstream*) LogFacility::RemoveLogStream(logname);
 
-    if ( del && fstrm != NULL ) {
+    if ( del && fstrm != nullptr ) {
         fstrm->close();
         delete fstrm;
-        fstrm = NULL;
+        fstrm = nullptr;
     }
 
     return fstrm;

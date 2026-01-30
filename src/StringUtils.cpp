@@ -612,15 +612,15 @@ std::wstring
 StringUtils::CtoWstr ( const std::string & str )
 {
     std::wstring  wstr = L"";
-    wchar_t      *tmp  = NULL;
+    wchar_t      *tmp  = nullptr;
 
     size_t slen = ::strlen(str.c_str());
-    size_t wlen = ::mbstowcs(NULL, str.c_str(), slen) + 1;
+    size_t wlen = ::mbstowcs(nullptr, str.c_str(), slen) + 1;
 
     tmp  = (wchar_t*) ::malloc(wlen * sizeof(wchar_t*));
     wlen = ::mbstowcs(tmp, str.c_str(), slen + 1);
 
-    if ( tmp == NULL )
+    if ( tmp == nullptr )
         return wstr;
 
     wstr = std::wstring(tmp);
@@ -634,15 +634,15 @@ std::string
 StringUtils::WtoCstr ( const std::wstring & wstr )
 {
     std::string  str = "";
-    char        *tmp = NULL;
+    char        *tmp = nullptr;
 
     size_t wlen = ::wcslen(wstr.c_str());
-    size_t slen = ::wcstombs(NULL, wstr.c_str(), wlen) + 1;
+    size_t slen = ::wcstombs(nullptr, wstr.c_str(), wlen) + 1;
 
     tmp  = (char*) ::malloc(slen * sizeof(char*));
     slen = ::wcstombs(tmp, wstr.c_str(), wlen+1);
 
-    if ( tmp == NULL )
+    if ( tmp == nullptr )
         return str;
 
     str = std::string(tmp);

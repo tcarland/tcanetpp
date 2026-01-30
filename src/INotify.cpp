@@ -180,7 +180,8 @@ INotify::readEvents ( IEventQueue & queue )
 
      _evbuf->setWritePtr(wt);
 
-    while ( _evbuf->readAvailable() > INOTIFY_EVENT_SIZE ) {
+    while ( _evbuf->readAvailable() > INOTIFY_EVENT_SIZE )
+    {
         INotifyEvent ivent;
 
         rptr = _evbuf->getReadPtr(&rlen);
@@ -192,11 +193,13 @@ INotify::readEvents ( IEventQueue & queue )
         event = (struct inotify_event*) rptr;
         //printf ("wd=%d mask=%u cookie=%u len=%u\n", event->wd, event->mask, event->cookie, event->len);
 
-        if ( event->len ) {
+        if ( event->len )
+        {
             ivent.wd    = event->wd;
             ivent.name  = event->name;
             ivent.path  = this->getWatchName(event->wd);
             ivent.type  = this->ReadEventMask(event->mask);
+
             if ( event->mask & IN_ISDIR ) {
                 ivent.isdir = true;
                 if ( _recursive && ivent.type.compare(INOTIFY_CREATE) == 0 )
