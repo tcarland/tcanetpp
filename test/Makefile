@@ -1,5 +1,6 @@
 NEED_LIBDL = 1
 NEED_SOCKET = 1
+NEED_OPENSSL = 1
 
 ifdef USE_LIBRT
 NEED_LIBRT = 1
@@ -32,7 +33,7 @@ PTT_OBJS=   pt_test.o
 
 BIN= asnwho ipconvert client server cachetest pttest pfxtest \
 strtest bufftest cidrtest packtest pingt ttrace filetest \
-thtest hashtest pfxbase
+thtest hashtest pfxbase tlstest udptest
 
 ALL_OBJS=$(OBJS) $(ASOBJ) $(STROBJ) $(CBUFF_OBJS) $(CIDR_OBJS)
 ALL_BINS=$(BIN)
@@ -48,7 +49,7 @@ include ${TCAMAKE_HOME}/tcamake_include
 # ----------------------- 
 
 all: asnclean asnwho ipconvert client server cidrtest strtest bufftest \
-pttest pingt packtest filetest ttrace
+pttest pingt packtest filetest ttrace tlsclient tlsserver udptest
 
 
 asnclean:
@@ -121,7 +122,15 @@ ttrace: trace_test.o
 	$(make-cxxbin-rule)
 	@echo
 
-udp_test: udp_test.o
+udptest: udp_test.o
+	$(make-cxxbin-rule)
+	@echo
+
+tlsclient: tlsclient.o
+	$(make-cxxbin-rule)
+	@echo
+
+tlsserver: tlsserver.o
 	$(make-cxxbin-rule)
 	@echo
 

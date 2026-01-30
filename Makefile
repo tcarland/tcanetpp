@@ -28,7 +28,7 @@ PT_OBJS =     src/patricia.o
 TH_OBJS =     src/Thread.o src/ThreadLock.o src/ThreadMutexPool.o
 CMDBUF_OBJS = src/CmdBuffer.o
 
-OBJS =  src/SocketOption.o src/Socket.o src/BufferedSocket.o \
+OBJS =  src/SocketOption.o src/Socket.o src/BufferedSocket.o src/SecureSocket.o \
         src/CircularBuffer.o src/Serializer.o \
         src/Whois.o src/EventManager.o \
         src/IpAddr.o src/AddrInfo.o \
