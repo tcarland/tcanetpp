@@ -73,7 +73,7 @@ class InputThread : public Thread {
             msg.append(":").append(StringUtils::ToString(val));
 
             mstr = (char*) ::malloc(msg.length() + 1);
-            if ( mstr == NULL )
+            if ( mstr == nullptr )
                 continue;
             ::strncpy(mstr, msg.c_str(), msg.length());
             mstr[msg.length()] = '\0';
@@ -156,7 +156,7 @@ class OutputThread : public Thread {
 
     void  processMsg ( char * msg )
     {
-        if ( msg == NULL )
+        if ( msg == nullptr )
             return;
         this->stripMsg(msg);
         this->printMsg(msg);

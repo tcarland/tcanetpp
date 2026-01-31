@@ -44,13 +44,13 @@ int main ( int argc, char **argv )
     ai    = AddrInfo::GetAddrInfo(name, "");
     i     = 1;
 
-    if ( ai == NULL ) {
+    if ( ai == nullptr ) {
         std::cout << "Error getting addrinfo for " << name << std::endl;
         return -1;
     }
 
     std::cout << "  " << name << std::endl;
-    for ( res = ai->begin(); res != NULL; res = ai->next() )
+    for ( res = ai->begin(); res != nullptr; res = ai->next() )
     {
         AddrInfo::GetNameInfo((const sockaddr*) res->ai_addr, res->ai_addrlen, result, NI_NUMERICHOST);
         std::cout << "addr result: " << i << " > " << result << std::endl;
@@ -58,7 +58,7 @@ int main ( int argc, char **argv )
     }
 
     delete ai;
-    ai = NULL;
+    ai = nullptr;
     std::cout << std::endl;
 
 
@@ -69,7 +69,7 @@ int main ( int argc, char **argv )
     ai    = AddrInfo::GetAddrInfo(name, "");
     i     = 1;
 
-    if ( ai == NULL ) {
+    if ( ai == nullptr ) {
         std::cout << "Error getting addrinfo for " << name << std::endl;
         return -1;
     }
@@ -83,7 +83,7 @@ int main ( int argc, char **argv )
         res = ai->next();
     }
     delete ai;
-    ai = NULL;
+    ai = nullptr;
     std::cout << std::endl;
 
 
@@ -95,7 +95,7 @@ int main ( int argc, char **argv )
     ai    = AddrInfo::GetAddrInfo(name, pt);
     i     = 1;
 
-    if ( ai == NULL ) {
+    if ( ai == nullptr ) {
         std::cout << "Error getting addrinfo for NULL name: " << AddrInfo::ai_error << std::endl;;
         return -1;
     }
@@ -109,7 +109,7 @@ int main ( int argc, char **argv )
         res = ai->next();
     }
     delete ai;
-    ai = NULL;
+    ai = nullptr;
     std::cout << std::endl;
 
     // -------------------------------------------
@@ -130,7 +130,7 @@ int main ( int argc, char **argv )
         }
 
         delete ai;
-        ai = NULL;
+        ai = nullptr;
     }
 
 

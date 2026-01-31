@@ -157,8 +157,8 @@ INotify::haveWatch ( int wd ) const
 ssize_t
 INotify::readEvents ( IEventQueue & queue )
 {
-    char * wptr = NULL;
-    char * rptr = NULL;
+    char * wptr = nullptr;
+    char * rptr = nullptr;
     size_t wlen = 0;
     size_t rlen = 0;
     size_t rt   = 0;
@@ -168,7 +168,7 @@ INotify::readEvents ( IEventQueue & queue )
     struct inotify_event * event;
 
     wptr = _evbuf->getWritePtr(&wlen);
-    if ( wptr == NULL )
+    if ( wptr == nullptr )
         return -1;
 
     wt = this->nreadn(this->_fd, (void*)wptr, wlen);
@@ -185,7 +185,7 @@ INotify::readEvents ( IEventQueue & queue )
         INotifyEvent ivent;
 
         rptr = _evbuf->getReadPtr(&rlen);
-        if ( rptr == NULL ) {
+        if ( rptr == nullptr ) {
             _errstr = "INotify::readEvents() Error in obtaining handle from buffer";
             return -1;
         }
@@ -281,9 +281,8 @@ INotify::nreadn ( int fd,  void * vptr, size_t n )
     while ( nleft > 0 )
     {
         if ( (nread = ::read(fd, ptr, nleft)) < 0 ) {
-            if ( errno == EINTR || errno == EAGAIN ) {
+            if ( errno == EINTR || errno == EAGAIN )
                 return (n-nleft);
-            }
             else
                 return -1;
         } else if ( nread == 0 ) {

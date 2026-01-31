@@ -453,20 +453,20 @@ Socket::accept()
 Socket*
 Socket::accept ( SocketFactory & factory )
 {
-    Socket     * client = NULL;
+    Socket     * client = nullptr;
     sockaddr_t   csock;
     socklen_t    len;
     sockfd_t     cfd;
 
     if ( _socktype < SOCKTYPE_SERVER )
-        return NULL;
+        return nullptr;
 
     len = sizeof(csock);
     ::memset(&csock, 0, len);
 
     if ( _proto == SOCKET_TCP ) {
         if ( (cfd = ::accept(_fd, (struct sockaddr*) &csock, &len)) < 0 )
-            return NULL;
+            return nullptr;
         client = factory(cfd, csock, _socktype, _proto);
     } else if ( _proto == SOCKET_UDP ) {
         client = factory(_fd, csock, _socktype, _proto);
@@ -760,7 +760,7 @@ Socket::getErrorString() const
 void
 Socket::Unblock ( Socket * s )
 {
-    if ( s == NULL )
+    if ( s == nullptr )
         return;
 
 #   ifdef WIN32
@@ -782,7 +782,7 @@ Socket::Unblock ( Socket * s )
 void
 Socket::Block ( Socket * s )
 {
-    if ( s == NULL )
+    if ( s == nullptr )
         return;
 
 #   ifdef WIN32

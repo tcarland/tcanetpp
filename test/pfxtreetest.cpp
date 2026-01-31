@@ -126,17 +126,17 @@ int main ( int argc, char **argv )
     for ( vIter = srcp.begin(); vIter != srcp.end(); vIter++ )
     {
         p  = ptree.exactMatch(*vIter);
-        if ( p == NULL )
+        if ( p == nullptr )
             printf("Search failed for %s\n",  vIter->toString().c_str());
         else
             printf("Found addr %s\n", vIter->toString().c_str());
     }
 
-    p  = NULL;
+    p  = nullptr;
 
     IpAddr::ToIpAddr(addr3, pfx);
     p = ptree.longestMatch(pfx);
-    if ( p == NULL ) {
+    if ( p == nullptr ) {
         printf("Search failed for %s\n", pfx.toString().c_str());
     } else {
         printf("longest match for %s returned %s\n",
@@ -146,7 +146,7 @@ int main ( int argc, char **argv )
 
     IpAddr::ToIpAddr(addrstr6, pfx);
     p  = ptree.longestMatch(pfx);
-    if ( p == NULL )
+    if ( p == nullptr )
         printf("Search failed for %s\n", pfx.toString().c_str());
     else
         printf("longest match for %s returned %s\n",

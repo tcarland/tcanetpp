@@ -151,7 +151,7 @@ ssize_t  readIcmpHeader ( CircularBuffer * buff, IcmpResponse & response )
     len  = sizeof(netip_h) + sizeof(neticmp_h);
     rptr = buff->getReadPtr(&rd);
 
-    if ( rptr == NULL )
+    if ( rptr == nullptr )
         return -1;
     if ( rd < len ) {
         std::cout << "Invalid header" << std::endl;
@@ -175,13 +175,13 @@ neticmp_h* readHeader ( CircularBuffer * buff )
     char      * rptr, *ptr;
     size_t      rd, len;
 
-    netip_h   * iph   = NULL;
-    neticmp_h * hdr   = NULL;
+    netip_h   * iph   = nullptr;
+    neticmp_h * hdr   = nullptr;
 
     len  = sizeof(netip_h) + sizeof(neticmp_h);
     rptr = buff->getReadPtr(&rd);
 
-    if ( rptr == NULL )
+    if ( rptr == nullptr )
         return hdr;
 
     if ( rd < len ) {
@@ -200,7 +200,7 @@ neticmp_h* readHeader ( CircularBuffer * buff )
     if ( hdr->id == Pid )
         return hdr;
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -302,12 +302,12 @@ int main ( int argc, char ** argv )
 
     dropPriv();
 
-    neticmp_h  * req     = NULL;
-    icmp_ts    * its     = NULL;
-    char       * wptr    = NULL;
-    char       * wbuff   = NULL;
-    char       * data    = NULL;
-    const char * dt      = NULL;
+    neticmp_h  * req     = nullptr;
+    icmp_ts    * its     = nullptr;
+    char       * wptr    = nullptr;
+    char       * wbuff   = nullptr;
+    char       * data    = nullptr;
+    const char * dt      = nullptr;
     bool         sendReq = true;
 
     sockaddr_t   csock;
@@ -395,7 +395,7 @@ int main ( int argc, char ** argv )
 
         sz   = rbuff->writePtrAvailable();
         wptr = rbuff->getWritePtr(&sz);
-        if ( wptr == NULL )
+        if ( wptr == nullptr )
             errorOut("Error in writing to rbuff");
 
         rd   = icmps->readFrom(wptr, sz, csock);
@@ -471,7 +471,4 @@ int main ( int argc, char ** argv )
         << std::endl;
 
     return 0;
-
 }
-
-

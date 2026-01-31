@@ -20,9 +20,9 @@ CXXFLAGS=   -std=c++0x
 OPT_FLAGS+= -DTWHOIS_MAIN 
 
 
-ASOBJ=  ../src/IpAddr.o ../src/AddrInfo.o \
-	../src/tcanetpp_random.o ../src/Socket.o \
-	../src/SocketOption.o ../src/Whois.o
+ASOBJ = ../src/IpAddr.o ../src/AddrInfo.o \
+	    ../src/tcanetpp_random.o ../src/Socket.o \
+	    ../src/SocketOption.o ../src/Whois.o
 
 OBJS=	client.o server.o pack_test.o ping.o
 
@@ -33,7 +33,7 @@ PTT_OBJS=   pt_test.o
 
 BIN= asnwho ipconvert client server cachetest pttest pfxtest \
 strtest bufftest cidrtest packtest pingt ttrace filetest \
-thtest hashtest pfxbase tlstest udptest
+thtest hashtest pfxbase tlstest udptest tlsclient tlsserver
 
 ALL_OBJS=$(OBJS) $(ASOBJ) $(STROBJ) $(CBUFF_OBJS) $(CIDR_OBJS)
 ALL_BINS=$(BIN)
