@@ -15,13 +15,13 @@ int main ()
     std::string  strB = "foo2";
     int16_t      intA = 1;
     uint32_t     intB = 2;
-    char *       buff = NULL;
+    char *       buff = nullptr;
     
     size_t  bsize = 128;
     
     buff = (char*) ::calloc(bsize, sizeof(char));
     
-    if ( buff == NULL )
+    if ( buff == nullptr )
         return -1;
     
     char * ptr = buff;

@@ -4,7 +4,7 @@
 # tools from the tcalib collection that are collectively 
 # called 'tcalibcore'.
 # 
-FROM debian:12.12-slim
+FROM debian:12.13-slim
 ARG RELEASE_VERSION=""
 
 ARG TDH_UID=1001
@@ -14,7 +14,7 @@ ARG tcamake_uri="https://github.com/tcarland/tcamake/archive/refs/tags"
 ARG tcamake_version="26.01.01"  # note the dropped 'v' for pathing issues
 
 LABEL org.opencontainers.image.authors="Timothy C. Arland <tcarland at gmail dot com>" \
-      org.opencontainers.image.base.name="debian:12.12-slim" \
+      org.opencontainers.image.base.name="debian:12.13-slim" \
       org.opencontainers.image.description="tcanetpp build container" \
       org.opencontainers.image.source="https://github.com/tcarland/tcanetpp" \
       org.opencontainers.image.title="tcanetpp" \

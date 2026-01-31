@@ -88,7 +88,7 @@ class EventManager {
 
     evid_t               addIOEvent     ( EventIOHandler    * handler,
                                           const sockfd_t    & sfd,
-                                          void              * rock     = NULL,
+                                          void              * rock     = nullptr,
                                           bool                isServer = false );
 
     bool                 removeEvent    ( const evid_t  & id );

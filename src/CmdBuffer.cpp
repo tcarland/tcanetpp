@@ -34,8 +34,8 @@ const char*  CmdBuffer::EOL = "\n";
 
 
 CmdBuffer::CmdBuffer ( size_t bufsize )
-    : _cmdbuf(NULL),
-      _file(NULL),
+    : _cmdbuf(nullptr),
+      _file(nullptr),
       _bufsize(bufsize),
       _eol(*CmdBuffer::EOL),
       _init(false)
@@ -43,8 +43,8 @@ CmdBuffer::CmdBuffer ( size_t bufsize )
 
 
 CmdBuffer::CmdBuffer ( const std::string & cmd, size_t bufsize )
-    : _cmdbuf(NULL),
-      _file(NULL),
+    : _cmdbuf(nullptr),
+      _file(nullptr),
       _bufsize(bufsize),
       _cmd(cmd),
       _eol(*CmdBuffer::EOL),
@@ -67,7 +67,7 @@ CmdBuffer::~CmdBuffer()
 bool
 CmdBuffer::open ( const std::string & cmd )
 {
-    FILE * f = NULL;
+    FILE * f = nullptr;
 
     if ( _init )
         this->close();
@@ -77,7 +77,7 @@ CmdBuffer::open ( const std::string & cmd )
         return false;
     }
 
-    if ( (f = ::popen(cmd.c_str(), "r")) == NULL ) {
+    if ( (f = ::popen(cmd.c_str(), "r")) == nullptr ) {
         _errstr = "CmdBuffer::Open() error in popen, failed to open pipe stream";
         return false;
     }
@@ -105,7 +105,7 @@ CmdBuffer::close()
         _cmdbuf->close();
         rt = ::pclose(_file) / 256;
         delete _cmdbuf;
-        _cmdbuf = NULL;
+        _cmdbuf = nullptr;
     }
     _init = false;
 

@@ -54,9 +54,14 @@ struct EventTimer {
     bool                enabled;   // boolean indicating whether event is active.
 
     EventTimer()
-        : evid(0),   evmgr(NULL), handler(NULL),
-          count(0),  fired(0),    evsec(0),
-          evusec(0), absolute(false),
+        : evid(0),
+          evmgr(nullptr),
+          handler(nullptr),
+          count(0),
+          fired(0),
+          evsec(0),
+          evusec(0),
+          absolute(false),
           enabled(false)
     {}
 

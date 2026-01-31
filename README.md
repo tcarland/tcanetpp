@@ -54,7 +54,7 @@ when adopting libboost, some components are still very useful today.
 libtcanetpp provides the following core functionality:
  * Containers: Patricia/Radix trie, Hashmap, Circular Buffer, Synchronized Queue
  * Event Management: For handling both network I/O and high-resolution timers
- * Threads: An interface for managing pthreads, thread pools and mutexes
+ * Threads: An OO interface for managing pthreads, thread pools and mutexes
  * Network: Socket and IP classes for manipulating IPv4 and IPv6 Addresses
  * Logging: A thread-safe logging facility  
  

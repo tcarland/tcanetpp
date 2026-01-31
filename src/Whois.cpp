@@ -36,7 +36,7 @@ namespace tcanetpp {
 
 
 Whois::Whois ( const std::string & host, uint16_t port )
-    : _sock(NULL)
+    : _sock(nullptr)
 {
     this->init(host, port);
 }
@@ -58,10 +58,10 @@ Whois::init ( const std::string & host, uint16_t port )
         return;
     if ( port == 0 )
         port = DEFAULT_WHOIS_PORT;
-    if ( _sock != NULL ) {
+    if ( _sock != nullptr ) {
         _sock->close();
         delete _sock;
-        _sock = NULL;
+        _sock = nullptr;
     }
 
     IpAddrList   addrs;
@@ -94,7 +94,7 @@ Whois::init ( const std::string & host, uint16_t port )
 
     if ( ! _sock->isConnected() )  {
         delete _sock;
-        _sock = NULL;
+        _sock   = nullptr;
         _errstr = "Connection attempts failed to host: ";
         _errstr.append(host);
     }
@@ -115,7 +115,7 @@ Whois::query ( const std::string & query, const std::string & host, uint16_t por
     if ( ! host.empty() )
         this->init(host, port);
 
-    if ( _sock == NULL ) { // throw or error
+    if ( _sock == nullptr ) { // throw or error
         _errstr = "Failed to init socket";
         return result;
     }
@@ -176,7 +176,7 @@ void usage()
 int main ( int argc, char ** argv )
 {
     std::string  host, query;
-    char *       hoststr = NULL;
+    char *       hoststr = nullptr;
     char         optChar;
 
     while ( (optChar = getopt(argc, argv, "h:")) != EOF )
@@ -201,7 +201,7 @@ int main ( int argc, char ** argv )
         }
     }
 
-    if ( hoststr != NULL && strlen(hoststr) > 0 ) {
+    if ( hoststr != nullptr && strlen(hoststr) > 0 ) {
         host = hoststr;
         free(hoststr);
     } else

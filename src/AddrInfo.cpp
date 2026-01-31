@@ -62,17 +62,17 @@ std::string AddrInfo::ai_error = " -- ";
 
 
 AddrInfo::AddrInfo()
-    : _ai(NULL),
-      _nxt(NULL),
+    : _ai(nullptr),
+      _nxt(nullptr),
       _err(0)
 {}
 
 AddrInfo::AddrInfo ( const std::string & name, const std::string & service )
-    : _ai(NULL),
-      _nxt(NULL),
+    : _ai(nullptr),
+      _nxt(nullptr),
       _err(0)
 {
-    _err = AddrInfo::GetAddrInfo(name, service, NULL, &_ai);
+    _err = AddrInfo::GetAddrInfo(name, service, nullptr, &_ai);
     _nxt = _ai;
 }
 
@@ -119,7 +119,7 @@ AddrInfo::operator= ( const AddrInfo & ai )
 bool
 AddrInfo::isValid() const
 {
-    if ( _ai == NULL )
+    if ( _ai == nullptr )
         return false;
     return true;
 }
@@ -155,7 +155,7 @@ AddrInfo::getAddr()
 {
     if ( _ai )
         return((sockaddr_t*) _ai->ai_addr);
-    return NULL;
+    return nullptr;
 }
 
 /** Returns the ai_addrlen of the underlying struct addrinfo */
@@ -172,7 +172,7 @@ AddrInfo::getNextAddr()
 {
     if ( _nxt )
         return((sockaddr_t*) _nxt->ai_addr);
-    return NULL;
+    return nullptr;
 }
 
 /** Returns the currently configured flags for the
@@ -260,13 +260,13 @@ AddrInfo::setProtocol ( int proto )
     return false;
 }
 
-/** Returns the canonical name if applicable, or NULL if not set */
+/** Returns the canonical name if applicable, or nullptr if not set */
 char*
 AddrInfo::getCanonName() const
 {
     if ( this->isValid() )
         return _ai->ai_canonname;
-    return NULL;
+    return nullptr;
 }
 
 int
@@ -293,7 +293,7 @@ AddrInfo::GetAddrInfo ( const std::string & host, uint16_t port, const addrinfo 
 AddrInfo*
 AddrInfo::GetAddrInfo ( const std::string & host, const std::string & svc, const addrinfo * hints )
 {
-    AddrInfo  * ai = NULL;
+    AddrInfo  * ai = nullptr;
     addrinfo  * res;
     int         err = 0;
 
@@ -327,8 +327,8 @@ AddrInfo::GetAddrInfo ( const std::string & host,
                         const addrinfo    * hints,
                         addrinfo         ** res )
 {
-    const char * hostname = NULL;
-    const char * service  = NULL;
+    const char * hostname = nullptr;
+    const char * service  = nullptr;
 
     if ( ! host.empty() )
         hostname = host.c_str();
@@ -452,7 +452,7 @@ AddrInfo::GetHostAddr ( const std::string & host )
 
     ai  = AddrInfo::GetAddrInfo(host, "");
 
-    if ( ai == NULL )
+    if ( ai == nullptr )
         return addr;
 
     res = ai->begin();
@@ -474,12 +474,12 @@ AddrInfo::GetAddrList ( const std::string & host, IpAddrList & v )
 {
     AddrInfo * ai = AddrInfo::GetAddrInfo(host, "");
 
-    if ( ai == NULL )
+    if ( ai == nullptr )
         return 0;
 
     struct addrinfo * res;
 
-    for ( res = ai->begin(); res != NULL; res = ai->next() )
+    for ( res = ai->begin(); res != nullptr; res = ai->next() )
     {
         IpAddr addr((sockaddr_t*)res->ai_addr);
         v.push_back(addr);

@@ -85,13 +85,13 @@ EventManager::addTimerEvent ( EventTimerHandler * handler,
 {
     EventTimer  timer;
 
-    if ( (handler == NULL) || (sec == 0 && usec == 0) )
+    if ( (handler == nullptr) || (sec == 0 && usec == 0) )
     {
         _errstr = "EventManager::addTimerEvent: invalid parameters";
         return NO_EVID;
     }
 
-    timer.evid    =  this->getNewEventId();
+    timer.evid =  this->getNewEventId();
 
     if ( timer.evid == NO_EVID )
         return NO_EVID;
@@ -100,9 +100,8 @@ EventManager::addTimerEvent ( EventTimerHandler * handler,
     timer.handler = handler;
     timer.count   = count;
     timer.enabled = true;
-
-    timer.evsec  = sec;
-    timer.evusec = usec; //msectoevu(msec);
+    timer.evsec   = sec;
+    timer.evusec  = usec; //msectoevu(msec);
 
     timer.abstime.tv_sec  = 0;
     timer.abstime.tv_usec = 0;
@@ -128,10 +127,10 @@ EventManager::addTimerEvent ( EventTimerHandler * handler, time_t abstime )
 {
     EventTimer  timer;
 
-    if ( handler == NULL )
+    if ( handler == nullptr )
         return NO_EVID;
 
-    timer.evid      = this->getNewEventId();
+    timer.evid = this->getNewEventId();
 
     if ( timer.evid == NO_EVID )
         return NO_EVID;
@@ -166,7 +165,7 @@ EventManager::addIOEvent ( EventIOHandler * handler, const sockfd_t & sfd,
 {
     EventIO  io;
 
-    if ( handler == NULL ) {
+    if ( handler == nullptr ) {
         _errstr = "Invalid event handler";
         return NO_EVID;
     }
@@ -176,7 +175,7 @@ EventManager::addIOEvent ( EventIOHandler * handler, const sockfd_t & sfd,
         return NO_EVID;
     }
 
-    io.evid     = this->getNewEventId();
+    io.evid = this->getNewEventId();
     if ( io.evid == NO_EVID )
         return NO_EVID;
 
@@ -353,7 +352,7 @@ EventManager::findTimerEvent ( const evid_t & id ) const
     tIter = _timers.find(id);
 
     if ( tIter == _timers.end() )
-        return NULL;
+        return nullptr;
 
     return(&tIter->second);
 }
@@ -368,7 +367,7 @@ EventManager::findIOEvent ( const evid_t & id ) const
     iIter = _clients.find(id);
 
     if ( iIter == _clients.end() )
-        return NULL;
+        return nullptr;
 
     return(&iIter->second);
 }
@@ -475,8 +474,7 @@ EventManager::checkTimers ( const timeval & now )
         if ( ! timer.enabled )
             continue;
 
-        if ( timer.abstime.tv_sec == 0 )
-        {
+        if ( timer.abstime.tv_sec == 0 ) {
             timer.abstime  = now;
             timer.abstime.tv_sec  += timer.evsec;
             timer.abstime.tv_usec += timer.evusec;
@@ -485,12 +483,9 @@ EventManager::checkTimers ( const timeval & now )
 
         bool fired = false;
 
-        if ( timer.abstime.tv_sec < now.tv_sec )
-        {
+        if ( timer.abstime.tv_sec < now.tv_sec ) {
             fired = true;
-        }
-        else if ( timer.abstime.tv_sec == now.tv_sec )
-        {
+        } else if ( timer.abstime.tv_sec == now.tv_sec ) {
             if ( timer.evusec > 0 ) {
                 if  ( timer.abstime.tv_usec <= now.tv_usec )
                     fired = true;
@@ -602,8 +597,7 @@ EventManager::getNewEventId()
 
     EventSet::iterator  sIter;
 
-    while ( id != _lastid )
-    {
+    while ( id != _lastid ) {
         if ( (sIter = _events.find(id)) == _events.end() && id != 0 )
             break;
         id++;
@@ -660,14 +654,13 @@ EventManager::TimevalDiffMs ( const timeval * t2, const timeval * t1 )
 void
 EventManager::TimevalDiff ( const timeval * t2, const timeval * t1, timeval * result )
 {
-    if ( t2 == NULL || t1 == NULL || result == NULL )
+    if ( t2 == nullptr || t1 == nullptr || result == nullptr )
         return;
 
     result->tv_sec  = t2->tv_sec  - t1->tv_sec;
     result->tv_usec = t2->tv_usec - t1->tv_usec;
 
-    if ( result->tv_usec <= 0 )
-    {
+    if ( result->tv_usec <= 0 ) {
         --result->tv_sec;
         result->tv_usec += USEC_PER_SEC;
     }
@@ -679,11 +672,10 @@ EventManager::TimevalDiff ( const timeval * t2, const timeval * t1, timeval * re
 void
 EventManager::TimevalNorm ( struct timeval * tv )
 {
-    if ( tv == NULL )
+    if ( tv == nullptr )
         return;
 
-    while ( tv->tv_usec >= USEC_PER_SEC )
-    {
+    while ( tv->tv_usec >= USEC_PER_SEC ) {
         tv->tv_sec++;
         tv->tv_usec -= USEC_PER_SEC;
     }
@@ -697,7 +689,7 @@ void
 EventManager::TimespecDiff ( const timespec * t2, const timespec * t1,
                              timespec * result )
 {
-    if ( t2 == NULL || t1 == NULL || result == NULL )
+    if ( t2 == nullptr || t1 == nullptr || result == nullptr )
         return;
 
     result->tv_sec  = t2->tv_sec  - t1->tv_sec;
@@ -725,11 +717,10 @@ EventManager::TimespecDiffNS ( const timespec * t2, const timespec * t1 )
 void
 EventManager::TimespecNorm ( timespec * ts )
 {
-    if ( ts == NULL )
+    if ( ts == nullptr )
         return;
 
-    while ( ts->tv_nsec >= NSEC_PER_SEC )
-    {
+    while ( ts->tv_nsec >= NSEC_PER_SEC ) {
         ts->tv_sec++;
         ts->tv_nsec -= NSEC_PER_SEC;
     }

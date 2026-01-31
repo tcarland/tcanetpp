@@ -190,13 +190,13 @@ private:
         bool           enabled;
         bool           showTime;
 
-        LogStream ( std::ostream * strm = NULL )
+        LogStream ( std::ostream * strm = nullptr )
             : logStream(strm),
               today(0),
               enabled(true),
               showTime(true)
         {
-            if ( logStream == NULL )
+            if ( logStream == nullptr )
                 enabled = false;
         }
 
@@ -210,7 +210,7 @@ private:
               enabled(true),
               showTime(true)
         {
-            if ( logStream == NULL )
+            if ( logStream == nullptr )
                 enabled = false;
         }
     };

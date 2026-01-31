@@ -289,8 +289,8 @@ int main ( int argc, char ** argv )
     netudp_h    * udph;
     PathData    * udata;
 
-    char        * wptr    = NULL;
-    char        * wbuff   = NULL;
+    char        * wptr    = nullptr;
+    char        * wbuff   = nullptr;
     bool          send    = true;
     bool          timeout = false;
     bool          pathd   = false;
@@ -304,7 +304,7 @@ int main ( int argc, char ** argv )
     CircularBuffer * rbuff = new CircularBuffer(buflen);
     wbuff         = (char*) ::malloc(idsz);
     udph          = (netudp_h*) wbuff;
-    udata         = (PathData*) wbuff + sizeof(netudp_h);
+    udata         = (PathData*) (wbuff + sizeof(netudp_h));
 
     udph->srcport = 0;
     udph->dstport = htons(port);

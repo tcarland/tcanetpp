@@ -129,7 +129,7 @@ class IpAddr {
                                        IpAddrList   & v );
 
     static int          GetCidrRange ( uint8_t   mb,
-                                       uint8_t * subnet = NULL );
+                                       uint8_t * subnet = nullptr );
     static int          GetIpv6Range ( uint8_t mb );
 
 

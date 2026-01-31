@@ -64,7 +64,7 @@ HeirarchicalStringTreeNode<ValueType>::getAbsoluteName() const
     std::string  absname = _nodeName;
     TreeNode   * next    = _parent;
 
-    while ( next != NULL ) {
+    while ( next != nullptr ) {
         absname.insert(absname.begin(), _delim);
         absname.insert(0, next->getName());
         next = next->getParent();
@@ -205,7 +205,7 @@ HeirarchicalStringTree<ValueType>::find ( const std::string & absoluteName )
                         std::back_inserter(branches));
 
     if ( branches.empty() || branches.size() != branchNames.size() )
-        return NULL;
+        return nullptr;
 
     return branches.back();
 }
@@ -223,14 +223,14 @@ HeirarchicalStringTree<ValueType>::insert ( const std::string & absoluteName,
     HeirarchicalStringTree::Split(absoluteName, _delim, std::back_inserter(branchNames));
 
     if ( branchNames.empty() )
-        return NULL;
+        return nullptr;
 
     if ( this->branchToNodes(branchNames.begin(), branchNames.end(), std::back_inserter(branches)) )
-        return NULL;
+        return nullptr;
 
     NodeMap * children = &_roots;
-    Node    * parent   = NULL;
-    Node    * node     = NULL;
+    Node    * parent   = nullptr;
+    Node    * node     = nullptr;
 
     if ( ! branches.empty() ) {
         children = &branches.back()->getChildren();
@@ -278,14 +278,14 @@ bool
 HeirarchicalStringTree<ValueType>::erase ( Node  * node,
                                            OutputIterator_ outIter )
 {
-    if ( node == NULL )
+    if ( node == nullptr )
         return false;
 
     DepthOrderingFunctor   depthfirst;
     const std::string      name       = node->getName();
     NodeMap              * pChildList = &_roots;
 
-    if ( node->getParent() != NULL )
+    if ( node->getParent() != nullptr )
         pChildList = &node->getParent()->getChildren();
 
 
@@ -358,7 +358,7 @@ template<typename Predicate_>
 void
 HeirarchicalStringTree<ValueType>::depthFirstTraversal ( Node * node, Predicate_ & predicate )
 {
-    if ( node == NULL )
+    if ( node == nullptr )
         return;
 
     NodeMap & children = node->getChildren();

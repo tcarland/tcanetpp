@@ -28,7 +28,7 @@ PT_OBJS =     src/patricia.o
 TH_OBJS =     src/Thread.o src/ThreadLock.o src/ThreadMutexPool.o
 CMDBUF_OBJS = src/CmdBuffer.o
 
-OBJS =  src/SocketOption.o src/Socket.o src/BufferedSocket.o \
+OBJS =  src/SocketOption.o src/Socket.o src/BufferedSocket.o src/SecureSocket.o \
         src/CircularBuffer.o src/Serializer.o \
         src/Whois.o src/EventManager.o \
         src/IpAddr.o src/AddrInfo.o \
@@ -62,14 +62,14 @@ all: lib cmdbuf libtcapt
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-solib: libtcanetpp.so.1.6.9
+solib: libtcanetpp.so.1.6.10
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
-libtcanetpp.so.1.6.9: ${OBJS}
+libtcanetpp.so.1.6.10: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)

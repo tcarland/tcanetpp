@@ -39,7 +39,6 @@ extern "C" {
 namespace tcanetpp {
 
 
-
 /* -------------------------------------------------------------- */
 
 /**  The thread constructor
@@ -52,7 +51,7 @@ Thread::Thread ( bool detach )
       _running(false),
       _detach(detach),
       _tid(0),
-      _stack(NULL)
+      _stack(nullptr)
 {
     ::pthread_attr_init(&_attr);
 }
@@ -212,7 +211,7 @@ Thread::setStackSize ( size_t stksz )
         stksz = THREAD_STACKSIZE_MIN;
 
     _stack = ::malloc(stksz);
-    if ( _stack == NULL ) {
+    if ( _stack == nullptr ) {
         _serr  = "Error in malloc().";
         return false;
     }
@@ -498,8 +497,8 @@ Thread::ThreadEntry ( void * arg )
 {
     Thread * t = (Thread*) arg;
 
-    if ( t == NULL )
-        return NULL;
+    if ( t == nullptr )
+        return nullptr;
 
     t->run();
     t->finished();

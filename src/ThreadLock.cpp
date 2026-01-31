@@ -37,7 +37,6 @@ extern "C" {
 namespace tcanetpp {
 
 
-
 /* ----------------------------------------------------------------------- */
 /**  Class to lock/unlock a mutex on construction/destruction
   *  allowing for synchronization of a class method by simply

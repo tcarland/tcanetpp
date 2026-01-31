@@ -4,13 +4,10 @@
 #include <string>
 #include <set>
 
-
-namespace foo {
+namespace evid_test {
 
 typedef uint16_t myid_t;
 typedef std::set<myid_t>  EventSet;
-
-
 
 
 EventSet evset;
@@ -42,7 +39,7 @@ myid_t  getNewId ( myid_t & id, myid_t & lastid)
 
 } // namespace
 
-using namespace foo;
+using namespace evid_test;
 
 
 

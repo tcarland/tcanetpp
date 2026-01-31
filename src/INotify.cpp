@@ -157,8 +157,8 @@ INotify::haveWatch ( int wd ) const
 ssize_t
 INotify::readEvents ( IEventQueue & queue )
 {
-    char * wptr = NULL;
-    char * rptr = NULL;
+    char * wptr = nullptr;
+    char * rptr = nullptr;
     size_t wlen = 0;
     size_t rlen = 0;
     size_t rt   = 0;
@@ -168,7 +168,7 @@ INotify::readEvents ( IEventQueue & queue )
     struct inotify_event * event;
 
     wptr = _evbuf->getWritePtr(&wlen);
-    if ( wptr == NULL )
+    if ( wptr == nullptr )
         return -1;
 
     wt = this->nreadn(this->_fd, (void*)wptr, wlen);
@@ -180,11 +180,12 @@ INotify::readEvents ( IEventQueue & queue )
 
      _evbuf->setWritePtr(wt);
 
-    while ( _evbuf->readAvailable() > INOTIFY_EVENT_SIZE ) {
+    while ( _evbuf->readAvailable() > INOTIFY_EVENT_SIZE )
+    {
         INotifyEvent ivent;
 
         rptr = _evbuf->getReadPtr(&rlen);
-        if ( rptr == NULL ) {
+        if ( rptr == nullptr ) {
             _errstr = "INotify::readEvents() Error in obtaining handle from buffer";
             return -1;
         }
@@ -192,11 +193,13 @@ INotify::readEvents ( IEventQueue & queue )
         event = (struct inotify_event*) rptr;
         //printf ("wd=%d mask=%u cookie=%u len=%u\n", event->wd, event->mask, event->cookie, event->len);
 
-        if ( event->len ) {
+        if ( event->len )
+        {
             ivent.wd    = event->wd;
             ivent.name  = event->name;
             ivent.path  = this->getWatchName(event->wd);
             ivent.type  = this->ReadEventMask(event->mask);
+
             if ( event->mask & IN_ISDIR ) {
                 ivent.isdir = true;
                 if ( _recursive && ivent.type.compare(INOTIFY_CREATE) == 0 )
@@ -278,9 +281,8 @@ INotify::nreadn ( int fd,  void * vptr, size_t n )
     while ( nleft > 0 )
     {
         if ( (nread = ::read(fd, ptr, nleft)) < 0 ) {
-            if ( errno == EINTR || errno == EAGAIN ) {
+            if ( errno == EINTR || errno == EAGAIN )
                 return (n-nleft);
-            }
             else
                 return -1;
         } else if ( nread == 0 ) {

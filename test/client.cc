@@ -33,7 +33,7 @@ int main ( int argc, char **argv )
     int         wt, port;
     ipv4addr_t  addr; 
 
-    BufferedSocket  * sock = NULL;
+    BufferedSocket  * sock = nullptr;
 
     IpAddr::pton("127.0.0.1", addr);
 
@@ -65,7 +65,7 @@ int main ( int argc, char **argv )
 
     while ( ! _Alarm ) {
 	
-	foo.timestamp = (uint32_t) time(NULL);
+	foo.timestamp = (uint32_t) ::time(NULL);
 	foo.count     += 1;
 
 	if ( (wt = sock->write((void*)&foo, sizeof(foo_t))) < 0 ) {

@@ -1,5 +1,6 @@
 NEED_LIBDL = 1
 NEED_SOCKET = 1
+NEED_OPENSSL = 1
 
 ifdef USE_LIBRT
 NEED_LIBRT = 1
@@ -19,9 +20,9 @@ CXXFLAGS=   -std=c++0x
 OPT_FLAGS+= -DTWHOIS_MAIN 
 
 
-ASOBJ=  ../src/IpAddr.o ../src/AddrInfo.o \
-	../src/tcanetpp_random.o ../src/Socket.o \
-	../src/SocketOption.o ../src/Whois.o
+ASOBJ = ../src/IpAddr.o ../src/AddrInfo.o \
+	    ../src/tcanetpp_random.o ../src/Socket.o \
+	    ../src/SocketOption.o ../src/Whois.o
 
 OBJS=	client.o server.o pack_test.o ping.o
 
@@ -32,7 +33,7 @@ PTT_OBJS=   pt_test.o
 
 BIN= asnwho ipconvert client server cachetest pttest pfxtest \
 strtest bufftest cidrtest packtest pingt ttrace filetest \
-thtest hashtest pfxbase
+thtest hashtest pfxbase tlstest udptest tlsclient tlsserver
 
 ALL_OBJS=$(OBJS) $(ASOBJ) $(STROBJ) $(CBUFF_OBJS) $(CIDR_OBJS)
 ALL_BINS=$(BIN)
@@ -48,7 +49,7 @@ include ${TCAMAKE_HOME}/tcamake_include
 # ----------------------- 
 
 all: asnclean asnwho ipconvert client server cidrtest strtest bufftest \
-pttest pingt packtest filetest ttrace
+pttest pingt packtest filetest ttrace tlsclient tlsserver udptest
 
 
 asnclean:
@@ -118,6 +119,18 @@ packtest: pack_test.o
 	@echo
 
 ttrace: trace_test.o
+	$(make-cxxbin-rule)
+	@echo
+
+udptest: udp_test.o
+	$(make-cxxbin-rule)
+	@echo
+
+tlsclient: tlsclient.o
+	$(make-cxxbin-rule)
+	@echo
+
+tlsserver: tlsserver.o
 	$(make-cxxbin-rule)
 	@echo
 

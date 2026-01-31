@@ -29,7 +29,7 @@ void             sigHandler     ( int signal );
 
 
 // globals
-bool    _Alarm = false;
+bool _Alarm = false;
 
 std::vector<BufferedSocket*>            clist;
 std::vector<BufferedSocket*>::iterator  cIter;
@@ -89,14 +89,14 @@ int main ( int argc, char **argv )
 
     int maxfdp = 128;
 
-    if ( (server = createServer(port)) == NULL ) {
+    if ( (server = createServer(port)) == nullptr ) {
         printf("Fatal error creating server socket\n");
         exit(-1);
     }
 
     buffer = (char*) malloc(sizeof(foo_t));
 
-    if ( buffer == NULL ) {
+    if ( buffer == nullptr ) {
         printf("Fatal: buffer malloc failed\n");
         exit(-1);
     }

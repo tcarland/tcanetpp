@@ -108,7 +108,7 @@ class PrefixCache {
     {
         CacheItem * ci = _pt->exactMatch(p);
 
-        if ( ci != NULL )
+        if ( ci != nullptr )
             return false;
 
         TimerSetIter  timer;
@@ -135,7 +135,7 @@ class PrefixCache {
         ValueType   val;
         CacheItem * ci = _pt->exactMatch(p);
 
-        if ( ci == NULL || ci.getPrefix() != p )
+        if ( ci == nullptr || ci.getPrefix() != p )
             return val;
 
         val = ci->getValue();
@@ -156,7 +156,7 @@ class PrefixCache {
     {
         CacheItem * ci = this->_pt->exactMatch(p);
 
-        if ( ci == NULL )
+        if ( ci == nullptr )
             return false;
 
         val = ci->getValue();
@@ -172,7 +172,7 @@ class PrefixCache {
     {
         CacheItem * ci = this->_pt->longestMatch(p);
 
-        if ( ci == NULL )
+        if ( ci == nullptr )
             return false;
 
         val = ci->getValue();
@@ -189,7 +189,7 @@ class PrefixCache {
         TimerSetIter  timer;
         CacheItem    *ci  = this->_pt->exactMatch(p);
 
-        if ( NULL == ci || ci.getPrefix().getPrefix() == 0 )
+        if ( nullptr == ci || ci.getPrefix().getPrefix() == 0 )
             return false;
 
         timer = ci->getTimer();
@@ -211,7 +211,7 @@ class PrefixCache {
      **/
     int  expireStale ( const time_t & now, ValueList & itemlist )
     {
-        CacheItem     *ci, *cr = NULL;
+        CacheItem     *ci, *cr = nullptr;
         TimerSetIter   tIter, rIter;
 
         tIter = _timers.begin();

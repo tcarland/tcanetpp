@@ -36,7 +36,7 @@ struct myitem {
 int main ( int argc, char **argv )
 {
     IpAddr   p;
-    myitem * item = NULL;
+    myitem * item = nullptr;
     time_t   now  = 0;
 
     PrefixCache<myitem*>  pc = PrefixCache<myitem*>(10);
@@ -92,7 +92,7 @@ int main ( int argc, char **argv )
         for ( sIter = stales.begin(); sIter != stales.end(); ++sIter ) {
             item = *sIter;
             std::cout << "  Removed: " << item->addrstr << std::endl;
-            if ( item )
+            if ( item != nullptr )
                 delete item;
         }
 

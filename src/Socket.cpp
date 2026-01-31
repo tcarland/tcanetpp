@@ -193,14 +193,14 @@ Socket::Socket ( addrinfo * ai )
     if ( (ai->ai_flags & AI_PASSIVE) )
         _socktype = SOCKTYPE_SERVER;
 
-    _ipaddr  = IpAddr((sockaddr_t*) ai->ai_addr);
+    _ipaddr = IpAddr((sockaddr_t*) ai->ai_addr);
 
     if ( _ipaddr.getFamily() == AF_INET ) {
         sockaddr_in * sock  = (sockaddr_in*) _ipaddr.getSockAddr();
-        _port    = ntohs(sock->sin_port);
+        _port  = ntohs(sock->sin_port);
     } else if ( _ipaddr.getFamily() == AF_INET6 ) {
         sockaddr_in6 * sock  = (sockaddr_in6*) _ipaddr.getSockAddr();
-        _port    = ntohs(sock->sin6_port);
+        _port  = ntohs(sock->sin6_port);
     }
 
     _addrstr = _ipaddr.toString();
@@ -219,31 +219,25 @@ Socket::Socket ( sockfd_t & fd, sockaddr_t & csock, SocketType type, int protoco
       _block(false),
       _noUdpClose(false)
 {
-    if ( Socket::IsValidDescriptor(this->_fd) )
-    {
+    if ( Socket::IsValidDescriptor(this->_fd) ) {
         if ( _proto == IPPROTO_TCP )
             _connected  = true;
         else if ( _proto == IPPROTO_UDP )
             _noUdpClose = true;
         _bound = true;
-    }
-    else
-    {
+    } else {
         _connected = false;
         _bound     = false;
     }
 
-    if ( _ipaddr.getFamily() == AF_INET )
-    {
+    if ( _ipaddr.getFamily() == AF_INET ) {
         sockaddr_in * sock;
         sock     = (sockaddr_in*) &csock;
         _port    = ntohs(sock->sin_port);
         _addrstr = IpAddr::ntop(sock->sin_addr.s_addr);
         _hoststr = _addrstr;
         _hoststr.append(":").append(StringUtils::ToString(_port));
-    }
-    else if ( _ipaddr.getFamily() == AF_INET6 )
-    {
+    } else if ( _ipaddr.getFamily() == AF_INET6 ) {
         sockaddr_in6 * sock;
         sock     = (sockaddr_in6*) &csock;
         _port    = ntohs(sock->sin6_port);
@@ -304,7 +298,7 @@ Socket::bind()
     int   r = 0;
 
     if ( _socktype < SOCKTYPE_SERVER || _bound || ! Socket::IsValidDescriptor(_fd) ) {
-            _errstr = "Socket::bind() socket is not initialized";
+        _errstr = "Socket::bind() socket is not initialized";
         return r;
     }
 
@@ -397,8 +391,7 @@ Socket::close()
 {
    if ( ! this->_noUdpClose )
    {
-        if ( Socket::IsValidDescriptor(_fd) )
-        {
+        if ( Socket::IsValidDescriptor(_fd) ) {
            _connected = false;
 
 #          ifdef WIN32
@@ -460,25 +453,22 @@ Socket::accept()
 Socket*
 Socket::accept ( SocketFactory & factory )
 {
-    Socket     * client = NULL;
+    Socket     * client = nullptr;
     sockaddr_t   csock;
     socklen_t    len;
     sockfd_t     cfd;
 
     if ( _socktype < SOCKTYPE_SERVER )
-        return NULL;
+        return nullptr;
 
     len = sizeof(csock);
     ::memset(&csock, 0, len);
 
-    if ( _proto == SOCKET_TCP )
-    {
+    if ( _proto == SOCKET_TCP ) {
         if ( (cfd = ::accept(_fd, (struct sockaddr*) &csock, &len)) < 0 )
-            return NULL;
+            return nullptr;
         client = factory(cfd, csock, _socktype, _proto);
-    }
-    else if ( _proto == SOCKET_UDP )
-    {
+    } else if ( _proto == SOCKET_UDP ) {
         client = factory(_fd, csock, _socktype, _proto);
     }
 
@@ -770,7 +760,7 @@ Socket::getErrorString() const
 void
 Socket::Unblock ( Socket * s )
 {
-    if ( s == NULL )
+    if ( s == nullptr )
         return;
 
 #   ifdef WIN32
@@ -792,7 +782,7 @@ Socket::Unblock ( Socket * s )
 void
 Socket::Block ( Socket * s )
 {
-    if ( s == NULL )
+    if ( s == nullptr )
         return;
 
 #   ifdef WIN32
