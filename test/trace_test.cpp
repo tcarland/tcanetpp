@@ -285,7 +285,7 @@ int main ( int argc, char ** argv )
     /* init buffers */
     sockaddr_t    csock;
     sockaddr_in * sa;
-    ipv4addr_t    addr;
+    ipv4addr_t    addr    = 0;
     netudp_h    * udph;
     PathData    * udata;
 
@@ -300,6 +300,7 @@ int main ( int argc, char ** argv )
     uint16_t port = 5995;  // port mask for ttl counting
     buflen        = 2048;
     idsz          = sizeof(netudp_h) + sizeof(PathData);
+    wt            = 0;
 
     CircularBuffer * rbuff = new CircularBuffer(buflen);
     wbuff         = (char*) ::malloc(idsz);
@@ -409,6 +410,9 @@ int main ( int argc, char ** argv )
 
                 wt = udps->write(wbuff, idsz);
             }
+            
+            if ( debug )
+                std::cout << "Wrote " << wt << " bytes to " << dstname << " with ttl " << ttl << std::endl;
 
             send    = false;
             timeout = false;
@@ -424,7 +428,7 @@ int main ( int argc, char ** argv )
         addr = sa->sin_addr.s_addr;
 
         if ( rd < 0 )
-            errorOut("Error in readFrom " + icmps->getErrorString());
+            errorOut("Error in readFrom " + icmps->getErrorString() + " from " + IpAddr::ntop(addr));
         rbuff->setWritePtr(rd);
 
         IcmpResponse  response;

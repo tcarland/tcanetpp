@@ -175,7 +175,7 @@ neticmp_h* readHeader ( CircularBuffer * buff )
     char      * rptr, *ptr;
     size_t      rd, len;
 
-    netip_h   * iph   = nullptr;
+    //netip_h   * iph   = nullptr;
     neticmp_h * hdr   = nullptr;
 
     len  = sizeof(netip_h) + sizeof(neticmp_h);
@@ -191,7 +191,7 @@ neticmp_h* readHeader ( CircularBuffer * buff )
     }
 
     ptr  = rptr;
-    iph  = (netip_h*) ptr;
+    //iph  = (netip_h*) ptr;
     ptr += sizeof(netip_h);
     hdr  = (neticmp_h*) ptr;
 
@@ -421,14 +421,11 @@ int main ( int argc, char ** argv )
                 rcvd++;
 
                 if ( sz == sizeof(icmp_ts) ) {
-                    timeval   tv;
                     char    * idf = rbuff->getReadPtr(&sz);
                     icmp_ts * ist = (icmp_ts*) idf;
-                    tv.tv_sec     = ist->secs;
-                    tv.tv_usec    = ist->usecs;
 
-                    if ( debug ) 
-                        std::cout << " Received data field in echo response" << std::endl;
+                    std::cout << ">Echo response data: timestamp=" << ist->secs << "." << ist->usecs 
+                              << " size=" << ist->size << std::endl;
 
                     rbuff->setReadPtr(sz);
                 }
