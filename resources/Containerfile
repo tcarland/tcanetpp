@@ -11,7 +11,8 @@ ARG TDH_UID=1001
 ARG TDH_GID=${TDH_UID}
 
 ARG tcamake_uri="https://github.com/tcarland/tcamake/archive/refs/tags"
-ARG tcamake_version="26.01.01"  # note the dropped 'v' for pathing issues
+ARG tcamake_version="26.04.01"  
+# dropped 'v' for pathing issues
 
 LABEL org.opencontainers.image.authors="Timothy C. Arland <tcarland at gmail dot com>" \
       org.opencontainers.image.base.name="debian:12.13-slim" \
@@ -35,6 +36,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     libxml2-dev \
     libzstd-dev \
     net-tools \
+    openssl \
     pkg-config \
     rsync \
     tini && \

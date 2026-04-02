@@ -141,8 +141,8 @@ thtest: threadtest.o
 endif
 
 clean:
-	$(RM) $(ALL_OBJS) $(BIN) \
-	*.d *.D *.bd *.o
+	$(RM) $(ALL_OBJS) *.d *.D *.bd *.o
 
 distclean: clean
+	$(RM) $(ALL_BINS)
 
