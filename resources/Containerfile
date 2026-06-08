@@ -11,7 +11,7 @@ ARG TDH_UID=1001
 ARG TDH_GID=${TDH_UID}
 
 ARG tcamake_uri="https://github.com/tcarland/tcamake/archive/refs/tags"
-ARG tcamake_version="26.04.01"  
+ARG tcamake_version="26.06.01"  
 # dropped 'v' for pathing issues
 
 LABEL org.opencontainers.image.authors="Timothy C. Arland <tcarland at gmail dot com>" \
@@ -35,6 +35,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     libssl-dev \
     libxml2-dev \
     libzstd-dev \
+    netcat-openbsd \
     net-tools \
     openssl \
     pkg-config \
