@@ -1,5 +1,4 @@
 # Makefile for tcanetpp
-#  Requires 'tcamake' build environment to exist in TOPDIR
 #
 NEED_SOCKET = 1
 NEED_LIBDL = 1
@@ -62,14 +61,14 @@ all: lib cmdbuf libtcapt
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-solib: libtcanetpp.so.1.6.11
+solib: libtcanetpp.so.1.6.12
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
-libtcanetpp.so.1.6.11: ${OBJS}
+libtcanetpp.so.1.6.12: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)
