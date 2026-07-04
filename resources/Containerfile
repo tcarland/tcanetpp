@@ -11,8 +11,9 @@ ARG TDH_UID=1001
 ARG TDH_GID=${TDH_UID}
 
 ARG tcamake_uri="https://github.com/tcarland/tcamake/archive/refs/tags"
-ARG tcamake_version="26.06.01"  
-# dropped 'v' for pathing issues
+ARG tcamake_version="26.06.01"  # dropped 'v' for pathing issues
+ARG tcmake_uri="https://github.com/tcarland/tcmake/archive/refs/tags"
+ARG tcmake_version="26.07.04"
 
 LABEL org.opencontainers.image.authors="Timothy C. Arland <tcarland at gmail dot com>" \
       org.opencontainers.image.base.name="debian:12.13-slim" \
@@ -54,10 +55,17 @@ RUN if [ -f ca.crt ]; then \
         update-ca-certificates; \
     fi
 
+# tcamake is the Gnu Makefile Build System
 RUN curl -L ${tcamake_uri}/v${tcamake_version}.tar.gz -o /tmp/tcamake.tar.gz && \
     tar -xzf /tmp/tcamake.tar.gz -C /opt && \
     ln -s tcamake-${tcamake_version} tcamake && \
     rm /tmp/tcamake.tar.gz
+
+# tcmake is the Cmake based build system
+RUN curl -L ${tcmake_uri}/v${tcmake_version}.tar.gz -o /tmp/tcamake.tar.gz && \
+    tar -xzf /tmp/tcmake.tar.gz -C /opt && \
+    ln -s tcamake-${tcmake_version} tcmake && \
+    rm /tmp/tcmake.tar.gz
 
 RUN cd tcanetpp && \
     source resources/release_mt.env && \
