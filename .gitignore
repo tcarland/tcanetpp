@@ -24,12 +24,16 @@
 *.out
 *.app
 
+build
 compile_flags.txt
+.cache
 .project
 .settings
 *.sw*
 *.crt
 *.cert
+*.key
+*.pem
 
 lib
 docs/html
