@@ -11,9 +11,9 @@ ARG TDH_UID=1001
 ARG TDH_GID=${TDH_UID}
 
 ARG tcamake_uri="https://github.com/tcarland/tcamake/archive/refs/tags"
-ARG tcamake_version="26.06.01"  # dropped 'v' for pathing issues
+ARG tcamake_version="26.07.07"  # dropped 'v' for pathing issues
 ARG tcmake_uri="https://github.com/tcarland/tcmake/archive/refs/tags"
-ARG tcmake_version="26.07.04"
+ARG tcmake_version="26.07.07"
 
 LABEL org.opencontainers.image.authors="Timothy C. Arland <tcarland at gmail dot com>" \
       org.opencontainers.image.base.name="debian:12.13-slim" \
