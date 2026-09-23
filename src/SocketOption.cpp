@@ -133,17 +133,24 @@ SocketOption::SetSndTimeout ( int val )
     return ( SocketOption(SOL_SOCKET, SO_SNDTIMEO, val, "SO_SNDTIMEO") );
 }
 
+/*  val != 0 sets the IPv4 Don't Fragment bit and disables local
+ *  fragmentation (oversized sends fail with EMSGSIZE); 0 allows fragmentation.
+ *  Linux has no DF flag option, so its path MTU discovery mode is used instead:
+ *  IP_PMTUDISC_DO or IP_PMTUDISC_DONT. getSocketOption() of the result
+ *  therefore returns that mode (0-3) on Linux rather than 0/1.
+ */
 SocketOption
 SocketOption::SetNoFragment ( int val )
 {
-# ifdef WIN32
+# if defined(WIN32)
     return ( SocketOption(IPPROTO_IP, IP_DONTFRAGMENT, val, "IP_DONTFRAGMENT") );
-# elif BSD
-    return ( SocketOption(IPPROTO_IP, IP_DONTFRAG, val, "IP_DONTFRAG") );
-# elif __sparc
-    return ( SocketOption(IPPROTO_IP, IP_DONTFRAG, val, "IP_DONTFRAG") );
+# elif defined(IP_MTU_DISCOVER)
+    return ( SocketOption(IPPROTO_IP, IP_MTU_DISCOVER,
+                          val ? IP_PMTUDISC_DO : IP_PMTUDISC_DONT, "IP_MTU_DISCOVER") );
+# elif defined(IP_DONTFRAG)
+    return ( SocketOption(IPPROTO_IP, IP_DONTFRAG, val ? 1 : 0, "IP_DONTFRAG") );
 # else
-    //return ( SocketOption(IPPROTO_IP, IP_MTU_DISCOVER, val, "IP_MTU_DISCOVER") );
+    (void) val;
     return ( SocketOption() );
 # endif
 }

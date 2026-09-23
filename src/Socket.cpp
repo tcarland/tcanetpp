@@ -679,7 +679,8 @@ Socket::isBlocking()
 // ----------------------------------------------------------------------
 
 /**  Returns the current value of the given socket option, or a default
-  *  (level 0) SocketOption on failure. SO_LINGER and SO_RCVTIMEO/SO_SNDTIMEO
+  *  SocketOption (level 0, id 0) on failure; test id(), since IPPROTO_IP
+  *  options are also level 0. SO_LINGER and SO_RCVTIMEO/SO_SNDTIMEO
   *  are converted to the int form used by setSocketOption().
  **/
 SocketOption
