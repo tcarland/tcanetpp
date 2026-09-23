@@ -517,8 +517,15 @@ Socket::accept ( SocketFactory & factory )
         client = factory(_fd, csock, _socktype, _proto);
     }
 
-    if ( !_block )
-        Socket::Unblock(client);
+    // The client inherits the server's mode, so isBlocking() is accurate
+    // (Linux doesn't carry O_NONBLOCK over from the listening socket).
+    if ( client != nullptr )
+    {
+        if ( _block )
+            client->setBlocking();
+        else
+            client->setNonBlocking();
+    }
 
     return client;
 }
@@ -646,6 +653,9 @@ Socket::read ( void * vptr, size_t n )
 
 // ----------------------------------------------------------------------
 
+/**  Sets the blocking mode. Before init() (no descriptor yet) this only
+  *  records the mode, and init() or connect() applies it.
+ **/
 void
 Socket::setBlocking()
 {
@@ -888,8 +898,10 @@ Socket::Unblock ( Socket * s )
 
 #   else
 
-    int flags = ::fcntl(s->getDescriptor(), F_GETFL, 0);
-    ::fcntl(s->getDescriptor(), F_SETFL, flags | O_NONBLOCK);
+    int  flags  = ::fcntl(s->getDescriptor(), F_GETFL, 0);
+
+    if ( flags >= 0 && ! (flags & O_NONBLOCK) )
+        ::fcntl(s->getDescriptor(), F_SETFL, flags | O_NONBLOCK);
 
 #   endif
 
@@ -911,7 +923,9 @@ Socket::Block ( Socket * s )
 #   else
 
     int  flags  = ::fcntl(s->getDescriptor(), F_GETFL, 0);
-    ::fcntl(s->getDescriptor(), F_SETFD, flags & ~O_NONBLOCK);
+
+    if ( flags >= 0 && (flags & O_NONBLOCK) )
+        ::fcntl(s->getDescriptor(), F_SETFL, flags & ~O_NONBLOCK);
 
 #   endif
 
