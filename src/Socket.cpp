@@ -347,6 +347,12 @@ Socket::listen()
 
 // ----------------------------------------------------------------------
 
+/**  Initiates (or continues) a connection for a CLIENT socket.
+  *  For a non-blocking socket, call again to learn the outcome of a
+  *  connect in progress.
+  *  @return  1 if connected, 0 if the connect is still in progress,
+  *  or -1 on error (see getErrorString()).
+ **/
 int
 Socket::connect()
 {
@@ -374,13 +380,17 @@ Socket::connect()
 #       else
         int  err = errno;
 
-        if ( err == EINPROGRESS )
+        if ( err == EINPROGRESS || err == EALREADY ) {
             return 0;
-        else if ( err == ECONNREFUSED )
+        } else if ( err == EISCONN ) {
+            _connected = true;
+            return 1;
+        } else if ( err == ECONNREFUSED ) {
             _errstr = "Socket::connect() Connection Refused";
-        else
+        } else {
             _errstr = "Socket::connect() Error in connect attempt: "
                     + StringUtils::StrError(err);
+        }
 #     endif
 
         return -1;
@@ -487,6 +497,12 @@ Socket::accept ( SocketFactory & factory )
 
 // ----------------------------------------------------------------------
 
+/**  Indicates whether a TCP socket is connected at the time of the call,
+  *  detecting both the completion of a non-blocking connect and a
+  *  connection that has failed or been reset. UDP, raw and listening
+  *  sockets report their last known state. To learn why a connect
+  *  failed, call connect() again.
+ **/
 bool
 Socket::isConnected()
 {
@@ -499,27 +515,42 @@ Socket::isConnected()
 
 #   else
 
-    if ( !_connected || _proto == IPPROTO_UDP )
+    if ( _proto != IPPROTO_TCP || _socktype == SOCKTYPE_SERVER || _socktype == SOCKTYPE_RAW )
         return _connected;
+
+    if ( ! Socket::IsValidDescriptor(_fd) ) {
+        _connected = false;
+        return false;
+    }
 
     pollfd  wset;
 
-    wset.fd     = this->getDescriptor();
-    wset.events = POLLOUT | POLLERR;
+    wset.fd      = _fd;
+    wset.events  = POLLOUT;
+    wset.revents = 0;
 
-    if ( poll(&wset, 1, 0) < 0 )
+    if ( ::poll(&wset, 1, 0) < 0 )
     {
         int  err = errno;
 
         if ( err == EINTR )
-            return true;
+            return _connected;
 
         _errstr = "Socket::isConnected() poll failed: " + StringUtils::StrError(err);
 
         return false;
     }
 
-    return true;
+    // POLLERR/POLLHUP: the connect failed, the connection was reset, or no
+    // connect was ever made. Not writable: a connect is still in progress,
+    // or the send buffer is full, so the last known state stands. SO_ERROR
+    // is deliberately not read, leaving any pending error for connect().
+    if ( wset.revents & (POLLERR | POLLHUP | POLLNVAL) )
+        _connected = false;
+    else if ( wset.revents & POLLOUT )
+        _connected = true;
+
+    return _connected;
 #   endif
 }
 
