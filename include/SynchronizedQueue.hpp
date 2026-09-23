@@ -37,7 +37,10 @@ extern "C" {
 namespace tcanetpp {
 
 
-#define DEFAULT_QUEUE_MAXSIZE 2^16
+/*  Default bound on queued items; push() returns 0 once full.
+ *  (Written 2^16 before 1.7.0, which is XOR in C and gave 18.)
+ */
+#define DEFAULT_QUEUE_MAXSIZE (1 << 16)
 
 
 /**  A SynchronizedQueue is a thread-safe wrapper to a
@@ -61,30 +64,34 @@ template<class ValueType> class SynchronizedQueue {
     }
 
     /**  Pushes an object onto the queue and returns a positive value
-      *  on success or zero if the queue is full.
+      *  on success or zero if the queue is full. The size is tested
+      *  under the lock, so concurrent producers can't overfill it.
      **/
     int  push ( ValueType object )
     {
-        if ( this->size() == _maxSize || this->lock() < 0 )
+        ThreadAutoMutex  mutex(&this->_mutex);
+
+        if ( ! mutex.isLocked() || _queue.size() >= _maxSize )
             return 0;
 
         _queue.push(object);
-        this->unlock();
 
         return 1;
     }
 
     /**  Pops an object off the front of the queue returning a positive
-      *  value on success or zero if the queue is empty.
+      *  value on success or zero if the queue is empty. Emptiness is
+      *  tested under the lock, so it is safe with several consumers.
      **/
     int  pop ( ValueType & object )
     {
-        if ( this->size() == 0 || this->lock() < 0 )
+        ThreadAutoMutex  mutex(&this->_mutex);
+
+        if ( ! mutex.isLocked() || _queue.empty() )
             return 0;
 
         object = _queue.front();
         _queue.pop();
-        this->unlock();
 
         return 1;
     }
@@ -150,6 +157,7 @@ template<class ValueType> class SynchronizedQueue {
 
     bool isEmpty()
     {
+        ThreadAutoMutex  mutex(&this->_mutex);
         return _queue.empty();
     }
     /*@}*/

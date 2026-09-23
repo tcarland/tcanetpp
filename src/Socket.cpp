@@ -26,16 +26,43 @@
 #ifndef WIN32
 # include <arpa/inet.h>
 # include <netinet/in.h>
+# include <sys/time.h>
 # include <poll.h>
 # include <fcntl.h>
 # include <errno.h>
 #endif
 
+#include <climits>
+
 #include "net/Socket.h"
 #include "util/StringUtils.h"
 
 
+/*  Writing to a reset connection must fail with EPIPE rather than raise
+ *  SIGPIPE, whose default action terminates the process.
+ */
+#if defined(MSG_NOSIGNAL)
+# define TCANET_SEND_FLAGS  MSG_NOSIGNAL
+#else
+# define TCANET_SEND_FLAGS  0
+#endif
+
+
 namespace tcanetpp {
+
+
+/*  For platforms without MSG_NOSIGNAL (e.g. macOS), and for writes made
+ *  by OpenSSL, which can't pass send flags. */
+static void
+SetNoSigPipe ( sockfd_t fd )
+{
+#   if defined(SO_NOSIGPIPE)
+    int  one = 1;
+    ::setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof(one));
+#   else
+    (void) fd;
+#   endif
+}
 
 
 // ----------------------------------------------------------------------
@@ -273,10 +300,11 @@ Socket::init ( bool block )
     {
         this->setSocketOption(SocketOption::SetReuseAddr(1));
 
-        if ( ! this->bind() )
+        // bind() returns 0 when already bound, which is not a failure.
+        if ( this->bind() < 0 )
             return -1;
-        if ( _proto == SOCKET_TCP )
-            this->listen();
+        if ( _proto == SOCKET_TCP && this->listen() < 0 )
+            return -1;
     }
 
     _block = block;
@@ -294,7 +322,6 @@ Socket::init ( bool block )
 int
 Socket::bind()
 {
-    char  serr[ERRORSTRLEN];
     int   r = 0;
 
     if ( _socktype < SOCKTYPE_SERVER || _bound || ! Socket::IsValidDescriptor(_fd) ) {
@@ -305,10 +332,10 @@ Socket::bind()
     r = ::bind(_fd, (struct sockaddr*) _ipaddr.getSockAddr(), sizeof(sockaddr_t));
 
     if ( r != 0 ) {
-        _errstr = "Socket::bind() Failed to bind";
+        int  err = errno;
+        _errstr  = "Socket::bind() Failed to bind";
 #       ifndef WIN32
-        if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-            _errstr = serr;
+        _errstr.append(": ").append(StringUtils::StrError(err));
 #       endif
         return -1;
     }
@@ -326,10 +353,19 @@ Socket::listen()
     if ( _socktype != SOCKTYPE_SERVER || _proto != IPPROTO_TCP )
         return 0;
 
-    if ( ! this->_bound )
-        this->bind();
+    // Never listen() on an unbound descriptor: the kernel would
+    // implicitly bind it to the wildcard address on an ephemeral port.
+    if ( ! this->_bound && this->bind() <= 0 )
+        return -1;
 
-    ::listen(_fd, 1);
+    if ( ::listen(_fd, SOMAXCONN) != 0 ) {
+        int  err = errno;
+        _errstr  = "Socket::listen() Failed to listen";
+#       ifndef WIN32
+        _errstr.append(": ").append(StringUtils::StrError(err));
+#       endif
+        return -1;
+    }
 
     _connected = true;
 
@@ -338,6 +374,12 @@ Socket::listen()
 
 // ----------------------------------------------------------------------
 
+/**  Initiates (or continues) a connection for a CLIENT socket.
+  *  For a non-blocking socket, call again to learn the outcome of a
+  *  connect in progress.
+  *  @return  1 if connected, 0 if the connect is still in progress,
+  *  or -1 on error (see getErrorString()).
+ **/
 int
 Socket::connect()
 {
@@ -363,17 +405,19 @@ Socket::connect()
             return 1;
         }
 #       else
-        if ( errno == EINPROGRESS )
+        int  err = errno;
+
+        if ( err == EINPROGRESS || err == EALREADY ) {
             return 0;
-        else if ( errno == ECONNREFUSED )
+        } else if ( err == EISCONN ) {
+            _connected = true;
+            return 1;
+        } else if ( err == ECONNREFUSED ) {
             _errstr = "Socket::connect() Connection Refused";
-        else
-            _errstr = "Socket::connect() Error in connect attempt";
-
-        char  serr[ERRORSTRLEN];
-
-        if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-            _errstr = serr;
+        } else {
+            _errstr = "Socket::connect() Error in connect attempt: "
+                    + StringUtils::StrError(err);
+        }
 #     endif
 
         return -1;
@@ -467,19 +511,33 @@ Socket::accept ( SocketFactory & factory )
     if ( _proto == SOCKET_TCP ) {
         if ( (cfd = ::accept(_fd, (struct sockaddr*) &csock, &len)) < 0 )
             return nullptr;
+        SetNoSigPipe(cfd);
         client = factory(cfd, csock, _socktype, _proto);
     } else if ( _proto == SOCKET_UDP ) {
         client = factory(_fd, csock, _socktype, _proto);
     }
 
-    if ( !_block )
-        Socket::Unblock(client);
+    // The client inherits the server's mode, so isBlocking() is accurate
+    // (Linux doesn't carry O_NONBLOCK over from the listening socket).
+    if ( client != nullptr )
+    {
+        if ( _block )
+            client->setBlocking();
+        else
+            client->setNonBlocking();
+    }
 
     return client;
 }
 
 // ----------------------------------------------------------------------
 
+/**  Indicates whether a TCP socket is connected at the time of the call,
+  *  detecting both the completion of a non-blocking connect and a
+  *  connection that has failed or been reset. UDP, raw and listening
+  *  sockets report their last known state. To learn why a connect
+  *  failed, call connect() again.
+ **/
 bool
 Socket::isConnected()
 {
@@ -492,27 +550,42 @@ Socket::isConnected()
 
 #   else
 
-    if ( !_connected || _proto == IPPROTO_UDP )
+    if ( _proto != IPPROTO_TCP || _socktype == SOCKTYPE_SERVER || _socktype == SOCKTYPE_RAW )
         return _connected;
 
+    if ( ! Socket::IsValidDescriptor(_fd) ) {
+        _connected = false;
+        return false;
+    }
+
     pollfd  wset;
-    char    serr[ERRORSTRLEN];
 
-    wset.fd     = this->getDescriptor();
-    wset.events = POLLOUT | POLLERR;
+    wset.fd      = _fd;
+    wset.events  = POLLOUT;
+    wset.revents = 0;
 
-    if ( poll(&wset, 1, 0) < 0 )
+    if ( ::poll(&wset, 1, 0) < 0 )
     {
-        if ( errno == EINTR )
-            return true;
+        int  err = errno;
 
-        if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-            _errstr = serr;
+        if ( err == EINTR )
+            return _connected;
+
+        _errstr = "Socket::isConnected() poll failed: " + StringUtils::StrError(err);
 
         return false;
     }
 
-    return true;
+    // POLLERR/POLLHUP: the connect failed, the connection was reset, or no
+    // connect was ever made. Not writable: a connect is still in progress,
+    // or the send buffer is full, so the last known state stands. SO_ERROR
+    // is deliberately not read, leaving any pending error for connect().
+    if ( wset.revents & (POLLERR | POLLHUP | POLLNVAL) )
+        _connected = false;
+    else if ( wset.revents & POLLOUT )
+        _connected = true;
+
+    return _connected;
 #   endif
 }
 
@@ -524,7 +597,7 @@ Socket::write ( const void * vptr, size_t n )
     ssize_t   st  = 0;
 
     if ( _socktype == SOCKTYPE_RAW || (_proto == SOCKET_UDP && ! _connected) ) {
-        st  = ::sendto(_fd, (const char*) vptr, n, 0,
+        st  = ::sendto(_fd, (const char*) vptr, n, TCANET_SEND_FLAGS,
               (struct sockaddr*) _ipaddr.getSockAddr(), sizeof(sockaddr_t));
     } else {
         st  = this->nwriten(vptr, n);
@@ -580,6 +653,9 @@ Socket::read ( void * vptr, size_t n )
 
 // ----------------------------------------------------------------------
 
+/**  Sets the blocking mode. Before init() (no descriptor yet) this only
+  *  records the mode, and init() or connect() applies it.
+ **/
 void
 Socket::setBlocking()
 {
@@ -602,20 +678,43 @@ Socket::isBlocking()
 
 // ----------------------------------------------------------------------
 
+/**  Returns the current value of the given socket option, or a default
+  *  SocketOption (level 0, id 0) on failure; test id(), since IPPROTO_IP
+  *  options are also level 0. SO_LINGER and SO_RCVTIMEO/SO_SNDTIMEO
+  *  are converted to the int form used by setSocketOption().
+ **/
 SocketOption
 Socket::getSocketOption ( SocketOption opt )
 {
-    SocketOption ropt;
-    socklen_t    vlen;
-    int          r, v;
-
-    vlen = sizeof(v);
-
-#   ifdef WIN32
-    r = ::getsockopt(_fd, opt.level(), opt.id(), (char*)&v, &vlen);
-#   else
-    r = ::getsockopt(_fd, opt.level(), opt.id(), &v, &vlen);
+    SocketOption   ropt;
+    socklen_t      vlen;
+    int            r, v = 0;
+    struct linger  lg;
+#   ifndef WIN32
+    struct timeval tv;
 #   endif
+
+    if ( opt.level() == SOL_SOCKET && opt.id() == SO_LINGER )
+    {
+        vlen = sizeof(lg);
+        r    = ::getsockopt(_fd, opt.level(), opt.id(), (char*) &lg, &vlen);
+        v    = lg.l_onoff ? static_cast<int>(lg.l_linger) : -1;
+    }
+#   ifndef WIN32
+    else if ( opt.level() == SOL_SOCKET && (opt.id() == SO_RCVTIMEO || opt.id() == SO_SNDTIMEO) )
+    {
+        vlen = sizeof(tv);
+        r    = ::getsockopt(_fd, opt.level(), opt.id(), &tv, &vlen);
+
+        long long ms = static_cast<long long>(tv.tv_sec) * 1000 + tv.tv_usec / 1000;
+        v = ( ms > INT_MAX ) ? INT_MAX : static_cast<int>(ms);
+    }
+#   endif
+    else
+    {
+        vlen = sizeof(v);
+        r    = ::getsockopt(_fd, opt.level(), opt.id(), (char*) &v, &vlen);
+    }
 
     if ( r == 0 )
         ropt = SocketOption(opt.level(), opt.id(), v, opt.name());
@@ -625,31 +724,61 @@ Socket::getSocketOption ( SocketOption opt )
 
 // ----------------------------------------------------------------------
 
+/**  Sets a socket option from an int value. Options the kernel expects
+  *  as structs are converted: SO_LINGER takes seconds (>= 0 enables linger,
+  *  0 meaning an abortive close; < 0 disables it), and SO_RCVTIMEO and
+  *  SO_SNDTIMEO take milliseconds (0 means no timeout).
+  *  Must be called after init(), once the descriptor exists.
+ **/
 bool
 Socket::setSocketOption ( int level, int optname, int optval )
 {
-    socklen_t  len;
-
-    len = (socklen_t) sizeof(int);
+    const void   * vptr = &optval;
+    socklen_t      len  = sizeof(int);
+    struct linger  lg;
+#   ifndef WIN32
+    struct timeval tv;
+#   endif
 
     if ( ! Socket::IsValidDescriptor(_fd) ) {
         _errstr = "Socket::setSocketOption: FD is invalid";
         return false;
     }
 
+    if ( level == SOL_SOCKET && optname == SO_LINGER )
+    {
+        lg.l_onoff  = ( optval >= 0 ) ? 1 : 0;
+        lg.l_linger = ( optval >= 0 ) ? optval : 0;
+        vptr = &lg;
+        len  = sizeof(lg);
+    }
+#   ifndef WIN32
+    else if ( level == SOL_SOCKET && (optname == SO_RCVTIMEO || optname == SO_SNDTIMEO) )
+    {
+        if ( optval < 0 ) {
+            _errstr = "Socket::setSocketOption() timeout must be >= 0 ms";
+            return false;
+        }
+        tv.tv_sec  = optval / 1000;
+        tv.tv_usec = (optval % 1000) * 1000;
+        vptr = &tv;
+        len  = sizeof(tv);
+    }
+#   endif
+
 #   ifdef WIN32
-    if ( ::setsockopt(_fd, level, optname, (const char*) &optval, len) < 0 ) {
+    if ( ::setsockopt(_fd, level, optname, (const char*) vptr, len) < 0 ) {
         _errstr = "Socket: Error in call to setsockopt()";
         return false;
     }
 #   else
-    char  serr[ERRORSTRLEN];
-    if ( ::setsockopt(_fd, level, optname, (const void*) &optval, len) < 0 ) {
-        // test for EOPNOTSUPP here
-        if ( errno == EOPNOTSUPP ) 
+    if ( ::setsockopt(_fd, level, optname, vptr, len) < 0 ) {
+        int  err = errno;
+
+        if ( err == EOPNOTSUPP ) 
             _errstr = "Socket::setSocketOption() EOPNOTSUPP";
-        else if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-            _errstr = serr;
+        else
+            _errstr = "Socket::setSocketOption() " + StringUtils::StrError(err);
         return false;
     }
 #   endif
@@ -770,8 +899,10 @@ Socket::Unblock ( Socket * s )
 
 #   else
 
-    int flags = ::fcntl(s->getDescriptor(), F_GETFL, 0);
-    ::fcntl(s->getDescriptor(), F_SETFL, flags | O_NONBLOCK);
+    int  flags  = ::fcntl(s->getDescriptor(), F_GETFL, 0);
+
+    if ( flags >= 0 && ! (flags & O_NONBLOCK) )
+        ::fcntl(s->getDescriptor(), F_SETFL, flags | O_NONBLOCK);
 
 #   endif
 
@@ -793,7 +924,9 @@ Socket::Block ( Socket * s )
 #   else
 
     int  flags  = ::fcntl(s->getDescriptor(), F_GETFL, 0);
-    ::fcntl(s->getDescriptor(), F_SETFD, flags & ~O_NONBLOCK);
+
+    if ( flags >= 0 && (flags & O_NONBLOCK) )
+        ::fcntl(s->getDescriptor(), F_SETFL, flags & ~O_NONBLOCK);
 
 #   endif
 
@@ -843,7 +976,7 @@ Socket::nwriten ( const void * vptr, size_t n )
 
     while ( nleft > 0 )
     {
-        if ( (nwritten = ::send(_fd, ptr, nleft, 0)) <= 0 )
+        if ( (nwritten = ::send(_fd, ptr, nleft, TCANET_SEND_FLAGS)) <= 0 )
         {
 #           ifdef WIN32
 
@@ -875,7 +1008,12 @@ Socket::nwriten ( const void * vptr, size_t n )
 
 // ----------------------------------------------------------------------
 
-/**  Internal Socket method for performing a non-blocking read, if applicable. */
+/**  Internal Socket method for performing a non-blocking read, if applicable.
+  *  Returns the number of bytes read (0 if the read would block), or -1 on
+  *  EOF or error. Bytes already read when EOF or an error is reached are
+  *  returned first; the condition is reported by the next call, since
+  *  the kernel continues to report EOF (recv() == 0) once reached.
+ **/
 ssize_t
 Socket::nreadn ( void * vptr, size_t n )
 {
@@ -898,7 +1036,7 @@ Socket::nreadn ( void * vptr, size_t n )
             else if ( err == WSAEWOULDBLOCK )
                 return(n-nleft);
             else
-                return -1;
+                return( (nleft < n) ? (ssize_t)(n-nleft) : -1 );
 
 #           else
 
@@ -907,13 +1045,13 @@ Socket::nreadn ( void * vptr, size_t n )
             else if ( errno == EWOULDBLOCK || errno == EAGAIN || errno == EINPROGRESS )
                 return(n-nleft);
             else
-                return -1;
+                return( (nleft < n) ? (ssize_t)(n-nleft) : -1 );
 
 #           endif
         }
         else if ( nread == 0 )
         {
-            return -1;
+            return( (nleft < n) ? (ssize_t)(n-nleft) : -1 );
         }
         nleft -= nread;
         ptr   += nread;
@@ -952,22 +1090,23 @@ Socket::CreateSocket ( sockfd_t & fd, IpAddr & addr, int socktype, int proto )
 #       ifdef WIN32
         errstr.append(": Failed to initialize socket");
 #       else
-        char   serr[ERRORSTRLEN];
+        int  err = errno;
 
-        if ( errno == EACCES || errno == EPERM ) {
+        if ( err == EACCES || err == EPERM ) {
             errstr.append("EACCES: Permission denied");
-        } else if ( errno == EAFNOSUPPORT ) {
+        } else if ( err == EAFNOSUPPORT ) {
             errstr.append("EAFNOSUPPORT: Address Family not supported");
-        } else if ( errno == EINVAL ) {
+        } else if ( err == EINVAL ) {
             errstr.append("EINVAL: Unknown protocol or PF not supported");
         } else {
-            if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-                errstr.append(serr);
+            errstr.append(StringUtils::StrError(err));
         }
 #       endif
 
         throw SocketException(errstr);
     }
+
+    SetNoSigPipe(fd);
 
     return;
 }

@@ -28,15 +28,32 @@ extern "C" {
 # include <errno.h>
 # include <unistd.h>
 # include <string.h>
+# include <limits.h>
 }
 
 #include <cstdlib>
 #include <sstream>
+#include <algorithm>
 
 #include "Thread.h"
+#include "util/StringUtils.h"
 
 
 namespace tcanetpp {
+
+
+/*  Held by start() across pthread_create() and the setup that follows it
+ *  (running flag, default name, detach); ThreadEntry() passes through it
+ *  before run(). Otherwise a short run() could finish, or delete the Thread,
+ *  while start() is still writing to it.
+ */
+static pthread_mutex_t  StartGate = PTHREAD_MUTEX_INITIALIZER;
+
+class StartGateLock {
+  public:
+    StartGateLock()  { ::pthread_mutex_lock(&StartGate); }
+    ~StartGateLock() { ::pthread_mutex_unlock(&StartGate); }
+};
 
 
 /* -------------------------------------------------------------- */
@@ -50,18 +67,38 @@ Thread::Thread ( bool detach )
     : _Alarm(false),
       _running(false),
       _detach(detach),
-      _tid(0),
-      _stack(nullptr)
+      _tid(0)
 {
     ::pthread_attr_init(&_attr);
 }
 
 
+/**  Joins a still-started Thread, but never throws: an exception here
+  *  would call std::terminate(). By this point a derived class is already
+  *  destroyed, so only the base setAlarm() is signalled; derived classes
+  *  should stop() in their own destructor. If deleted from the thread
+  *  itself (e.g. in finished()), which can't join itself, the thread is
+  *  detached so its resources are reclaimed when it exits.
+ **/
 Thread::~Thread()
 {
-    ::pthread_attr_destroy(&_attr);
     if ( _tid != 0 )
-        this->stop();
+    {
+        this->setAlarm();
+
+        if ( ! _detach )
+        {
+            if ( ::pthread_equal(_tid, ::pthread_self()) )
+                ::pthread_detach(_tid);
+            else
+                ::pthread_join(_tid, nullptr);  // no way to report failure here
+        }
+
+        _tid     = 0;
+        _running = false;
+    }
+
+    ::pthread_attr_destroy(&_attr);
 }
 
 /* -------------------------------------------------------------- */
@@ -74,6 +111,7 @@ void
 Thread::start()
 {
     size_t stksz = 0;
+    int    err   = 0;
 
     if ( _tid != 0 )
         throw ThreadException("Thread::start() id non-zero, already started?");
@@ -82,13 +120,16 @@ Thread::start()
         throw ThreadException(_serr);
 
     if ( stksz < THREAD_STACKSIZE_MIN ) {
-        stksz = THREAD_STACKSIZE_MIN;
-        if ( ! this->setStackSize(stksz) )
+        if ( ! this->setStackSize(THREAD_STACKSIZE_MIN) )
             throw ThreadException(_serr);
     }
 
-    if ( ::pthread_create(&_tid, &_attr, Thread::ThreadEntry, (void*)this) != 0 ) {
-        _serr = "Thread::start() pthread_create error: " + std::string(::strerror(errno));
+    // pthread functions return the error code rather than setting errno.
+    StartGateLock  gate;
+
+    if ( (err = ::pthread_create(&_tid, &_attr, Thread::ThreadEntry, (void*)this)) != 0 ) {
+        _tid  = 0;
+        _serr = "Thread::start() pthread_create error: " + StringUtils::StrError(err);
         throw ThreadException(_serr);
     }
 
@@ -107,22 +148,24 @@ Thread::start()
 }
 
 
-/**  Forcibly stops the thread, and if not detached from the thread it will
- *   attempt to join the thread. A ThreadException is thrown if the join
- *   fails.
+/**  Signals the thread via setAlarm() and, if not detached, joins it.
+ *   A ThreadException is thrown if the join fails, e.g. EDEADLK when called
+ *   from the thread itself.
  **/
 void
 Thread::stop()
 {
+    int  err = 0;
+
     if ( _tid == 0 )
         return;
 
     this->setAlarm();
 
-    if ( ! _detach && ::pthread_join(_tid, NULL) != 0 ) {
+    if ( ! _detach && (err = ::pthread_join(_tid, NULL)) != 0 ) {
         std::ostringstream  serr;
         serr << "Thread::stop() pthread_join error: "
-             << _threadName << " : " << std::string(::strerror(errno));
+             << _threadName << " : " << StringUtils::StrError(err);
         _serr = serr.str();
         throw ThreadException(_serr);
     }
@@ -197,41 +240,45 @@ Thread::yield()
 /* -------------------------------------------------------------- */
 
 /**  Sets the stack size of the Thread. This method should be
-  *  called prior to starting the Thread.
+  *  called prior to starting the Thread. The stack itself is allocated
+  *  and released by the pthread library (with a guard page), sized to
+  *  at least THREAD_STACKSIZE_MIN or PTHREAD_STACK_MIN, whichever is larger.
+  *  Without a call to this method, the Thread uses the platform default.
  **/
 bool
 Thread::setStackSize ( size_t stksz )
 {
+    int  err = 0;
+
     if ( this->isRunning() ) {
         _serr  = "Thread is already running.";
         return false;
     }
 
-    if ( stksz < THREAD_STACKSIZE_MIN )
-        stksz = THREAD_STACKSIZE_MIN;
+    // PTHREAD_STACK_MIN may be a runtime value (sysconf) on newer glibc.
+    stksz = std::max(stksz, std::max(static_cast<size_t>(THREAD_STACKSIZE_MIN),
+                                     static_cast<size_t>(PTHREAD_STACK_MIN)));
 
-    _stack = ::malloc(stksz);
-    if ( _stack == nullptr ) {
-        _serr  = "Error in malloc().";
-        return false;
-    }
-
-    if ( ::pthread_attr_setstack(&_attr, _stack, stksz) ) {
-        _serr = "Error in pthread_attr_setstack().";
+    if ( (err = ::pthread_attr_setstacksize(&_attr, stksz)) != 0 ) {
+        _serr = "Thread::setStackSize() pthread_attr_setstacksize error: "
+              + StringUtils::StrError(err);
         return false;
     }
 
     return true;
 }
 
-/**  Returns the Thread's configured stack size */
+/**  Returns the Thread's configured stack size, which is the platform
+  *  default unless setStackSize() has been called.
+ **/
 bool
 Thread::getStackSize ( size_t & stksz )
 {
-    void * stack;
+    int  err = 0;
 
-    if ( ::pthread_attr_getstack(&_attr, &stack, &stksz) ) {
-        _serr = "Error in pthread_attr_getstack().";
+    if ( (err = ::pthread_attr_getstacksize(&_attr, &stksz)) != 0 ) {
+        _serr = "Thread::getStackSize() pthread_attr_getstacksize error: "
+              + StringUtils::StrError(err);
         return false;
     }
 
@@ -499,6 +546,11 @@ Thread::ThreadEntry ( void * arg )
 
     if ( t == nullptr )
         return nullptr;
+
+    // Wait for start() to finish setting up this Thread.
+    {
+        StartGateLock  gate;
+    }
 
     t->run();
     t->finished();

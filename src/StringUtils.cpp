@@ -365,6 +365,54 @@ StringUtils::ReplaceTabs ( std::string & strline )
     return;
 }
 
+// ----------------------------------------------------------------------
+
+/*  strerror_r() comes in two incompatible flavors selected by feature
+ *  macros: the GNU version (default under _GNU_SOURCE, which g++ always
+ *  defines) returns a char* that may or may not point into the supplied
+ *  buffer, while the XSI version returns an int and fills the buffer.
+ *  Overloading on the return type picks the right handling at compile time.
+ */
+namespace {
+
+inline const char*
+StrErrorResult ( char * result, const char * )
+{
+    return result;
+}
+
+inline const char*
+StrErrorResult ( int result, const char * buf )
+{
+    return ( result == 0 ) ? buf : nullptr;
+}
+
+}  // namespace
+
+/**  Thread-safe equivalent of strerror(). Returns the system error
+  *  message for the provided error number (typically errno).
+ **/
+std::string
+StringUtils::StrError ( int err )
+{
+    char         buf[ERRORSTRLEN];
+    const char * msg = nullptr;
+
+    buf[0] = '\0';
+
+#   ifdef WIN32
+    if ( ::strerror_s(buf, ERRORSTRLEN, err) == 0 )
+        msg = buf;
+#   else
+    msg = StrErrorResult(::strerror_r(err, buf, ERRORSTRLEN), buf);
+#   endif
+
+    if ( msg == nullptr || *msg == '\0' )
+        return "Unknown error " + std::to_string(err);
+
+    return std::string(msg);
+}
+
 
 
 // ----------------------------------------------------------------------

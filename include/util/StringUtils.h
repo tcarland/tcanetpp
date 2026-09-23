@@ -98,6 +98,8 @@ class StringUtils {
     static void          StripComments    ( std::string & strline );
     static void          ReplaceTabs      ( std::string & strline );
 
+    static std::string   StrError         ( int err );
+
 
     /*  Note: the to/fromString functions do NOT work with (u)int8_t
      *  types since these are typedef'd from an unsigned char

@@ -48,13 +48,13 @@ ThreadAutoMutex::ThreadAutoMutex ( ThreadLock * lock, bool sync )
       _locked(false)
 {
     if ( this->_sync )
-        if ( this->_mutex->lock() )
+        if ( this->_mutex->lock() > 0 )
             _locked = true;
 }
 
 ThreadAutoMutex::~ThreadAutoMutex()
 {
-    if ( this->_sync )
+    if ( this->_locked )
         this->_mutex->unlock();
 }
 

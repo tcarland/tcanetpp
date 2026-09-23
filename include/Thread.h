@@ -39,6 +39,9 @@ extern "C" {
 namespace tcanetpp {
 
 
+/*  Lower bound applied by Thread::setStackSize(). Threads use the platform
+ *  default stack size (RLIMIT_STACK on glibc) unless setStackSize() is called.
+ */
 #define THREAD_STACKSIZE_MIN 16384
 
 
@@ -140,7 +143,6 @@ class Thread {
     pthread_t           _tid;
     pthread_attr_t      _attr;
     struct sched_param  _param;
-    void*               _stack;
 };
 
 }  // namespace
