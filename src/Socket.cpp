@@ -38,7 +38,31 @@
 #include "util/StringUtils.h"
 
 
+/*  Writing to a reset connection must fail with EPIPE rather than raise
+ *  SIGPIPE, whose default action terminates the process.
+ */
+#if defined(MSG_NOSIGNAL)
+# define TCANET_SEND_FLAGS  MSG_NOSIGNAL
+#else
+# define TCANET_SEND_FLAGS  0
+#endif
+
+
 namespace tcanetpp {
+
+
+/*  For platforms without MSG_NOSIGNAL (e.g. macOS), and for writes made
+ *  by OpenSSL, which can't pass send flags. */
+static void
+SetNoSigPipe ( sockfd_t fd )
+{
+#   if defined(SO_NOSIGPIPE)
+    int  one = 1;
+    ::setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof(one));
+#   else
+    (void) fd;
+#   endif
+}
 
 
 // ----------------------------------------------------------------------
@@ -487,6 +511,7 @@ Socket::accept ( SocketFactory & factory )
     if ( _proto == SOCKET_TCP ) {
         if ( (cfd = ::accept(_fd, (struct sockaddr*) &csock, &len)) < 0 )
             return nullptr;
+        SetNoSigPipe(cfd);
         client = factory(cfd, csock, _socktype, _proto);
     } else if ( _proto == SOCKET_UDP ) {
         client = factory(_fd, csock, _socktype, _proto);
@@ -565,7 +590,7 @@ Socket::write ( const void * vptr, size_t n )
     ssize_t   st  = 0;
 
     if ( _socktype == SOCKTYPE_RAW || (_proto == SOCKET_UDP && ! _connected) ) {
-        st  = ::sendto(_fd, (const char*) vptr, n, 0,
+        st  = ::sendto(_fd, (const char*) vptr, n, TCANET_SEND_FLAGS,
               (struct sockaddr*) _ipaddr.getSockAddr(), sizeof(sockaddr_t));
     } else {
         st  = this->nwriten(vptr, n);
@@ -936,7 +961,7 @@ Socket::nwriten ( const void * vptr, size_t n )
 
     while ( nleft > 0 )
     {
-        if ( (nwritten = ::send(_fd, ptr, nleft, 0)) <= 0 )
+        if ( (nwritten = ::send(_fd, ptr, nleft, TCANET_SEND_FLAGS)) <= 0 )
         {
 #           ifdef WIN32
 
@@ -1065,6 +1090,8 @@ Socket::CreateSocket ( sockfd_t & fd, IpAddr & addr, int socktype, int proto )
 
         throw SocketException(errstr);
     }
+
+    SetNoSigPipe(fd);
 
     return;
 }

@@ -33,10 +33,71 @@
 #ifndef WIN32
 # include <poll.h>
 # include <errno.h>
+# include <signal.h>
+# include <pthread.h>
+# include <time.h>
 #endif
 
 
 namespace tcanetpp {
+
+
+/*  OpenSSL writes to the descriptor itself, so Socket's MSG_NOSIGNAL can't
+ *  reach it. Where SO_NOSIGPIPE isn't available (Linux), SIGPIPE is blocked
+ *  in the calling thread for the duration of an OpenSSL call, and any SIGPIPE
+ *  the call raised is discarded. The process-wide disposition is untouched,
+ *  and errno is preserved for the SSL_get_error() checks that follow.
+ */
+class SigPipeGuard {
+  public:
+    SigPipeGuard();
+    ~SigPipeGuard();
+
+#if ! defined(WIN32) && ! defined(SO_NOSIGPIPE)
+  private:
+    sigset_t  _oldmask;
+    bool      _pending;
+#endif
+};
+
+
+SigPipeGuard::SigPipeGuard()
+{
+#   if ! defined(WIN32) && ! defined(SO_NOSIGPIPE)
+    sigset_t  block, pending;
+
+    ::sigemptyset(&block);
+    ::sigaddset(&block, SIGPIPE);
+    ::pthread_sigmask(SIG_BLOCK, &block, &_oldmask);
+
+    _pending = ( ::sigpending(&pending) == 0 && ::sigismember(&pending, SIGPIPE) );
+#   endif
+}
+
+
+SigPipeGuard::~SigPipeGuard()
+{
+#   if ! defined(WIN32) && ! defined(SO_NOSIGPIPE)
+    int       saved = errno;
+    sigset_t  pending;
+
+    // A SIGPIPE that was already pending belongs to someone else; leave it.
+    if ( ! _pending && ::sigpending(&pending) == 0 && ::sigismember(&pending, SIGPIPE) )
+    {
+        sigset_t         pipeset;
+        struct timespec  zero = { 0, 0 };
+
+        ::sigemptyset(&pipeset);
+        ::sigaddset(&pipeset, SIGPIPE);
+
+        while ( ::sigtimedwait(&pipeset, nullptr, &zero) < 0 && errno == EINTR )
+            ;
+    }
+
+    ::pthread_sigmask(SIG_SETMASK, &_oldmask, nullptr);
+    errno = saved;
+#   endif
+}
 
 
 // Static member initialization
@@ -65,7 +126,11 @@ SecureSocket::SecureSocketFactory::operator() ( sockfd_t         & fd,
     SSL_set_fd(ssl, fd);
 
     // Perform TLS handshake for incoming connection
-    int result = SSL_accept(ssl);
+    int result;
+    {
+        SigPipeGuard  guard;
+        result = SSL_accept(ssl);
+    }
     if ( result <= 0 ) 
     {
         int sslerr = SSL_get_error(ssl, result);
@@ -451,10 +516,14 @@ SecureSocket::sslHandshake()
     }
 
     int result;
-    if ( _socktype == SOCKTYPE_CLIENT )
-        result = SSL_connect(_ssl);
-    else
-        result = SSL_accept(_ssl);
+    {
+        SigPipeGuard  guard;
+
+        if ( _socktype == SOCKTYPE_CLIENT )
+            result = SSL_connect(_ssl);
+        else
+            result = SSL_accept(_ssl);
+    }
 
     if ( result <= 0 )
     {
@@ -526,6 +595,7 @@ SecureSocket::close()
     {
         if ( _sslConnected ) {
             // Perform clean SSL shutdown
+            SigPipeGuard  guard;
             int result = SSL_shutdown(_ssl);
             if ( result == 0 )  // Need to call again for bidirectional shutdown
                 SSL_shutdown(_ssl);
@@ -556,6 +626,7 @@ SecureSocket::shutdown ( int shut )
     {
         // SSL_shutdown handles bidirectional shutdown
         if ( shut >= 2 ) {
+            SigPipeGuard  guard;
             int result = SSL_shutdown(_ssl);
             if ( result == 0 )
                 SSL_shutdown(_ssl);
@@ -595,7 +666,11 @@ SecureSocket::read ( void * vptr, size_t n )
         return -1;
     }
 
-    int result = SSL_read(_ssl, vptr, static_cast<int>(n));
+    int result;
+    {
+        SigPipeGuard  guard;   // SSL_read() may also write (e.g. key updates)
+        result = SSL_read(_ssl, vptr, static_cast<int>(n));
+    }
 
     if ( result <= 0 )
     {
@@ -650,7 +725,11 @@ SecureSocket::write ( const void * vptr, size_t n )
         return -1;
     }
 
-    int result = SSL_write(_ssl, vptr, static_cast<int>(n));
+    int result;
+    {
+        SigPipeGuard  guard;
+        result = SSL_write(_ssl, vptr, static_cast<int>(n));
+    }
 
     if ( result <= 0 )
     {
