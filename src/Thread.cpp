@@ -42,6 +42,20 @@ extern "C" {
 namespace tcanetpp {
 
 
+/*  Held by start() across pthread_create() and the setup that follows it
+ *  (running flag, default name, detach); ThreadEntry() passes through it
+ *  before run(). Otherwise a short run() could finish, or delete the Thread,
+ *  while start() is still writing to it.
+ */
+static pthread_mutex_t  StartGate = PTHREAD_MUTEX_INITIALIZER;
+
+class StartGateLock {
+  public:
+    StartGateLock()  { ::pthread_mutex_lock(&StartGate); }
+    ~StartGateLock() { ::pthread_mutex_unlock(&StartGate); }
+};
+
+
 /* -------------------------------------------------------------- */
 
 /**  The thread constructor
@@ -59,11 +73,32 @@ Thread::Thread ( bool detach )
 }
 
 
+/**  Joins a still-started Thread, but never throws: an exception here
+  *  would call std::terminate(). By this point a derived class is already
+  *  destroyed, so only the base setAlarm() is signalled; derived classes
+  *  should stop() in their own destructor. If deleted from the thread
+  *  itself (e.g. in finished()), which can't join itself, the thread is
+  *  detached so its resources are reclaimed when it exits.
+ **/
 Thread::~Thread()
 {
-    ::pthread_attr_destroy(&_attr);
     if ( _tid != 0 )
-        this->stop();
+    {
+        this->setAlarm();
+
+        if ( ! _detach )
+        {
+            if ( ::pthread_equal(_tid, ::pthread_self()) )
+                ::pthread_detach(_tid);
+            else
+                ::pthread_join(_tid, nullptr);  // no way to report failure here
+        }
+
+        _tid     = 0;
+        _running = false;
+    }
+
+    ::pthread_attr_destroy(&_attr);
 }
 
 /* -------------------------------------------------------------- */
@@ -90,6 +125,8 @@ Thread::start()
     }
 
     // pthread functions return the error code rather than setting errno.
+    StartGateLock  gate;
+
     if ( (err = ::pthread_create(&_tid, &_attr, Thread::ThreadEntry, (void*)this)) != 0 ) {
         _tid  = 0;
         _serr = "Thread::start() pthread_create error: " + StringUtils::StrError(err);
@@ -111,9 +148,9 @@ Thread::start()
 }
 
 
-/**  Forcibly stops the thread, and if not detached from the thread it will
- *   attempt to join the thread. A ThreadException is thrown if the join
- *   fails.
+/**  Signals the thread via setAlarm() and, if not detached, joins it.
+ *   A ThreadException is thrown if the join fails, e.g. EDEADLK when called
+ *   from the thread itself.
  **/
 void
 Thread::stop()
@@ -509,6 +546,11 @@ Thread::ThreadEntry ( void * arg )
 
     if ( t == nullptr )
         return nullptr;
+
+    // Wait for start() to finish setting up this Thread.
+    {
+        StartGateLock  gate;
+    }
 
     t->run();
     t->finished();
