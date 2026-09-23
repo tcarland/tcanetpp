@@ -41,7 +41,7 @@ OBJS +=	$(TH_OBJS)
 endif
 
 BIN =
-ALL_OBJS =$(OBJS) $(TH_OBJS) $(PT_OBJS) $(CMDBUF_OBJS)
+ALL_OBJS = $(OBJS) $(TH_OBJS) $(PT_OBJS) $(CMDBUF_OBJS)
 ALL_BINS = $(BIN)
 
 # ---------------------------------------------
@@ -61,14 +61,14 @@ all: lib cmdbuf libtcapt
 lib: arlib
 
 arlib: lib/libtcanetpp.a
-solib: libtcanetpp.so.1.6.15
+solib: libtcanetpp.so.1.7.0
 libtcapt: lib/libtcapt.a
 
 cmdbuffer: cmdbuf
 cmdbuf:    libcmdbuf
 libcmdbuf: lib/libcmdbuf.a
 
-libtcanetpp.so.1.6.15: ${OBJS}
+libtcanetpp.so.1.7.0: ${OBJS}
 	( $(MKDIR) lib )
 	( $(RM) $@ lib/libtcanetpp.so )
 	$(make-so-rule)

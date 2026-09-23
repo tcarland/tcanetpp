@@ -273,10 +273,11 @@ Socket::init ( bool block )
     {
         this->setSocketOption(SocketOption::SetReuseAddr(1));
 
-        if ( ! this->bind() )
+        // bind() returns 0 when already bound, which is not a failure.
+        if ( this->bind() < 0 )
             return -1;
-        if ( _proto == SOCKET_TCP )
-            this->listen();
+        if ( _proto == SOCKET_TCP && this->listen() < 0 )
+            return -1;
     }
 
     _block = block;
@@ -294,7 +295,6 @@ Socket::init ( bool block )
 int
 Socket::bind()
 {
-    char  serr[ERRORSTRLEN];
     int   r = 0;
 
     if ( _socktype < SOCKTYPE_SERVER || _bound || ! Socket::IsValidDescriptor(_fd) ) {
@@ -305,10 +305,10 @@ Socket::bind()
     r = ::bind(_fd, (struct sockaddr*) _ipaddr.getSockAddr(), sizeof(sockaddr_t));
 
     if ( r != 0 ) {
-        _errstr = "Socket::bind() Failed to bind";
+        int  err = errno;
+        _errstr  = "Socket::bind() Failed to bind";
 #       ifndef WIN32
-        if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-            _errstr = serr;
+        _errstr.append(": ").append(StringUtils::StrError(err));
 #       endif
         return -1;
     }
@@ -326,10 +326,19 @@ Socket::listen()
     if ( _socktype != SOCKTYPE_SERVER || _proto != IPPROTO_TCP )
         return 0;
 
-    if ( ! this->_bound )
-        this->bind();
+    // Never listen() on an unbound descriptor: the kernel would
+    // implicitly bind it to the wildcard address on an ephemeral port.
+    if ( ! this->_bound && this->bind() <= 0 )
+        return -1;
 
-    ::listen(_fd, 1);
+    if ( ::listen(_fd, SOMAXCONN) != 0 ) {
+        int  err = errno;
+        _errstr  = "Socket::listen() Failed to listen";
+#       ifndef WIN32
+        _errstr.append(": ").append(StringUtils::StrError(err));
+#       endif
+        return -1;
+    }
 
     _connected = true;
 
@@ -363,17 +372,15 @@ Socket::connect()
             return 1;
         }
 #       else
-        if ( errno == EINPROGRESS )
+        int  err = errno;
+
+        if ( err == EINPROGRESS )
             return 0;
-        else if ( errno == ECONNREFUSED )
+        else if ( err == ECONNREFUSED )
             _errstr = "Socket::connect() Connection Refused";
         else
-            _errstr = "Socket::connect() Error in connect attempt";
-
-        char  serr[ERRORSTRLEN];
-
-        if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-            _errstr = serr;
+            _errstr = "Socket::connect() Error in connect attempt: "
+                    + StringUtils::StrError(err);
 #     endif
 
         return -1;
@@ -496,18 +503,18 @@ Socket::isConnected()
         return _connected;
 
     pollfd  wset;
-    char    serr[ERRORSTRLEN];
 
     wset.fd     = this->getDescriptor();
     wset.events = POLLOUT | POLLERR;
 
     if ( poll(&wset, 1, 0) < 0 )
     {
-        if ( errno == EINTR )
+        int  err = errno;
+
+        if ( err == EINTR )
             return true;
 
-        if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-            _errstr = serr;
+        _errstr = "Socket::isConnected() poll failed: " + StringUtils::StrError(err);
 
         return false;
     }
@@ -643,13 +650,13 @@ Socket::setSocketOption ( int level, int optname, int optval )
         return false;
     }
 #   else
-    char  serr[ERRORSTRLEN];
     if ( ::setsockopt(_fd, level, optname, (const void*) &optval, len) < 0 ) {
-        // test for EOPNOTSUPP here
-        if ( errno == EOPNOTSUPP ) 
+        int  err = errno;
+
+        if ( err == EOPNOTSUPP ) 
             _errstr = "Socket::setSocketOption() EOPNOTSUPP";
-        else if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-            _errstr = serr;
+        else
+            _errstr = "Socket::setSocketOption() " + StringUtils::StrError(err);
         return false;
     }
 #   endif
@@ -952,17 +959,16 @@ Socket::CreateSocket ( sockfd_t & fd, IpAddr & addr, int socktype, int proto )
 #       ifdef WIN32
         errstr.append(": Failed to initialize socket");
 #       else
-        char   serr[ERRORSTRLEN];
+        int  err = errno;
 
-        if ( errno == EACCES || errno == EPERM ) {
+        if ( err == EACCES || err == EPERM ) {
             errstr.append("EACCES: Permission denied");
-        } else if ( errno == EAFNOSUPPORT ) {
+        } else if ( err == EAFNOSUPPORT ) {
             errstr.append("EAFNOSUPPORT: Address Family not supported");
-        } else if ( errno == EINVAL ) {
+        } else if ( err == EINVAL ) {
             errstr.append("EINVAL: Unknown protocol or PF not supported");
         } else {
-            if ( ::strerror_r(errno, serr, ERRORSTRLEN) == 0 )
-                errstr.append(serr);
+            errstr.append(StringUtils::StrError(err));
         }
 #       endif
 
