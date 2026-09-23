@@ -136,14 +136,15 @@ BufferedSocket::init ( bool block )
 
 /** Reads at most n bytes from the socket and writes to the provided
   * buffer. Returns the number of bytes read, or 0 if blocked, or a
-  * negative value indicating a read error.
+  * negative value indicating EOF or a read error. Data already buffered
+  * is returned before EOF or an error is reported.
  **/
 ssize_t
 BufferedSocket::read ( void * vptr, size_t n )
 {
     ssize_t  rt = 0;
 
-    if ( (rt = this->readToBuffer()) < 0 )
+    if ( (rt = this->readToBuffer()) < 0 && _rbuffer->readAvailable() == 0 )
         return rt;
 
     return _rbuffer->read(vptr, n);
@@ -357,7 +358,8 @@ BufferedSocket::bufferedWrite ( const void *vptr, size_t n )
 /** Performs a continuous read of the socket, buffering data to the
   * internal read buffer until a read block occurs or the buffer is full.
   * Returns the number of bytes read, 0 if blocked, or a negative
-  * indicating a read error.
+  * indicating EOF or a read error. Bytes received ahead of EOF or an
+  * error are buffered and counted first; the next call returns negative.
  **/
 ssize_t
 BufferedSocket::readToBuffer()
@@ -372,20 +374,18 @@ BufferedSocket::readToBuffer()
         size = _rbuffer->writePtrAvailable();
         wptr = _rbuffer->getWritePtr(&size);
 
-        if ( wptr == nullptr ) {
-            rd = 0;
+        if ( wptr == nullptr )
             break;
-        }
 
         rcv = this->nreadn(wptr, size);
 
         if ( rcv < 0 ) {
-            rd  = rcv;
-            rcv = 0;
-        } else {
-            rd += rcv;
+            if ( rd == 0 )
+                rd = rcv;
+            break;
         }
 
+        rd += rcv;
         _rbuffer->setWritePtr(rcv);
 
     } while ( rcv > 0 );

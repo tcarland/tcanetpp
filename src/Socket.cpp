@@ -913,7 +913,12 @@ Socket::nwriten ( const void * vptr, size_t n )
 
 // ----------------------------------------------------------------------
 
-/**  Internal Socket method for performing a non-blocking read, if applicable. */
+/**  Internal Socket method for performing a non-blocking read, if applicable.
+  *  Returns the number of bytes read (0 if the read would block), or -1 on
+  *  EOF or error. Bytes already read when EOF or an error is reached are
+  *  returned first; the condition is reported by the next call, since
+  *  the kernel continues to report EOF (recv() == 0) once reached.
+ **/
 ssize_t
 Socket::nreadn ( void * vptr, size_t n )
 {
@@ -936,7 +941,7 @@ Socket::nreadn ( void * vptr, size_t n )
             else if ( err == WSAEWOULDBLOCK )
                 return(n-nleft);
             else
-                return -1;
+                return( (nleft < n) ? (ssize_t)(n-nleft) : -1 );
 
 #           else
 
@@ -945,13 +950,13 @@ Socket::nreadn ( void * vptr, size_t n )
             else if ( errno == EWOULDBLOCK || errno == EAGAIN || errno == EINPROGRESS )
                 return(n-nleft);
             else
-                return -1;
+                return( (nleft < n) ? (ssize_t)(n-nleft) : -1 );
 
 #           endif
         }
         else if ( nread == 0 )
         {
-            return -1;
+            return( (nleft < n) ? (ssize_t)(n-nleft) : -1 );
         }
         nleft -= nread;
         ptr   += nread;
