@@ -37,7 +37,10 @@ extern "C" {
 namespace tcanetpp {
 
 
-#define DEFAULT_QUEUE_MAXSIZE 2^16
+/*  Default bound on queued items; push() returns 0 once full.
+ *  (Written 2^16 before 1.7.0, which is XOR in C and gave 18.)
+ */
+#define DEFAULT_QUEUE_MAXSIZE (1 << 16)
 
 
 /**  A SynchronizedQueue is a thread-safe wrapper to a
