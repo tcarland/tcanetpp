@@ -26,10 +26,13 @@
 #ifndef WIN32
 # include <arpa/inet.h>
 # include <netinet/in.h>
+# include <sys/time.h>
 # include <poll.h>
 # include <fcntl.h>
 # include <errno.h>
 #endif
+
+#include <climits>
 
 #include "net/Socket.h"
 #include "util/StringUtils.h"
@@ -640,20 +643,42 @@ Socket::isBlocking()
 
 // ----------------------------------------------------------------------
 
+/**  Returns the current value of the given socket option, or a default
+  *  (level 0) SocketOption on failure. SO_LINGER and SO_RCVTIMEO/SO_SNDTIMEO
+  *  are converted to the int form used by setSocketOption().
+ **/
 SocketOption
 Socket::getSocketOption ( SocketOption opt )
 {
-    SocketOption ropt;
-    socklen_t    vlen;
-    int          r, v;
-
-    vlen = sizeof(v);
-
-#   ifdef WIN32
-    r = ::getsockopt(_fd, opt.level(), opt.id(), (char*)&v, &vlen);
-#   else
-    r = ::getsockopt(_fd, opt.level(), opt.id(), &v, &vlen);
+    SocketOption   ropt;
+    socklen_t      vlen;
+    int            r, v = 0;
+    struct linger  lg;
+#   ifndef WIN32
+    struct timeval tv;
 #   endif
+
+    if ( opt.level() == SOL_SOCKET && opt.id() == SO_LINGER )
+    {
+        vlen = sizeof(lg);
+        r    = ::getsockopt(_fd, opt.level(), opt.id(), (char*) &lg, &vlen);
+        v    = lg.l_onoff ? static_cast<int>(lg.l_linger) : -1;
+    }
+#   ifndef WIN32
+    else if ( opt.level() == SOL_SOCKET && (opt.id() == SO_RCVTIMEO || opt.id() == SO_SNDTIMEO) )
+    {
+        vlen = sizeof(tv);
+        r    = ::getsockopt(_fd, opt.level(), opt.id(), &tv, &vlen);
+
+        long long ms = static_cast<long long>(tv.tv_sec) * 1000 + tv.tv_usec / 1000;
+        v = ( ms > INT_MAX ) ? INT_MAX : static_cast<int>(ms);
+    }
+#   endif
+    else
+    {
+        vlen = sizeof(v);
+        r    = ::getsockopt(_fd, opt.level(), opt.id(), (char*) &v, &vlen);
+    }
 
     if ( r == 0 )
         ropt = SocketOption(opt.level(), opt.id(), v, opt.name());
@@ -663,25 +688,55 @@ Socket::getSocketOption ( SocketOption opt )
 
 // ----------------------------------------------------------------------
 
+/**  Sets a socket option from an int value. Options the kernel expects
+  *  as structs are converted: SO_LINGER takes seconds (>= 0 enables linger,
+  *  0 meaning an abortive close; < 0 disables it), and SO_RCVTIMEO and
+  *  SO_SNDTIMEO take milliseconds (0 means no timeout).
+  *  Must be called after init(), once the descriptor exists.
+ **/
 bool
 Socket::setSocketOption ( int level, int optname, int optval )
 {
-    socklen_t  len;
-
-    len = (socklen_t) sizeof(int);
+    const void   * vptr = &optval;
+    socklen_t      len  = sizeof(int);
+    struct linger  lg;
+#   ifndef WIN32
+    struct timeval tv;
+#   endif
 
     if ( ! Socket::IsValidDescriptor(_fd) ) {
         _errstr = "Socket::setSocketOption: FD is invalid";
         return false;
     }
 
+    if ( level == SOL_SOCKET && optname == SO_LINGER )
+    {
+        lg.l_onoff  = ( optval >= 0 ) ? 1 : 0;
+        lg.l_linger = ( optval >= 0 ) ? optval : 0;
+        vptr = &lg;
+        len  = sizeof(lg);
+    }
+#   ifndef WIN32
+    else if ( level == SOL_SOCKET && (optname == SO_RCVTIMEO || optname == SO_SNDTIMEO) )
+    {
+        if ( optval < 0 ) {
+            _errstr = "Socket::setSocketOption() timeout must be >= 0 ms";
+            return false;
+        }
+        tv.tv_sec  = optval / 1000;
+        tv.tv_usec = (optval % 1000) * 1000;
+        vptr = &tv;
+        len  = sizeof(tv);
+    }
+#   endif
+
 #   ifdef WIN32
-    if ( ::setsockopt(_fd, level, optname, (const char*) &optval, len) < 0 ) {
+    if ( ::setsockopt(_fd, level, optname, (const char*) vptr, len) < 0 ) {
         _errstr = "Socket: Error in call to setsockopt()";
         return false;
     }
 #   else
-    if ( ::setsockopt(_fd, level, optname, (const void*) &optval, len) < 0 ) {
+    if ( ::setsockopt(_fd, level, optname, vptr, len) < 0 ) {
         int  err = errno;
 
         if ( err == EOPNOTSUPP ) 

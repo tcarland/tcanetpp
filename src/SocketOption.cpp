@@ -82,6 +82,7 @@ SocketOption::SetReuseAddr ( int val )
     return( SocketOption(SOL_SOCKET, SO_REUSEADDR, val, "SO_REUSEADDR") );
 }
 
+/*  seconds: >= 0 enables linger (0 = abortive close, RST); < 0 disables */
 SocketOption
 SocketOption::SetLinger ( int val )
 {
@@ -119,6 +120,7 @@ SocketOption::SetSndLoWat ( int val )
     return ( SocketOption(SOL_SOCKET, SO_SNDLOWAT, val, "SO_SNDLOWAT") );
 }
 
+/*  milliseconds; 0 = no timeout */
 SocketOption
 SocketOption::SetRcvTimeout ( int val )
 {
