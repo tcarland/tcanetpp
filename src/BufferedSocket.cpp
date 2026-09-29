@@ -59,9 +59,7 @@ BufferedSocket::BufferedSocket ( ipv4addr_t ip,
       _rbuffer(new CircularBuffer()),
       _wbuffer(nullptr),
       _wbx(false)
-{
-    this->init(false);
-}
+{}
 
 BufferedSocket::BufferedSocket ( ipv6addr_t ip, 
                                  uint16_t   port, 
@@ -71,9 +69,7 @@ BufferedSocket::BufferedSocket ( ipv6addr_t ip,
       _rbuffer(new CircularBuffer()),
       _wbuffer(nullptr),
       _wbx(false)
-{
-    this->init(false);
-}
+{}
 
 BufferedSocket::BufferedSocket ( sockaddr_t * sa, 
                                  uint16_t     port, 
@@ -83,18 +79,14 @@ BufferedSocket::BufferedSocket ( sockaddr_t * sa,
       _rbuffer(new CircularBuffer()),
       _wbuffer(nullptr),
       _wbx(false)
-{
-    this->init(false);
-}
+{}
 
 BufferedSocket::BufferedSocket ( addrinfo * ai )
     : Socket(ai),
       _rbuffer(new CircularBuffer()),
       _wbuffer(nullptr),
       _wbx(false)
-{
-    this->init(false);
-}
+{}
 
 // protected constructor
 BufferedSocket::BufferedSocket ( sockfd_t   & fd, 
@@ -105,9 +97,7 @@ BufferedSocket::BufferedSocket ( sockfd_t   & fd,
       _rbuffer(new CircularBuffer()),
       _wbuffer(nullptr),
       _wbx(false)
-{
-    this->init(false);
-}
+{}
 
 
 BufferedSocket::~BufferedSocket()
