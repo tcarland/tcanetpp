@@ -116,9 +116,9 @@ template<class ValueType> class SynchronizedQueue {
         return _mutex.waitFor(usec);
     }
 
-    /**  Will lock the calling thread for the time specified.
-      *  @param  ts  is a timespec struct specifying the
-      *  length of time to wait.
+    /**  Will lock the calling thread until the time specified.
+      *  @param  ts  is an absolute CLOCK_REALTIME deadline
+      *  (as for pthread_cond_timedwait), not a duration.
      **/
     int  waitFor ( const timespec * ts )
     {
