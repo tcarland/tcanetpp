@@ -106,6 +106,8 @@ class Serializer {
         if ( pad > buflen )
             return buflen;
 
+        ::memset(buffer, 0, pad);
+        
         return pad;
     }
 };

@@ -31,7 +31,6 @@ extern "C" {
 }
 
 #include "ThreadLock.h"
-#include "event/EventManager.h"
 
 
 namespace tcanetpp {
@@ -145,10 +144,11 @@ ThreadLock::wait()
     return 1;
 }
 
-/**  A timed wait that blocks for given number of seconds.
+/**  A timed wait that blocks for up to the given number of microseconds.
   *  As with the pthreads API, the mutex must be locked first.
   *
   *  @param usec is the number of microseconds to wait.
+  *  @return  1 if signaled, 0 on timeout (or usec < 1), -1 on error.
  **/
 int
 ThreadLock::waitFor ( time_t usec )
@@ -158,20 +158,28 @@ ThreadLock::waitFor ( time_t usec )
     if ( usec < 1 )
         return 0;
 
-    ::memset(&to, 0, sizeof(to));
+    // The deadline is absolute CLOCK_REALTIME (pthread_cond_timedwait's
+    // default clock), so start from the current time at full resolution.
+    if ( ::clock_gettime(CLOCK_REALTIME, &to) != 0 )
+        return -1;
 
-    to.tv_sec  = ::time(NULL);
-    to.tv_nsec = usec * 1000;
+    to.tv_sec  += usec / 1000000;
+    to.tv_nsec += (usec % 1000000) * 1000;
 
-    EventManager::TimespecNorm(&to);
+    if ( to.tv_nsec >= 1000000000L ) {
+        to.tv_sec  += 1;
+        to.tv_nsec -= 1000000000L;
+    }
 
     return this->waitFor(&to);
 }
 
-/**  A timed wait that blocks for given number of seconds.
+/**  A timed wait that blocks until the given absolute time.
   *  As with the pthreads API, the mutex must be locked first.
   *
-  *  @param ts is a struct timespec of the amount of time to wait.
+  *  @param ts is an absolute CLOCK_REALTIME deadline (as for
+  *  pthread_cond_timedwait), not a duration.
+  *  @return  1 if signaled, 0 on timeout, -1 on error.
  **/
 int
 ThreadLock::waitFor ( const timespec * ts )

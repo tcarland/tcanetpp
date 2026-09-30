@@ -70,11 +70,12 @@ ThreadMutexPool::operator= ( const ThreadMutexPool & pool )
 ThreadLock*
 ThreadMutexPool::AcquireMutex()
 {
-    ThreadAutoMutex mutex(&_lock);
     ThreadLock    * lock = nullptr;
 
     if ( _mutexIn.empty() )
         this->createMutexes();
+
+    ThreadAutoMutex mutex(&_lock);
 
     if ( ! _mutexIn.empty() ) {
         lock = _mutexIn.front();
