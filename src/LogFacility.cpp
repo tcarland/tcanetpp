@@ -417,7 +417,7 @@ LogFacility::IsOpen ( const std::string & logname )
 void
 LogFacility::LogMessage ( LogFacility::Message & logmsg, int level )
 {
-    return LogFacility::LogMessage(LogFacility::_LogPrefix, logmsg.str(), level, false);
+    return LogFacility::LogMessage(LogFacility::_LogName, logmsg.str(), level, false);
 }
 
 /**  Alternate LogMessage allowing control of the newline character. This

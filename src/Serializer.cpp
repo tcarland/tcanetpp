@@ -163,9 +163,7 @@ Serializer::Unpack ( const char * buffer, size_t buflen,
 
     val_written = valw;
 
-    if ( vallen < val_written )
-        return -1;
-    else if ( buflen < upk + val_written )
+    if ( vallen < val_written || buflen < (upk + val_written) )
         return -1;
 
     ::memcpy(val, buffer + upk, val_written);
