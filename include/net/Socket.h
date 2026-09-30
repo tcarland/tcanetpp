@@ -138,6 +138,13 @@ class Socket {
 
     virtual ~Socket();
 
+    /**  A Socket owns its descriptor and closes it on destruction,
+      *  so copies would double-close (or close a reused fd number).
+      *  Pass Sockets by pointer or reference.
+     **/
+    Socket ( const Socket & )            = delete;
+    Socket& operator= ( const Socket & ) = delete;
+
 
   protected:
 

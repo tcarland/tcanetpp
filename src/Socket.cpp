@@ -342,6 +342,28 @@ Socket::bind()
 
     _bound = true;
 
+    // Record the port actually bound; for port 0 the kernel picks one.
+    // (Raw sockets report their protocol number as the port; skip them.)
+    sockaddr_t  local;
+    socklen_t   len = sizeof(local);
+
+    if ( _socktype == SOCKTYPE_SERVER &&
+         ::getsockname(_fd, (struct sockaddr*) &local, &len) == 0 )
+    {
+        sockaddr_t * sa = _ipaddr.getSockAddr();
+
+        if ( local.ss_family == AF_INET && sa->ss_family == AF_INET ) {
+            _port = ntohs(((sockaddr_in*) &local)->sin_port);
+            ((sockaddr_in*) sa)->sin_port = htons(_port);
+        } else if ( local.ss_family == AF_INET6 && sa->ss_family == AF_INET6 ) {
+            _port = ntohs(((sockaddr_in6*) &local)->sin6_port);
+            ((sockaddr_in6*) sa)->sin6_port = htons(_port);
+        }
+
+        _hoststr = _addrstr;
+        _hoststr.append(":").append(StringUtils::ToString(_port));
+    }
+
     return 1;
 }
 
