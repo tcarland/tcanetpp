@@ -52,23 +52,25 @@ class ThreadMutexPool {
 
     ThreadMutexPool& operator= ( const ThreadMutexPool & pool );
 
-    ThreadLock*  AcquireMutex();
-    void         ReleaseMutex ( ThreadLock * lock );
+    ThreadLock*  acquireMutex();
+    void         releaseMutex ( ThreadLock * lock );
 
-    void         MinPoolSize ( size_t size );
-    size_t       MinPoolSize();
+    void         minPoolSize ( size_t size );
+    size_t       minPoolSize();
 
-    void         MaxPoolSize ( size_t size );
-    size_t       MaxPoolSize();
+    void         maxPoolSize ( size_t size );
+    size_t       maxPoolSize();
 
-    size_t       MutexAvailable();
-    size_t       MutexInUse();
+    size_t       mutexAvailable();
+    size_t       mutexInUse();
 
     void         clear();
 
   private:
 
-    void         createMutexes();
+    /*  _lock must be held by the caller  */
+    void         createMutexesNolock();
+    void         clearNolock();
 
 
   private:
